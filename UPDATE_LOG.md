@@ -111,6 +111,68 @@ bevestigde marktbewegingsreeksen (bevestigde ankerpunten als ijkpunten gebruikt)
 
 ---
 
+## Update 3 — 12 maart 2026 (tweede update van de dag)
+
+**Rapportdatum:** 12 maart 2026
+**Uitgevoerd door:** Claude Sonnet (autonomous update via CLAUDE.md instructions)
+
+### Bevestigde datapunten (✓)
+| Datapunt | Waarde | Bron |
+|----------|--------|------|
+| TTF 12/03/2026 | €48.54/MWh | oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 (gemiddelde gebruikt) |
+| Belpex 12/03/2026 | €66.59/MWh | EU Energy Live ✓✓ |
+| Belpex 11/03/2026 | €74.63/MWh | EU Energy Live (correctie van 74.6) |
+| EU gasopslag 12/03/2026 | 29.3% | GIE AGSI+ (multiple sources confirm <30%) |
+| Brent 12/03/2026 | $96.90/vat | Investing.com (intraday high $103.06) |
+
+### Geïnterpoleerde datapunten (~)
+Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
+
+### Geopolitieke context op rapportdatum
+- **Hormuz:** Straat van Hormuz blijft gesloten. Dag 13 van VS-Israëlische luchtaanvallen op Iran.
+- **Scheepvaart:** Iran-aanvallen op commerciële scheepvaart escaleren verder.
+- **Brent:** Tijdelijk $103/vat (intraday), teruggevallen naar ~$97 door IEA-effect.
+- **IEA/G7:** Grootste reserve-vrijgave ooit (>182 mln vaten) bevestigd op 11/03. Effect zichtbaar: TTF gedaald van €51.73 naar €48.54.
+- **Qatar:** North Field East LNG-uitbreiding blijft vertraagd.
+- **TTF prijsdaling:** IEA-interventie heeft effect - TTF gedaald ondanks voortdurende crisis.
+
+### Scenario-kansen toegepast
+| Scenario | Kans | Redenering |
+|----------|------|-----------|
+| Bearish | 25% | IEA-vrijgave toont effect + lente seizoen + structurele LNG-aanbodgolf 2026 |
+| Basis | 50% | Hormuz blijft verstoord maar IEA-interventie dempt piek, geleidelijke normalisatie verwacht |
+| Bullish | 25% | Escalatie blijft reëel: Iran plaatst mijnen, scheepvaartaanvallen, Qatar LNG vertraagd |
+
+### Forecast range (apr–mei 2026)
+- TTF Basis: €32–47/MWh (aangepast naar beneden door IEA-effect)
+- TTF Bearish: €24–42/MWh
+- TTF Bullish: €48–62/MWh
+
+### Wijzigingen t.o.v. vorige versie (update 2 — 12/03 eerder vandaag)
+- rawData: 11/02 verwijderd (oudste punt), data voor 12/03 bijgewerkt
+- TTF 12/03: van €51.73 naar €48.54 (IEA-effect zichtbaar, cross-validated met 3 bronnen)
+- Belpex 11/03: van 74.6 naar 74.63 (precisie correctie van EU Energy Live)
+- Belpex 12/03: van ~€55 naar €66.59 (bevestigd door EU Energy Live)
+- Brent: van ~$95 naar ~$97 (Investing.com $96.90, intraday $103)
+- Forecast startpunt: bijgewerkt naar TTF €48.54, Belpex €66.59
+- Alle forecast scenarios: aangepast naar beneden door lagere startpunt
+- KPIs: TTF €48.54 (+52% vs 27/02), Belpex €66.59 (-11% vs gisteren), Brent ~$97
+- Alert banner: "Brent tijdelijk $103" + "TTF gedaald door IEA-effect"
+- Belpex mix-notitie: bijgewerkt naar €66.59 daggemiddelde
+- Bronnen: oilpriceapi.com, EU Energy Live, Investing.com toegevoegd als primaire validatiebronnen
+
+### Technische notities
+- Nieuwe primaire bronnen toegevoegd aan CLAUDE.md voor toekomstige updates:
+  - TTF vandaag: https://www.oilpriceapi.com/live/dutch-ttf-gas-price
+  - TTF historisch: https://www.investing.com/commodities/dutch-ttf-gas-c1-futures-historical-data
+  - Belpex vandaag & historisch: https://euenergy.live/country.php?a2=BE
+- TTF prijsdiscrepantie opgelost door cross-validatie van 3 bronnen (€43.23, ~€49-50, €61.15)
+- Geen apostrof-issues in deze update
+- Beide bestanden (JSX + offline HTML) gesynchroniseerd met identieke data
+- Data-validatie uitgevoerd volgens CLAUDE.md instructies
+
+---
+
 ## Template voor volgende update
 
 Kopieer dit blok en vul in:

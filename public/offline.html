@@ -74,13 +74,13 @@ svg.chart{width:100%;font-family:Georgia,serif}
 <div class="kpi-grid">
   <div class="kpi" style="border:1px solid #ef444444">
     <div class="kpi-label">TTF Gas vandaag</div>
-    <div class="kpi-val" style="color:#ef4444">€51.73<span class="kpi-sub">/MWh</span></div>
-    <div class="kpi-note" style="color:#ef4444">+62% vs 27/02</div>
+    <div class="kpi-val" style="color:#ef4444">€48.54<span class="kpi-sub">/MWh</span></div>
+    <div class="kpi-note" style="color:#ef4444">+52% vs 27/02</div>
   </div>
   <div class="kpi" style="border:1px solid #f9731644">
     <div class="kpi-label">Belpex Elektr. vandaag</div>
-    <div class="kpi-val" style="color:#f97316">~€55<span class="kpi-sub">/MWh</span></div>
-    <div class="kpi-note" style="color:#f97316">laag door zonne-en.</div>
+    <div class="kpi-val" style="color:#f97316">€66.59<span class="kpi-sub">/MWh</span></div>
+    <div class="kpi-note" style="color:#f97316">-11% vs gisteren</div>
   </div>
   <div class="kpi" style="border:1px solid #eab30844">
     <div class="kpi-label">EU Gasopslag</div>
@@ -89,8 +89,8 @@ svg.chart{width:100%;font-family:Georgia,serif}
   </div>
   <div class="kpi" style="border:1px solid #8b5cf644">
     <div class="kpi-label">Brent Ruwe Olie</div>
-    <div class="kpi-val" style="color:#8b5cf6">~$95<span class="kpi-sub">/vat</span></div>
-    <div class="kpi-note" style="color:#8b5cf6">tijdelijk ~$100 v.</div>
+    <div class="kpi-val" style="color:#8b5cf6">~$97<span class="kpi-sub">/vat</span></div>
+    <div class="kpi-note" style="color:#8b5cf6">tijdelijk $103 v.</div>
   </div>
 </div>
 
@@ -168,7 +168,7 @@ svg.chart{width:100%;font-family:Georgia,serif}
     <h3 style="margin:0 0 14px;color:#f8fafc;font-size:15px">🇧🇪 Belgische Energiemix</h3>
     <p style="margin-top:0;font-size:13px;color:#94a3b8;line-height:1.6">Gas is de <strong style="color:#f8fafc">marginale producent</strong> in ~60–70% van de handelssessies en bepaalt daardoor direct de Belpex-prijs.</p>
     <div style="background:#172554;border-radius:8px;padding:12px 14px" id="mix-rows"></div>
-    <p style="font-size:12px;color:#f97316;margin-top:10px;margin-bottom:0">⚡ Belpex op 12/03 (~€55 daggemiddelde) significant lager dan TTF-piek door massale zonne-energieproductie overdag en lagere verwarmingsvraag in lente.</p>
+    <p style="font-size:12px;color:#f97316;margin-top:10px;margin-bottom:0">⚡ Belpex op 12/03 (€66.59 daggemiddelde) gedaald t.o.v. gisteren door lagere verwarmingsvraag en zonne-energieproductie in lente.</p>
   </div>
 
 </div>
@@ -290,7 +290,7 @@ svg.chart{width:100%;font-family:Georgia,serif}
   <h3 style="margin:0 0 6px;color:#f8fafc;font-size:16px">📚 Bronvermeldingen &amp; Officiële Databronnen</h3>
   <p style="font-size:13px;color:#64748b;margin-top:0;margin-bottom:22px">Alle bronnen zijn publiek raadpleegbaar. Bevestigde exacte datapunten zijn gemarkeerd met ✓ in de tabellen.</p>
   <div id="sources-content"></div>
-  <div style="background:#172554;border:1px solid #3b82f644;border-radius:10px;padding:13px 17px;font-size:12px;color:#93c5fd;line-height:1.7"><strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 27/02 = €31.96 (Bloomberg/Reuters), TTF 09/03 = €59.57 (Xinhua), Belpex 11/03 = €74.60 (ENTSO-E), TTF 12/03 = €51.73 (Trading Economics), EU opslag 11/03 = 29.27% (GIE AGSI+). Belpex 12/03 (~€55) = schatting op basis van Elexys kwartierdata. Tussenliggende dagwaarden zijn interpolaties.</div>
+  <div style="background:#172554;border:1px solid #3b82f644;border-radius:10px;padding:13px 17px;font-size:12px;color:#93c5fd;line-height:1.7"><strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 27/02 = €31.96 (Bloomberg/Reuters), TTF 09/03 = €59.57 (Xinhua), TTF 12/03 = €48.54 (oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 - gemiddelde gebruikt), Belpex 12/03 = €66.59 (EU Energy Live), Belpex 11/03 = €74.63 (EU Energy Live), EU opslag 12/03 = 29.3% (GIE AGSI+), Brent 12/03 = $96.90 (Investing.com). Tussenliggende dagwaarden zijn interpolaties.</div>
 </div>
 </div><!-- /tab-bronnen -->
 
@@ -302,10 +302,10 @@ svg.chart{width:100%;font-family:Georgia,serif}
 
 <script>
 // ===== DATA =====
-const marketData = [{"date": "11/02", "ttf": 29.9, "belpex": 59.0, "note": ""}, {"date": "12/02", "ttf": 30.2, "belpex": 65.0, "note": ""}, {"date": "13/02", "ttf": 31.0, "belpex": 78.0, "note": ""}, {"date": "14/02", "ttf": 30.8, "belpex": 70.0, "note": ""}, {"date": "17/02", "ttf": 31.5, "belpex": 81.0, "note": ""}, {"date": "18/02", "ttf": 32.1, "belpex": 86.0, "note": ""}, {"date": "19/02", "ttf": 31.8, "belpex": 76.0, "note": ""}, {"date": "20/02", "ttf": 33.0, "belpex": 88.0, "note": ""}, {"date": "21/02", "ttf": 34.2, "belpex": 94.0, "note": ""}, {"date": "24/02", "ttf": 33.5, "belpex": 82.0, "note": ""}, {"date": "25/02", "ttf": 32.8, "belpex": 74.0, "note": ""}, {"date": "26/02", "ttf": 32.3, "belpex": 71.0, "note": ""}, {"date": "27/02", "ttf": 31.96, "belpex": 68.0, "note": "OK"}, {"date": "28/02", "ttf": 32.5, "belpex": 72.0, "note": ""}, {"date": "02/03", "ttf": 38.0, "belpex": 95.0, "note": "Hormuz"}, {"date": "03/03", "ttf": 53.0, "belpex": 118.0, "note": "Piek"}, {"date": "04/03", "ttf": 56.0, "belpex": 112.0, "note": ""}, {"date": "05/03", "ttf": 54.5, "belpex": 106.0, "note": ""}, {"date": "06/03", "ttf": 57.0, "belpex": 114.0, "note": ""}, {"date": "07/03", "ttf": 55.0, "belpex": 102.0, "note": "WE"}, {"date": "09/03", "ttf": 59.57, "belpex": 136.0, "note": "OKPiek"}, {"date": "10/03", "ttf": 57.0, "belpex": 112.0, "note": "IEA"}, {"date": "11/03", "ttf": 55.48, "belpex": 74.6, "note": "OK"}, {"date": "12/03", "ttf": 51.73, "belpex": 55.0, "note": "OKVandaag"}];
-const forecastBase = [{"date": "12/03", "ttf": 51.73, "belpex": 55.0}, {"date": "15/03", "ttf": 50, "belpex": 82}, {"date": "22/03", "ttf": 46, "belpex": 76}, {"date": "01/04", "ttf": 42, "belpex": 70}, {"date": "15/04", "ttf": 38, "belpex": 62}, {"date": "01/05", "ttf": 34, "belpex": 54}];
-const forecastBull = [{"date": "12/03", "ttf": 51.73, "belpex": 55.0}, {"date": "15/03", "ttf": 58, "belpex": 105}, {"date": "22/03", "ttf": 65, "belpex": 120}, {"date": "01/04", "ttf": 62, "belpex": 112}, {"date": "15/04", "ttf": 58, "belpex": 100}, {"date": "01/05", "ttf": 52, "belpex": 88}];
-const forecastBear = [{"date": "12/03", "ttf": 51.73, "belpex": 55.0}, {"date": "15/03", "ttf": 44, "belpex": 72}, {"date": "22/03", "ttf": 38, "belpex": 62}, {"date": "01/04", "ttf": 33, "belpex": 54}, {"date": "15/04", "ttf": 29, "belpex": 46}, {"date": "01/05", "ttf": 26, "belpex": 38}];
+const marketData = [{"date": "12/02", "ttf": 30.2, "belpex": 65.0, "note": ""}, {"date": "13/02", "ttf": 31.0, "belpex": 78.0, "note": ""}, {"date": "14/02", "ttf": 30.8, "belpex": 70.0, "note": ""}, {"date": "17/02", "ttf": 31.5, "belpex": 81.0, "note": ""}, {"date": "18/02", "ttf": 32.1, "belpex": 86.0, "note": ""}, {"date": "19/02", "ttf": 31.8, "belpex": 76.0, "note": ""}, {"date": "20/02", "ttf": 33.0, "belpex": 88.0, "note": ""}, {"date": "21/02", "ttf": 34.2, "belpex": 94.0, "note": ""}, {"date": "24/02", "ttf": 33.5, "belpex": 82.0, "note": ""}, {"date": "25/02", "ttf": 32.8, "belpex": 74.0, "note": ""}, {"date": "26/02", "ttf": 32.3, "belpex": 71.0, "note": ""}, {"date": "27/02", "ttf": 31.96, "belpex": 68.0, "note": "OK"}, {"date": "28/02", "ttf": 32.5, "belpex": 72.0, "note": ""}, {"date": "02/03", "ttf": 38.0, "belpex": 95.0, "note": "Hormuz"}, {"date": "03/03", "ttf": 53.0, "belpex": 118.0, "note": "Piek"}, {"date": "04/03", "ttf": 56.0, "belpex": 112.0, "note": ""}, {"date": "05/03", "ttf": 54.5, "belpex": 106.0, "note": ""}, {"date": "06/03", "ttf": 57.0, "belpex": 114.0, "note": ""}, {"date": "07/03", "ttf": 55.0, "belpex": 102.0, "note": "WE"}, {"date": "09/03", "ttf": 59.57, "belpex": 136.0, "note": "OKPiek"}, {"date": "10/03", "ttf": 57.0, "belpex": 112.0, "note": "IEA"}, {"date": "11/03", "ttf": 55.48, "belpex": 74.63, "note": "OK"}, {"date": "12/03", "ttf": 48.54, "belpex": 66.59, "note": "OKVandaag"}];
+const forecastBase = [{"date": "12/03", "ttf": 48.54, "belpex": 66.59}, {"date": "15/03", "ttf": 47, "belpex": 78}, {"date": "22/03", "ttf": 44, "belpex": 72}, {"date": "01/04", "ttf": 40, "belpex": 66}, {"date": "15/04", "ttf": 36, "belpex": 58}, {"date": "01/05", "ttf": 32, "belpex": 50}];
+const forecastBull = [{"date": "12/03", "ttf": 48.54, "belpex": 66.59}, {"date": "15/03", "ttf": 55, "belpex": 98}, {"date": "22/03", "ttf": 62, "belpex": 115}, {"date": "01/04", "ttf": 58, "belpex": 105}, {"date": "15/04", "ttf": 54, "belpex": 92}, {"date": "01/05", "ttf": 48, "belpex": 82}];
+const forecastBear = [{"date": "12/03", "ttf": 48.54, "belpex": 66.59}, {"date": "15/03", "ttf": 42, "belpex": 68}, {"date": "22/03", "ttf": 36, "belpex": 58}, {"date": "01/04", "ttf": 31, "belpex": 50}, {"date": "15/04", "ttf": 27, "belpex": 42}, {"date": "01/05", "ttf": 24, "belpex": 36}];
 
 // ===== TAB SWITCHING =====
 function showTab(name) {

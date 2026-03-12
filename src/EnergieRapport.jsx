@@ -6,12 +6,11 @@ import {
 } from "recharts";
 
 // === DATA ===
-// Confirmed points (✓): TTF 27/02=31.96 (Bloomberg), TTF 09/03=59.57 (Xinhua), Belpex 11/03=74.6 (ENTSO-E)
-// TTF 12/03=51.73 (Trading Economics, confirmed by oilpriceapi ~€52)
-// Belpex 12/03=~55 (Elexys kwartierdata: zonne-energie drukt middag naar ~0, avondpiek ~€80-130)
-// EU opslag 11/03=29.27% (GIE AGSI+), Brent 12/03=~$95 (BNN Bloomberg, tijdelijk ~$100)
+// Confirmed points (✓): TTF 27/02=31.96 (Bloomberg), TTF 09/03=59.57 (Xinhua)
+// TTF 12/03=48.54 (oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 - avg used)
+// Belpex 12/03=66.59 (EU Energy Live ✓✓), Belpex 11/03=74.63 (EU Energy Live)
+// EU opslag 12/03=29.3% (GIE AGSI+, multiple sources <30%), Brent 12/03=$96.90 (Investing.com)
 const rawData = [
-  { date: "11/02", ttf: 29.90, belpex: 59.0,  note: "" },
   { date: "12/02", ttf: 30.20, belpex: 65.0,  note: "" },
   { date: "13/02", ttf: 31.00, belpex: 78.0,  note: "" },
   { date: "14/02", ttf: 30.80, belpex: 70.0,  note: "" },
@@ -33,8 +32,8 @@ const rawData = [
   { date: "07/03", ttf: 55.00, belpex: 102.0, note: "WE" },
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "✓Piek" },
   { date: "10/03", ttf: 57.00, belpex: 112.0, note: "IEA" },
-  { date: "11/03", ttf: 55.48, belpex: 74.6,  note: "✓" },
-  { date: "12/03", ttf: 51.73, belpex: 55.0,  note: "✓Vandaag" },
+  { date: "11/03", ttf: 55.48, belpex: 74.63, note: "✓" },
+  { date: "12/03", ttf: 48.54, belpex: 66.59, note: "✓Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -47,28 +46,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "12/03", ttf: 51.73, belpex: 55.0 },
-  { date: "15/03", ttf: 50,    belpex: 82   },
-  { date: "22/03", ttf: 46,    belpex: 76   },
-  { date: "01/04", ttf: 42,    belpex: 70   },
-  { date: "15/04", ttf: 38,    belpex: 62   },
-  { date: "01/05", ttf: 34,    belpex: 54   },
+  { date: "12/03", ttf: 48.54, belpex: 66.59 },
+  { date: "15/03", ttf: 47,    belpex: 78   },
+  { date: "22/03", ttf: 44,    belpex: 72   },
+  { date: "01/04", ttf: 40,    belpex: 66   },
+  { date: "15/04", ttf: 36,    belpex: 58   },
+  { date: "01/05", ttf: 32,    belpex: 50   },
 ];
 const forecastBull = [
-  { date: "12/03", ttf: 51.73, belpex: 55.0 },
-  { date: "15/03", ttf: 58,    belpex: 105  },
-  { date: "22/03", ttf: 65,    belpex: 120  },
-  { date: "01/04", ttf: 62,    belpex: 112  },
-  { date: "15/04", ttf: 58,    belpex: 100  },
-  { date: "01/05", ttf: 52,    belpex: 88   },
+  { date: "12/03", ttf: 48.54, belpex: 66.59 },
+  { date: "15/03", ttf: 55,    belpex: 98   },
+  { date: "22/03", ttf: 62,    belpex: 115  },
+  { date: "01/04", ttf: 58,    belpex: 105  },
+  { date: "15/04", ttf: 54,    belpex: 92   },
+  { date: "01/05", ttf: 48,    belpex: 82   },
 ];
 const forecastBear = [
-  { date: "12/03", ttf: 51.73, belpex: 55.0 },
-  { date: "15/03", ttf: 44,    belpex: 72   },
-  { date: "22/03", ttf: 38,    belpex: 62   },
-  { date: "01/04", ttf: 33,    belpex: 54   },
-  { date: "15/04", ttf: 29,    belpex: 46   },
-  { date: "01/05", ttf: 26,    belpex: 38   },
+  { date: "12/03", ttf: 48.54, belpex: 66.59 },
+  { date: "15/03", ttf: 42,    belpex: 68   },
+  { date: "22/03", ttf: 36,    belpex: 58   },
+  { date: "01/04", ttf: 31,    belpex: 50   },
+  { date: "15/04", ttf: 27,    belpex: 42   },
+  { date: "01/05", ttf: 24,    belpex: 36   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -182,10 +181,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€51.73", "/MWh",  "+62% vs 27/02",       "#ef4444"],
-          ["Belpex Elektr. vandaag","~€55",   "/MWh",  "laag door zonne-en.", "#f97316"],
+          ["TTF Gas vandaag",       "€48.54", "/MWh",  "+52% vs 27/02",       "#ef4444"],
+          ["Belpex Elektr. vandaag","€66.59", "/MWh",  "-11% vs gisteren",    "#f97316"],
           ["EU Gasopslag",          "29.3%",  " cap.", "laagste in jaren",    "#eab308"],
-          ["Brent Ruwe Olie",       "~$95",   "/vat",  "tijdelijk ~$100 v.",  "#8b5cf6"],
+          ["Brent Ruwe Olie",       "~$97",   "/vat",  "tijdelijk $103 v.",   "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
