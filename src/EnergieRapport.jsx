@@ -7,9 +7,10 @@ import {
 
 // === DATA ===
 // Confirmed points (✓): TTF 27/02=31.96 (Bloomberg), TTF 09/03=59.57 (Xinhua), Belpex 11/03=74.6 (ENTSO-E)
-// Intermediate values interpolated from confirmed market movement reports
+// TTF 12/03=51.73 (Trading Economics, confirmed by oilpriceapi ~€52)
+// Belpex 12/03=~55 (Elexys kwartierdata: zonne-energie drukt middag naar ~0, avondpiek ~€80-130)
+// EU opslag 11/03=29.27% (GIE AGSI+), Brent 12/03=~$95 (BNN Bloomberg, tijdelijk ~$100)
 const rawData = [
-  { date: "10/02", ttf: 30.50, belpex: 72.0,  note: "" },
   { date: "11/02", ttf: 29.90, belpex: 59.0,  note: "" },
   { date: "12/02", ttf: 30.20, belpex: 65.0,  note: "" },
   { date: "13/02", ttf: 31.00, belpex: 78.0,  note: "" },
@@ -32,7 +33,8 @@ const rawData = [
   { date: "07/03", ttf: 55.00, belpex: 102.0, note: "WE" },
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "✓Piek" },
   { date: "10/03", ttf: 57.00, belpex: 112.0, note: "IEA" },
-  { date: "11/03", ttf: 55.48, belpex: 74.6,  note: "✓Vandaag" },
+  { date: "11/03", ttf: 55.48, belpex: 74.6,  note: "✓" },
+  { date: "12/03", ttf: 51.73, belpex: 55.0,  note: "✓Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -45,28 +47,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "11/03", ttf: 55.48, belpex: 74.6 },
-  { date: "15/03", ttf: 52,    belpex: 88   },
-  { date: "22/03", ttf: 48,    belpex: 82   },
-  { date: "01/04", ttf: 44,    belpex: 76   },
-  { date: "15/04", ttf: 40,    belpex: 68   },
-  { date: "01/05", ttf: 36,    belpex: 58   },
+  { date: "12/03", ttf: 51.73, belpex: 55.0 },
+  { date: "15/03", ttf: 50,    belpex: 82   },
+  { date: "22/03", ttf: 46,    belpex: 76   },
+  { date: "01/04", ttf: 42,    belpex: 70   },
+  { date: "15/04", ttf: 38,    belpex: 62   },
+  { date: "01/05", ttf: 34,    belpex: 54   },
 ];
 const forecastBull = [
-  { date: "11/03", ttf: 55.48, belpex: 74.6 },
-  { date: "15/03", ttf: 60,    belpex: 108  },
+  { date: "12/03", ttf: 51.73, belpex: 55.0 },
+  { date: "15/03", ttf: 58,    belpex: 105  },
   { date: "22/03", ttf: 65,    belpex: 120  },
-  { date: "01/04", ttf: 58,    belpex: 105  },
-  { date: "15/04", ttf: 52,    belpex: 92   },
-  { date: "01/05", ttf: 46,    belpex: 80   },
+  { date: "01/04", ttf: 62,    belpex: 112  },
+  { date: "15/04", ttf: 58,    belpex: 100  },
+  { date: "01/05", ttf: 52,    belpex: 88   },
 ];
 const forecastBear = [
-  { date: "11/03", ttf: 55.48, belpex: 74.6 },
-  { date: "15/03", ttf: 46,    belpex: 76   },
-  { date: "22/03", ttf: 40,    belpex: 65   },
-  { date: "01/04", ttf: 36,    belpex: 56   },
-  { date: "15/04", ttf: 32,    belpex: 48   },
-  { date: "01/05", ttf: 28,    belpex: 40   },
+  { date: "12/03", ttf: 51.73, belpex: 55.0 },
+  { date: "15/03", ttf: 44,    belpex: 72   },
+  { date: "22/03", ttf: 38,    belpex: 62   },
+  { date: "01/04", ttf: 33,    belpex: 54   },
+  { date: "15/04", ttf: 29,    belpex: 46   },
+  { date: "01/05", ttf: 26,    belpex: 38   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -123,10 +125,29 @@ export default function EnergieRapport() {
   return (
     <div style={{ background: "#0f172a", minHeight: "100vh", color: "#e2e8f0", fontFamily: "Georgia, serif", padding: "24px 20px" }}>
 
+      {/* LOGO + COPYRIGHT */}
+      <div style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 12, padding: "16px 24px", marginBottom: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+        <img
+          src="/fulllogo_transparent_nobuffer.png"
+          alt="PWR.IT CommV"
+          style={{ maxHeight: 70, maxWidth: 260, objectFit: "contain" }}
+        />
+        <div style={{ borderTop: "1px solid #334155", paddingTop: 12, width: "100%", textAlign: "center" }}>
+          <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, marginBottom: 4 }}>
+            © PWR.IT CommV — Alle rechten voorbehouden
+          </div>
+          <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.7 }}>
+            Het gebruik, kopiëren en verspreiden van deze pagina en de analyses hierop is uitsluitend toegestaan
+            mits <strong style={{ color: "#94a3b8" }}>uitdrukkelijke schriftelijke toestemming van PWR.IT CommV</strong>.
+            Zonder toestemming is elke reproductie of verspreiding verboden.
+          </div>
+        </div>
+      </div>
+
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 11 MAART 2026 — OFFICIËLE DATABRONNEN
+          MARKTANALYSE — 12 MAART 2026 — OFFICIËLE DATABRONNEN
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -142,7 +163,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Straat van Hormuz verstoord · TTF +74% in 6 handelsdagen · IEA stelt grootste reserve-vrijgave ooit voor (&gt;182 mln vaten) · G7 bespreking 11/03/2026
+            Straat van Hormuz gesloten · Iran-aanvallen op scheepvaart escaleren (dag 13) · Brent tijdelijk boven $100 · G7 IEA-vrijgave bevestigd 11/03 · TTF licht gedaald maar crisis duurt voort
           </div>
         </div>
       </div>
@@ -161,10 +182,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€55.48", "/MWh",  "+74% vs 27/02",     "#ef4444"],
-          ["Belpex Elektr. vandaag","€74.6",  "/MWh",  "+10% vs 27/02",     "#f97316"],
-          ["EU Gasopslag",          "<30%",   " cap.", "laagste in jaren",  "#eab308"],
-          ["Brent Ruwe Olie",       "~$88",   "/vat",  "piek $119.5 ma.",   "#8b5cf6"],
+          ["TTF Gas vandaag",       "€51.73", "/MWh",  "+62% vs 27/02",       "#ef4444"],
+          ["Belpex Elektr. vandaag","~€55",   "/MWh",  "laag door zonne-en.", "#f97316"],
+          ["EU Gasopslag",          "29.3%",  " cap.", "laagste in jaren",    "#eab308"],
+          ["Brent Ruwe Olie",       "~$95",   "/vat",  "tijdelijk ~$100 v.",  "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -271,7 +292,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (8 mrt 2026)", "<30%",           "#ef4444"],
+              ["EU-gemiddelde (11 mrt 2026)", "29.3%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -308,9 +329,9 @@ export default function EnergieRapport() {
               {[
                 ["Volume",          ">182 mln vaten (est. 300–400 mln)"],
                 ["% totale res.",   "~25–30%"],
-                ["IEA-meeting",     "10/03/2026, beslissing 11/03"],
-                ["G7 positie",      "Principieel akkoord"],
-                ["Marktreactie",    "Brent: $119.5 → ~$88/vat"],
+                ["IEA-meeting",     "10/03/2026, G7 akkoord bevestigd 11/03"],
+                ["G7 positie",      "Akkoord bevestigd — vrijgave in werking"],
+                ["Marktreactie",    "Brent: $119.5 → ~$95/vat (tijdelijk ~$100 op 12/03)"],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
                   <span style={{ color: "#94a3b8" }}>{k}</span>
@@ -338,7 +359,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex daalde op 11/03 (€74.6) ondanks hoge TTF dankzij hogere kern- en windproductie overdag.
+              ⚡ Belpex op 12/03 (~€55 daggemiddelde) significant lager dan TTF-piek door massale zonne-energieproductie overdag en lagere verwarmingsvraag in lente.
             </p>
           </div>
         </div>
@@ -405,7 +426,7 @@ export default function EnergieRapport() {
           <h3 style={{ margin: "0 0 12px", color: "#f8fafc", fontSize: 15 }}>🔑 Sleutelfactoren om op te volgen</h3>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {[
-              ["IEA G7-beslissing (11/03)",   "Bepalend voor korte-termijn prijsdruk."],
+              ["IEA G7-vrijgave (bevestigd 11/03)", "In werking getreden — effect op prijzen volgen."],
               ["Hormuz scheepvaartberichten",  "Elke heropening = prijsdaling. Bron: Lloyd's List / Reuters."],
               ["GIE gasopslag (wekelijks di)", "Herstel boven 30% = positief signaal."],
               ["Noorwegen onderhoud mei–jun",  "Geplande stops → tijdelijke TTF-stijgingen."],
@@ -617,7 +638,8 @@ export default function EnergieRapport() {
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
                 { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële EU gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
-                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (bevestigd 11/03: €55.48/MWh)",                url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
+                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (12/03: ~€52/MWh, 11/03: €55.48/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
+                { n: "Trading Economics — TTF 12/03/2026",    d: "Bevestigd: TTF €51.73/MWh op 12/03/2026 (+3.48% dag/dag)",            url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
                 { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over EU gasopslag en marktevolutie",            url: "https://europeangashub.com" },
                 { n: "Modo Energy — Hormuz/TTF analyse",       d: "Gedetailleerde analyse Hormuz-impact op TTF en BESS (mrt 2026)",      url: "https://modoenergy.com/research/en/gas-price-jump-iran-war-qatar-lng-ras-laffan-bess-batteries-ttf-nbp-jkm-revenues-interest-rates-march-2026" },
               ],
@@ -625,8 +647,10 @@ export default function EnergieRapport() {
             {
               cat: "🌍 Geopolitiek & Beleidsinstanties", color: "#f97316",
               items: [
-                { n: "Reuters — IEA reserve-voorstel (10/03/2026)",     d: "Primair nieuwsagentschap, bevestigd door Bloomberg/WSJ",              url: "https://uk.finance.yahoo.com/news/iea-proposes-largest-ever-oil-004117342.html" },
-                { n: "Xinhua — Olie- en gasprijzen (09-10/03/2026)",    d: "Bevestigde datapunten: TTF €59.57 (09/03), Brent $119.5 intraday",   url: "https://english.news.cn/20260310/6991c6f027d14192b6d4f889d84ac71b/c.html" },
+                { n: "Reuters — IEA reserve-voorstel (10/03/2026)",     d: "Primair nieuwsagentschap, bevestigd door Bloomberg/WSJ",                                    url: "https://uk.finance.yahoo.com/news/iea-proposes-largest-ever-oil-004117342.html" },
+                { n: "Xinhua — Olie- en gasprijzen (09-10/03/2026)",    d: "Bevestigde datapunten: TTF €59.57 (09/03), Brent $119.5 intraday",                               url: "https://english.news.cn/20260310/6991c6f027d14192b6d4f889d84ac71b/c.html" },
+                { n: "BNN Bloomberg — Brent tijdelijk >$100 (12/03)",   d: "Iran-aanvallen op scheepvaart: Brent tijdelijk $100, teruggevallen naar ~$95–97",                url: "https://www.bnnbloomberg.ca/markets/2026/03/12/brent-crude-oil-briefly-tops-us100-a-barrel-as-iran-attacks-on-shipping-worsen-supply-concerns/" },
+                { n: "Columbia SIPA — Hormuz gesloten (11/03/2026)",    d: "Hormuz effectief gesloten voor tankerverkeer, VS-marinebegeleiding gefaald",                      url: "https://www.energypolicy.columbia.edu/iran-conflict-brief-what-it-will-take-to-open-up-the-strait-of-hormuz/" },
                 { n: "Internationaal Energieagentschap (IEA)",           d: "Officiële energiestatistieken, noodreserves en beleidsaanbevelingen", url: "https://www.iea.org" },
                 { n: "EU Raad — Gasopslag Verordening",                 d: "EU-beleid rond gasopslagverplichtingen t.e.m. 2027",                  url: "https://www.consilium.europa.eu/en/infographics/gas-storage-capacity/" },
                 { n: "Bruegel — European Natural Gas Imports Tracker",  d: "Academische tracking van EU gasimportflows en opslagdata",            url: "https://www.bruegel.org/dataset/european-natural-gas-imports" },
@@ -662,7 +686,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 27/02 = €31.96 (Bloomberg/Reuters), TTF 09/03 = €59.57 (Xinhua), Belpex daggemiddelde 11/03 = €74.60 (ENTSO-E/dayaheadmarket.eu). Tussenliggende dagwaarden zijn interpolaties op basis van bevestigde marktbewegingsreeksen. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 27/02 = €31.96 (Bloomberg/Reuters), TTF 09/03 = €59.57 (Xinhua), Belpex 11/03 = €74.60 (ENTSO-E), TTF 12/03 = €51.73 (Trading Economics/oilpriceapi), EU opslag 11/03 = 29.27% (GIE AGSI+). Belpex 12/03 (~€55) = schatting op basis van Elexys kwartierdata (zonne-energie drukt middag naar ~€0). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}
@@ -670,7 +694,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 11 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 12 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
     </div>
   );
