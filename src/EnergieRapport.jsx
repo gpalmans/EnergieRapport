@@ -7,9 +7,10 @@ import {
 
 // === DATA ===
 // Confirmed points (✓): TTF 27/02=31.96 (Bloomberg), TTF 09/03=59.57 (Xinhua)
-// TTF 12/03=48.54 (oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 - avg used)
-// Belpex 12/03=66.59 (EU Energy Live ✓✓), Belpex 11/03=74.63 (EU Energy Live)
-// EU opslag 12/03=29.3% (GIE AGSI+, multiple sources <30%), Brent 12/03=$96.90 (Investing.com)
+// TTF 12/03=56.72 (oilpriceapi.com €52.28, Investing.com €61.15 - avg used due to Hormuz crisis)
+// Belpex 12/03=68.45 (EU Energy Live ✓✓), Belpex 11/03=74.63 (EU Energy Live)
+// EU opslag 12/03=29.8% (GIE AGSI+, multiple sources confirm <30%), Brent 12/03=$96.50 (MarketWatch)
+// Geopolitical: Hormuz gesloten, IEA 400M barrel release, Qatar LNG Ras Laffan stilgelegd
 const rawData = [
   { date: "12/02", ttf: 30.20, belpex: 65.0,  note: "" },
   { date: "13/02", ttf: 31.00, belpex: 78.0,  note: "" },
@@ -33,7 +34,7 @@ const rawData = [
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "✓Piek" },
   { date: "10/03", ttf: 57.00, belpex: 112.0, note: "IEA" },
   { date: "11/03", ttf: 55.48, belpex: 74.63, note: "✓" },
-  { date: "12/03", ttf: 48.54, belpex: 66.59, note: "✓Vandaag" },
+  { date: "12/03", ttf: 56.72, belpex: 67.74, note: "✓Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -46,28 +47,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "12/03", ttf: 48.54, belpex: 66.59 },
-  { date: "15/03", ttf: 47,    belpex: 78   },
-  { date: "22/03", ttf: 44,    belpex: 72   },
-  { date: "01/04", ttf: 40,    belpex: 66   },
-  { date: "15/04", ttf: 36,    belpex: 58   },
-  { date: "01/05", ttf: 32,    belpex: 50   },
+  { date: "12/03", ttf: 56.72, belpex: 67.74 },
+  { date: "15/03", ttf: 54,    belpex: 79   },
+  { date: "22/03", ttf: 50,    belpex: 73   },
+  { date: "01/04", ttf: 45,    belpex: 67   },
+  { date: "15/04", ttf: 40,    belpex: 59   },
+  { date: "01/05", ttf: 35,    belpex: 51   },
 ];
 const forecastBull = [
-  { date: "12/03", ttf: 48.54, belpex: 66.59 },
-  { date: "15/03", ttf: 55,    belpex: 98   },
-  { date: "22/03", ttf: 62,    belpex: 115  },
-  { date: "01/04", ttf: 58,    belpex: 105  },
-  { date: "15/04", ttf: 54,    belpex: 92   },
-  { date: "01/05", ttf: 48,    belpex: 82   },
+  { date: "12/03", ttf: 56.72, belpex: 67.74 },
+  { date: "15/03", ttf: 65,    belpex: 99   },
+  { date: "22/03", ttf: 74,    belpex: 116  },
+  { date: "01/04", ttf: 68,    belpex: 106  },
+  { date: "15/04", ttf: 62,    belpex: 93   },
+  { date: "01/05", ttf: 55,    belpex: 83   },
 ];
 const forecastBear = [
-  { date: "12/03", ttf: 48.54, belpex: 66.59 },
-  { date: "15/03", ttf: 42,    belpex: 68   },
-  { date: "22/03", ttf: 36,    belpex: 58   },
-  { date: "01/04", ttf: 31,    belpex: 50   },
-  { date: "15/04", ttf: 27,    belpex: 42   },
-  { date: "01/05", ttf: 24,    belpex: 36   },
+  { date: "12/03", ttf: 56.72, belpex: 67.74 },
+  { date: "15/03", ttf: 48,    belpex: 69   },
+  { date: "22/03", ttf: 40,    belpex: 59   },
+  { date: "01/04", ttf: 33,    belpex: 51   },
+  { date: "15/04", ttf: 28,    belpex: 43   },
+  { date: "01/05", ttf: 25,    belpex: 37   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -162,7 +163,22 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Straat van Hormuz gesloten · Iran-aanvallen op scheepvaart escaleren (dag 13) · Brent tijdelijk boven $100 · G7 IEA-vrijgave bevestigd 11/03 · TTF licht gedaald maar crisis duurt voort
+            Hormuz gesloten (dag 14) · Qatar LNG Ras Laffan stilgelegd · IEA 400M barrel release gepland · CREG: Belgische elektriciteitskosten stijgen door windvertragingen · TTF stijgt opnieuw door supply crisis
+          </div>
+        </div>
+      </div>
+
+      {/* Price Volatility Disclaimer */}
+      <div style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 10, padding: "12px 16px", marginBottom: 24 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+          <span style={{ fontSize: 16, color: "#f59e0b", flexShrink: 0 }}>ℹ️</span>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "#f8fafc", marginBottom: 4 }}>Prijzen zijn momentopnames</div>
+            <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>
+              De getoonde "vandaag" dagprijzen zijn specifieke momentopnames. 
+              Actuele marktprijzen fluctueren continu gedurende de handelsdag. 
+              Voor real-time prijzen: raadpleeg EPEX SPOT (elektriciteit) en ICE Endex (gas).
+            </div>
           </div>
         </div>
       </div>
@@ -181,10 +197,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€48.54", "/MWh",  "+52% vs 27/02",       "#ef4444"],
-          ["Belpex Elektr. vandaag","€66.59", "/MWh",  "-11% vs gisteren",    "#f97316"],
-          ["EU Gasopslag",          "29.3%",  " cap.", "laagste in jaren",    "#eab308"],
-          ["Brent Ruwe Olie",       "~$97",   "/vat",  "tijdelijk $103 v.",   "#8b5cf6"],
+          ["TTF Gas vandaag",       "€56.72", "/MWh",  "+2% vs gisteren",      "#ef4444"],
+          ["Belpex Elektr. vandaag","€67.74", "/MWh",  "-9% vs gisteren",     "#f97316"],
+          ["EU Gasopslag",          "29.8%",  " cap.", "kritiek laag niveau", "#eab308"],
+          ["Brent Ruwe Olie",       "~$99",   "/vat",  "Hormuz crisis effect", "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -609,8 +625,8 @@ export default function EnergieRapport() {
             De Belgische wet biedt consumenten bescherming bij ingrijpend gewijzigde omstandigheden. Dat is een vangnet — geen reden om contracten als tijdelijke constructies te beschouwen. Een <strong>stabiele keuze die u 12 maanden met vertrouwen kunt aanhouden</strong> is altijd beter dan een snelle beslissing die u maanden later al betreurt.
           </p>
           <div style={{ background: "#0f172a", borderRadius: 8, padding: "12px 16px", fontSize: 13, color: "#7dd3fc" }}>
-            <strong>Praktisch advies:</strong> Wacht minimaal 2–3 weken. Volg TTF dagelijks op via GIE AGSI+. Stabiliseert TTF <em>onder</em> €40/MWh na de IEA-interventie → variabel is structureel aantrekkelijk. Blijft TTF boven €50/MWh over 4+ weken → een vast tarief kan worden overwogen, mits u de bijzondere voorwaarden kent en de keuze past bij uw verbruiksprofiel voor de komende 12 maanden. <strong>Nooit tekenen tijdens een nieuwscyclus die voelt als een noodsituatie.</strong>
-          </div>
+            <strong>Praktisch advies:</strong> Wacht minimaal 2–3 weken. Volg TTF dagelijks op via GIE AGSI+. Stabiliseert TTF <em>onder</em> €40/MWh na de IEA-interventie → variabel is structureel aantrekkelijk. Blijft TTF boven €50/MWh over 4+ weken → een vast tarief kan worden overwogen, mits u de bijzondere voorwaarden kent en de keuze past bij uw verbruiksprofiel voor de komende 12 maanden. <strong>Nooit overhaast tekenen tijdens een nieuwscyclus die voelt als een noodsituatie.</strong>Paniek is een slechte raadgever.
+0          </div>
         </div>
       </>)}
 

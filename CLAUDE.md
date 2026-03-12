@@ -59,20 +59,125 @@ tavily_search: "EPEX SPOT Belgium electricity [huidige maand] [huidig jaar]"
 
 Doel: daggemiddelde day-ahead prijzen zelfde periode als TTF.
 
-### EU Gasopslag (%)
+### EU Gas Storage (%)
 ```
-tavily_search: "EU gas storage level percentage today GIE AGSI"
-tavily_search: "European natural gas storage [huidige maand] [huidig jaar]"
+tavily_search: "EU gas storage level percentage today"
+tavily_search: "European gas storage levels 2026"
 ```
-Doel: meest recente weekcijfer, EU-gemiddelde en vergelijking met vorig jaar.
+**Bronnen:** GIE AGSI+, Energy Dashboard.
 
-### Olieprijzen
+### Brent Crude Oil ($/vat)
 ```
-tavily_search: "Brent crude oil price today $/barrel"
+tavily_search: "Brent crude oil price today"
+tavily_search: "Brent oil price March 2026"
 ```
-Doel: meest recente slotkoers + eventuele uitschieters.
+**Bronnen:** Investing.com, Yahoo Finance.
 
-### Geopolitieke context
+---
+
+## Stap 1.5 — Geopolitieke & Marktanalyse Bronnen Scannen
+
+Na het verzamelen van de basisdata scan je aanvullende nieuws- en marktbronnen op
+informatie die de energieprijzen, de geopolitieke context en de forecastscenario's
+kan beïnvloeden.
+
+Belangrijk:
+- Gebruik deze bronnen als **context- en interpretatiebron**, niet als primaire validatie
+  van TTF-, Belpex-, opslag- of Brent-cijfers.
+- Numerieke kerncijfers blijven gevalideerd via de primaire databronnen uit stap 1.
+- Neem alleen items op die **concreet relevant** zijn voor prijsbewegingen,
+  marktverwachtingen of Belgische eindklanten.
+
+### Belgische & Nederlandse Energiebronnen
+- **Mijn Energie Blog**: https://www.mijnenergie.be/blog
+  - Focus: Belgische energiemarkt, tariefontwikkelingen, beleidsupdates
+  - Zoektermen: "energieprijzen", "gas elektriciteit", "tarieven"
+
+- **De Tijd**: https://www.tijd.be/
+  - Focus: Financiële analyse, energiebedrijven, marktontwikkelingen
+  - Zoektermen: "energie", "TTF", "Belpex", "gas"
+
+- **VRT Nieuws Energie**: https://www.vrt.be/vrtnws/nl/dossiers/2021/09/energieprijzen/
+  - Focus: Nieuws over energieprijzen, beleid, consumentenimpact
+  - Zoektermen: "energieprijzen", "gas elektriciteit"
+
+- **VRT Nieuws Milieu & Energie**: https://www.vrt.be/vrtnws/nl/net-binnen/milieu-en-klimaat/energie/
+  - Focus: Klimaatbeleid, hernieuwbare energie, energietransitie
+  - Zoektermen: "hernieuwbaar", "zonne-energie", "wind"
+
+- **De Redactie**: https://www.deredactie.be
+  - Focus: Politiek nieuws, energiebeleid, EU-regelgeving
+  - Zoektermen: "energiebeleid", "EU", "klimaat"
+
+### Regulatorische & Marktdata Bronnen
+- **CREG Publicaties**: https://www.creg.be/en/publications
+  - Focus: Belgische energieregulator, marktrapporten, tariefbesluiten
+  - Zoektermen: "tariff", "market report", "electricity", "gas"
+
+- **Montel News**: https://montelnews.com/
+  - Focus: Europese energiemarkt nieuws, trading, prijzen
+  - Zoektermen: "power prices", "gas", "TTF", "Belgium"
+
+- **EEX Newsroom**: https://www.eex.com/en/newsroom
+  - Focus: Energy Exchange nieuws, marktdata, trading
+  - Zoektermen: "power", "gas", "market news"
+
+### Scan Strategie per Update
+
+Scan per update **minstens 4 van deze bronnen**, waarvan:
+- minstens 1 Belgische consumenten- of nieuwsbron
+- minstens 1 regulatorische of professionele marktbron
+- minstens 1 bron met expliciete geopolitieke of beleidscontext
+
+Zoek in die bronnen naar:
+
+1. **Directe prijsinvloeden:**
+   - Nieuwe overheidsmaatregelen of subsidies
+   - Onderhoud aan kerncentrales of gasinfrastructuur
+   - LNG-leveringsproblemen of nieuwe contracten
+   - Weergerelateerde vraagveranderingen
+
+2. **Geopolitieke ontwikkelingen:**
+   - EU-sancties of energiebeleid wijzigingen
+   - Rusland-Oekraïne conflict impact
+   - Midden-Oosten spanningen (Hormuz, Qatar LNG)
+   - Internationale klimaatovereenkomsten
+
+3. **Structurele marktveranderingen:**
+   - Nieuwe capaciteit (zonnepanelen, wind, batterijen)
+   - Netwerkuitbreidingen of beperkingen
+   - Opslagontwikkelingen (gas, elektriciteit)
+   - Leveranciersstrategie en tariefontwikkelingen
+
+4. **Consumentenimpact:**
+   - Nieuwe tariefvoorstellen van leveranciers
+   - VREG/CREG beslissingen
+   - Overheidssteun of maatregelen
+   - Marktverwachtingen en adviezen
+
+### Minimale output van deze scan
+
+Leg per update minstens het volgende vast:
+- 2 tot 5 relevante bevindingen
+- per bevinding: bron, datum, samenvatting in 1 zin, en impactlabel `positief`,
+  `negatief` of `neutraal`
+- een korte conclusie over het effect op:
+  - TTF
+  - Belpex
+  - het basis/bullish/bearish scenario
+
+### Integratie in Rapport
+
+De gevonden informatie wordt verwerkt in:
+
+- **Analyse tab:** Marktontwikkelingen en prijsfactoren
+- **Geopolitiek tab:** Internationale context en risico's
+- **Forecast scenario's:** Aanpassing van kansen en trends
+- **Bronnen tab:** Referenties naar gebruikte bronnen
+- **Alert banner:** Acute crisissituaties of belangrijke wijzigingen
+
+### Geopolitieke context (extra scanning)
+
 ```
 tavily_search: "energy market geopolitical risk [huidige maand] [huidig jaar]"
 tavily_search: "Strait of Hormuz LNG supply disruption [huidig jaar]"
@@ -194,6 +299,11 @@ Open Claude Code in de projectmap en typ:
 Lees CLAUDE.md en UPDATE_LOG.md.
 Voer een volledige update uit voor vandaag.
 Gebruik Tavily om actuele TTF, Belpex, EU gasopslag en Brent data op te halen.
+Gebruik Tavily om actuele nieuwsberichten te zoeken die een postieve of negatieve impact kunnen hebben op de energieprijzen. Neem deze resultaten mee op in:
+ - De Analyse
+ - Het Geopolitieke luik
+ - De Forecast scenario's
+ - De bronnen
 Update src/EnergieRapport.jsx en public/offline.html.
 Vul UPDATE_LOG.md in.
 Push naar GitHub.
@@ -205,64 +315,8 @@ Claude Code voert dan autonoom alle stappen uit.
 
 ## Projectlocatie
 
-- **Repository:** `https://github.com/UWGEBRUIKER/energie-rapport-2026`
-  *(pas aan naar uw eigen GitHub gebruikersnaam)*
+- **Repository:** `https://github.com/gpalmans/TariffAnalysisComparison`
 - **Cloudflare URL:** `https://energie-rapport-2026.pages.dev`
-- **Lokale map:** de map waar u deze repo gecloned heeft
+- **Lokale map:** `D:\Users\Gijs\Documents\Automatisering\EnergieRapport`
 
 ---
-
-## MCP Configuratie (eenmalige setup)
-
-### 1. Tavily API key ophalen
-Ga naar https://app.tavily.com → Sign up (gratis, geen creditcard) →
-API Keys → kopieer de key (formaat: `tvly-xxxxxxxxxxxx`)
-
-### 2. Claude Code MCP config aanpassen
-
-Open of maak het bestand `~/.claude/claude_desktop_config.json`
-(op Windows: `%APPDATA%\Claude\claude_desktop_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "tavily": {
-      "command": "npx",
-      "args": ["-y", "tavily-mcp"],
-      "env": {
-        "TAVILY_API_KEY": "tvly-UW-API-KEY-HIER"
-      }
-    }
-  }
-}
-```
-
-Vervang `tvly-UW-API-KEY-HIER` door uw echte Tavily key.
-
-### 3. Verificatie
-
-Start Claude Code opnieuw op. Typ in Claude Code:
-```
-gebruik tavily om de huidige TTF gasprijs op te zoeken
-```
-
-Als Tavily correct geconfigureerd is, ziet u een zoekresultaat.
-Als u een foutmelding krijgt, controleer of `npx` beschikbaar is
-(`npx --version` in een terminal) en of de API key correct is.
-
-### 4. GitHub toegang voor Claude Code
-
-Claude Code heeft schrijftoegang tot de repo nodig voor `git push`.
-Controleer dat uw lokale git geconfigureerd is:
-
-```bash
-git config --global user.email "uw@email.com"
-git config --global user.name "Uw Naam"
-```
-
-En dat u SSH of HTTPS toegang heeft tot de repo:
-```bash
-git remote -v  # moet uw repo URL tonen
-git push --dry-run origin main  # test zonder te pushen
-```
-
