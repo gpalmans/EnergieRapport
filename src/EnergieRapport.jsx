@@ -711,6 +711,8 @@ export default function EnergieRapport() {
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
         Opgesteld: 12 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
+      {/* Cloudflare Web Analytics */}
+      <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
     </div>
   );
 }
