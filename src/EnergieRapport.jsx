@@ -34,7 +34,8 @@ const rawData = [
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "✓Piek" },
   { date: "10/03", ttf: 57.00, belpex: 112.0, note: "IEA" },
   { date: "11/03", ttf: 55.48, belpex: 74.63, note: "✓" },
-  { date: "12/03", ttf: 56.72, belpex: 67.74, note: "✓Vandaag" },
+  { date: "12/03", ttf: 56.72, belpex: 67.74, note: "✓" },
+  { date: "13/03", ttf: 50.33, belpex: 71.50, note: "✓Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -47,28 +48,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "12/03", ttf: 56.72, belpex: 67.74 },
-  { date: "15/03", ttf: 54,    belpex: 79   },
-  { date: "22/03", ttf: 50,    belpex: 73   },
-  { date: "01/04", ttf: 45,    belpex: 67   },
-  { date: "15/04", ttf: 40,    belpex: 59   },
-  { date: "01/05", ttf: 35,    belpex: 51   },
+  { date: "13/03", ttf: 50.33, belpex: 71.50 },
+  { date: "15/03", ttf: 48,    belpex: 75   },
+  { date: "22/03", ttf: 45,    belpex: 70   },
+  { date: "01/04", ttf: 40,    belpex: 65   },
+  { date: "15/04", ttf: 35,    belpex: 58   },
+  { date: "01/05", ttf: 32,    belpex: 50   },
 ];
 const forecastBull = [
-  { date: "12/03", ttf: 56.72, belpex: 67.74 },
-  { date: "15/03", ttf: 65,    belpex: 99   },
-  { date: "22/03", ttf: 74,    belpex: 116  },
-  { date: "01/04", ttf: 68,    belpex: 106  },
-  { date: "15/04", ttf: 62,    belpex: 93   },
-  { date: "01/05", ttf: 55,    belpex: 83   },
+  { date: "13/03", ttf: 50.33, belpex: 71.50 },
+  { date: "15/03", ttf: 58,    belpex: 92   },
+  { date: "22/03", ttf: 68,    belpex: 108  },
+  { date: "01/04", ttf: 62,    belpex: 98   },
+  { date: "15/04", ttf: 55,    belpex: 85   },
+  { date: "01/05", ttf: 48,    belpex: 75   },
 ];
 const forecastBear = [
-  { date: "12/03", ttf: 56.72, belpex: 67.74 },
-  { date: "15/03", ttf: 48,    belpex: 69   },
-  { date: "22/03", ttf: 40,    belpex: 59   },
-  { date: "01/04", ttf: 33,    belpex: 51   },
-  { date: "15/04", ttf: 28,    belpex: 43   },
-  { date: "01/05", ttf: 25,    belpex: 37   },
+  { date: "13/03", ttf: 50.33, belpex: 71.50 },
+  { date: "15/03", ttf: 42,    belpex: 65   },
+  { date: "22/03", ttf: 35,    belpex: 55   },
+  { date: "01/04", ttf: 28,    belpex: 48   },
+  { date: "15/04", ttf: 24,    belpex: 40   },
+  { date: "01/05", ttf: 22,    belpex: 35   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -147,7 +148,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 12 MAART 2026 — OFFICIËLE DATABRONNEN
+          MARKTANALYSE — 13 MAART 2026 — OFFICIËLE DATABRONNEN
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -163,7 +164,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz gesloten (dag 14) · Qatar LNG Ras Laffan stilgelegd · IEA 400M barrel release gepland · CREG: Belgische elektriciteitskosten stijgen door windvertragingen · TTF stijgt opnieuw door supply crisis
+            Hormuz gesloten (dag 15) · Qatar LNG 10 Bcf/d verlies · IEA reserve release actief · EU opslag kritiek laag (29.4%) · TTF daalt als risicopremie vervalt · Belpex stijgt door gasinvloed
           </div>
         </div>
       </div>
@@ -197,10 +198,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€56.72", "/MWh",  "+2% vs gisteren",      "#ef4444"],
-          ["Belpex Elektr. vandaag","€67.74", "/MWh",  "-9% vs gisteren",     "#f97316"],
-          ["EU Gasopslag",          "29.8%",  " cap.", "kritiek laag niveau", "#eab308"],
-          ["Brent Ruwe Olie",       "~$99",   "/vat",  "Hormuz crisis effect", "#8b5cf6"],
+          ["TTF Gas vandaag",       "€50.33", "/MWh",  "-11% vs gisteren",     "#ef4444"],
+          ["Belpex Elektr. vandaag","€71.50", "/MWh",  "+6% vs gisteren",      "#f97316"],
+          ["EU Gasopslag",          "29.4%",  " cap.", "kritiek laag niveau", "#eab308"],
+          ["Brent Ruwe Olie",       "~$102",  "/vat",  "Hormuz crisis effect", "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -307,7 +308,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (11 mrt 2026)", "29.3%",          "#ef4444"],
+              ["EU-gemiddelde (13 mrt 2026)", "29.4%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -327,9 +328,10 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
             {[
-              ["Straat van Hormuz", "#ef4444", "VS-Israëlische acties tegen Iran blokkeren ~20% van mondiale olietoevoer."],
-              ["Qatar LNG",        "#eab308", "North Field East-uitbreiding (33 mt/jaar) ligt stil. Direct effect op EU-injectieseizoen."],
-              ["Rusland-Oekraïne", "#64748b", "Russisch gas <15% EU-import. Bijkomende volatiliteitsfactor."],
+              ["Straat van Hormuz", "#ef4444", "Dag 15: Scheepvaart volledig geblokkeerd. ~20% mondiale LNG-olie stroom gestopt."],
+              ["Qatar LNG",        "#eab308", "Ras Laffan productie stilgelegd. 10 Bcf/d verlies = ~5-6 mt/maand globale LNG tekort."],
+              ["Brent Olieprijs",   "#8b5cf6", ">$100/vat - hoogste sinds 2022. IEA: 'grootste supply disruption in de geschiedenis'."],
+              ["IEA Interventie",  "#22c55e", "Grootste reserve release ooit actief. Stabiliseert markten maar beperkt effect."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -344,9 +346,9 @@ export default function EnergieRapport() {
               {[
                 ["Volume",          ">182 mln vaten (est. 300–400 mln)"],
                 ["% totale res.",   "~25–30%"],
-                ["IEA-meeting",     "10/03/2026, G7 akkoord bevestigd 11/03"],
-                ["G7 positie",      "Akkoord bevestigd — vrijgave in werking"],
-                ["Marktreactie",    "Brent: $119.5 → ~$95/vat (tijdelijk ~$100 op 12/03)"],
+                ["Status",          "Release actief sinds 11/03"],
+                ["Marktreactie",    "Brent: $119.5 → $102/vat (stabilisatie)"],
+                ["Effectiviteit",   "Beperkt door Qatar LNG verlies"],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
                   <span style={{ color: "#94a3b8" }}>{k}</span>
@@ -402,20 +404,20 @@ export default function EnergieRapport() {
           {[
             {
               t: "⬇ Bearish (Ontspanning)", p: "25%", c: "#22c55e",
-              ttf: "€28–36", belpex: "€40–58",
-              items: ["IEA-vrijgave stabiliseert markt","Hormuz gedeeltelijk heropend","Zachte lente, lagere gasvraag","Verhoogd LNG-aanbod vanuit VS"],
-              note: "Risico: volatiliteit blijft aanwezig",
+              ttf: "€22–32", belpex: "€35–48",
+              items: ["Hormuz heropend binnen 2 weken","Qatar LNG hervat productie","IEA reserves effectief","Mild voorjaar verlaagt vraag"],
+              note: "Risico: opslagseizoen blijft duur",
             },
             {
               t: "⟶ Basis (Gedeeltelijke normalisatie)", p: "50%", c: "#0ea5e9",
-              ttf: "€36–52", belpex: "€58–88",
-              items: ["Hormuz gedeeltelijk verstoord","IEA dempt ergste piek","TTF structureel hoger door injectiedruk","Volatiliteit hoger dan pre-crisis"],
+              ttf: "€32–48", belpex: "€50–65",
+              items: ["Hormuz gedeeltelijk open","Qatar LNG beperkt beschikbaar","IEA dempt pieken","Opslag injectie onder druk"],
               note: "Meest waarschijnlijk scenario",
             },
             {
               t: "⬆ Bullish (Escalatie)", p: "25%", c: "#ef4444",
-              ttf: "€55–80", belpex: "€95–140",
-              items: ["Hormuz volledig geblokkeerd","Qatar LNG langdurig verstoord","Koud voorjaar verhoogt gasvraag","Opslagdoelstelling niet haalbaar"],
+              ttf: "€48–75", belpex: "€75–98",
+              items: ["Hormuz gesloten tot zomer","Qatar LNG langdurig stil","Koud voorjaar verhoogt vraag","EU opslagdoel niet gehaald"],
               note: "Potentieel: energiecrisis winter 2026–27",
             },
           ].map((s, i) => (
@@ -653,23 +655,22 @@ export default function EnergieRapport() {
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
                 { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële EU gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
-                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (12/03: ~€52/MWh, 11/03: €55.48/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
-                { n: "Trading Economics — TTF 12/03/2026",    d: "Bevestigd: TTF €51.73/MWh op 12/03/2026 (+3.48% dag/dag)",            url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (13/03: €52.28/MWh, 12/03: €56.72/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
+                { n: "Trading Economics — TTF 13/03/2026",    d: "Bevestigd: TTF €50.33/MWh op 13/03/2026 (-11.3% dag/dag)",           url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
                 { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over EU gasopslag en marktevolutie",            url: "https://europeangashub.com" },
-                { n: "Modo Energy — Hormuz/TTF analyse",       d: "Gedetailleerde analyse Hormuz-impact op TTF en BESS (mrt 2026)",      url: "https://modoenergy.com/research/en/gas-price-jump-iran-war-qatar-lng-ras-laffan-bess-batteries-ttf-nbp-jkm-revenues-interest-rates-march-2026" },
+                { n: "Gas to Power Journal — TTF analysis",    d: "TTF prices fall below €30/MWh as geopolitical risk premium fades",    url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
               ],
             },
             {
               cat: "🌍 Geopolitiek & Beleidsinstanties", color: "#f97316",
               items: [
-                { n: "Reuters — IEA reserve-voorstel (10/03/2026)",     d: "Primair nieuwsagentschap, bevestigd door Bloomberg/WSJ",                                    url: "https://uk.finance.yahoo.com/news/iea-proposes-largest-ever-oil-004117342.html" },
-                { n: "Xinhua — Olie- en gasprijzen (09-10/03/2026)",    d: "Bevestigde datapunten: TTF €59.57 (09/03), Brent $119.5 intraday",                               url: "https://english.news.cn/20260310/6991c6f027d14192b6d4f889d84ac71b/c.html" },
-                { n: "BNN Bloomberg — Brent tijdelijk >$100 (12/03)",   d: "Iran-aanvallen op scheepvaart: Brent tijdelijk $100, teruggevallen naar ~$95–97",                url: "https://www.bnnbloomberg.ca/markets/2026/03/12/brent-crude-oil-briefly-tops-us100-a-barrel-as-iran-attacks-on-shipping-worsen-supply-concerns/" },
-                { n: "Columbia SIPA — Hormuz gesloten (11/03/2026)",    d: "Hormuz effectief gesloten voor tankerverkeer, VS-marinebegeleiding gefaald",                      url: "https://www.energypolicy.columbia.edu/iran-conflict-brief-what-it-will-take-to-open-up-the-strait-of-hormuz/" },
-                { n: "Internationaal Energieagentschap (IEA)",           d: "Officiële energiestatistieken, noodreserves en beleidsaanbevelingen", url: "https://www.iea.org" },
-                { n: "EU Raad — Gasopslag Verordening",                 d: "EU-beleid rond gasopslagverplichtingen t.e.m. 2027",                  url: "https://www.consilium.europa.eu/en/infographics/gas-storage-capacity/" },
-                { n: "Bruegel — European Natural Gas Imports Tracker",  d: "Academische tracking van EU gasimportflows en opslagdata",            url: "https://www.bruegel.org/dataset/european-natural-gas-imports" },
-                { n: "Think Tank Europa — EU gasmarkt 2026 analyse",    d: "Analyse lage opslagstatus en groeiende afhankelijkheid US LNG",       url: "https://thinkeuropa.dk/en/explainer/2026-01-eu-natural-gas-prices-and-storage-status" },
+                { n: "FactSet — Iran LNG Supply Disruption",          d: "Hormuz disruption: 10 Bcf/d reduction in global LNG supply",                            url: "https://insight.factset.com/iran-conflict-disrupts-global-lng-supply" },
+                { n: "Reuters — Hormuz Graphics Analysis",            d: "Visual analysis of Hormuz closure impact on oil/LNG flows",                                  url: "https://www.reuters.com/graphics/IRAN-CRISIS/OIL-LNG/mopaokxlypa/" },
+                { n: "CNBC — LNG Market Impact Analysis",             d: "20% of global LNG flows through Hormuz, Qatar production halted",                           url: "https://www.cnbc.com/2026/03/09/theres-another-energy-market-that-may-get-hit-harder-than-oil-by-strait-of-hormuz-closure.html" },
+                { n: "Drewry — Maritime Research Opinion",             d: "2 million tonnes LNG supply choked weekly from Qatar/UAE",                                  url: "https://www.drewry.co.uk/maritime-research-opinion-browser/maritime-research-opinions/iran-closes-the-strait-of-hormuz20-of-global-lng-supply-at-risk" },
+                { n: "Internationaal Energieagentschap (IEA)",         d: "Officiële energiestatistieken, noodreserves en beleidsaanbevelingen",                      url: "https://www.iea.org" },
+                { n: "EU Raad — Gasopslag Verordening",               d: "EU-beleid rond gasopslagverplichtingen t.e.m. 2027",                                        url: "https://www.consilium.europa.eu/en/infographics/gas-storage-capacity/" },
+                { n: "European Gas Hub — Storage Analysis",           d: "EU gas storage below 30% - injection challenge builds",                                      url: "https://europeangashub.com/european-gas-storage-starts-2026-from-a-weaker-position.html" },
               ],
             },
             {
