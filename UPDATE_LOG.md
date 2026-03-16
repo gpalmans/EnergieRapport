@@ -6,6 +6,56 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 8 — 16 maart 2026 (Volledige Update)
+
+### Bevestigde datapunten
+- **TTF Gas**: €49.69/MWh (OilPriceAPI ✓✓, Trading Economics €52.03) - daling -1.3% vs gisteren
+- **Belpex**: €72.52/MWh (EU Energy Live ✓✓) - stijging +1.4% vs gisteren  
+- **EU Gasopslag**: 29.2% (Energy Dashboard ✓) - kritiek laag niveau
+- **Brent Crude**: $104.56/vat (MarketWatch ✓) - stabilisatie rond $105
+
+### Marktdynamiek
+- TTF stabiliseert rond €50 na extreme volatiliteit vorige week
+- Belpex toont lichte stijging ondanks stabielere gasprijzen
+- EU gasopslag daalt verder onder kritieke 30% drempel
+- Brent stabiliseert na IEA strategische reserve release
+
+### Geopolitieke context
+- Hormuz crisis dag 18 - scheepvaart volledig geblokkeerd
+- IEA noemt dit "grootste supply disruption in history"
+- Qatar LNG verstoring blijft impact hebben op globale markt
+- IEA record release van 400M vaten actief - grootste ooit
+- Media-aandacht wereldwijd voor hoge olieprijzen
+
+### Nieuwsimpact analyse
+- New York Times: IEA bevestigt historische omvang van Iran-oorlog impact
+- Al Jazeera: Strategische olie-release dempt markten maar kan LNG-verstoring niet oplossen
+- Reuters: Oorlog dreigt langdurige impact op energiemarkten
+- FactSet: Hormuz verstoring reduceert mondiale LNG-toevoer met 10 Bcf/d
+
+### Forecast scenario updates
+- Basis scenario startpunt bijgewerkt naar €49.69/MWh (16/03)
+- Bullish scenario rekening houdend met aanhoudende geopolitieke risico's
+- Bearish scenario anticipeert op normalisatie na IEA-interventie
+- Tijdlijnen uitgebreid tot begin mei 2026
+
+### Bronnenvalidatie
+- OilPriceAPI: TTF €49.69/MWh (16/03) ✓
+- EU Energy Live: Belpex €72.52/MWh (16/03) ✓  
+- Energy Dashboard: EU opslag 29.2% ✓
+- MarketWatch: Brent $104.56/vat ✓
+- Trading Economics: TTF €52.03/MWh (cross-validation)
+- Nieuwe geopolitieke bronnen toegevoegd (NYT, Al Jazeera, Reuters extended)
+
+### Technische wijzigingen
+- rawData array bijgewerkt met nieuwe datapunten
+- Forecast arrays geüpdatet met nieuwe baseline (16/03)
+- KPI's en header datum bijgewerkt naar 16 maart 2026
+- Geopolitieke context ververst met laatste ontwikkelingen
+- Bronnenlijst uitgebreid met nieuwe media-referenties
+
+---
+
 ## Update 7 — 13 maart 2026 (Volledige Update)
 
 **Update door:** Claude AI
