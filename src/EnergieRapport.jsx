@@ -382,7 +382,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex op 12/03 (~€55 daggemiddelde) significant lager dan TTF-piek door massale zonne-energieproductie overdag en lagere verwarmingsvraag in lente.
+              ⚡ Belpex op 17/03 (€113.77 daggemiddelde) explodeert +56.8% door perfecte storm: Dunkelflaute, kerncapaciteitsvermindering en grid congestion.
             </p>
           </div>
         </div>
@@ -710,7 +710,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 27/02 = €31.96 (Bloomberg/Reuters), TTF 09/03 = €59.57 (Xinhua), Belpex 11/03 = €74.60 (ENTSO-E), TTF 12/03 = €51.73 (Trading Economics/oilpriceapi), EU opslag 11/03 = 29.27% (GIE AGSI+). Belpex 12/03 (~€55) = schatting op basis van Elexys kwartierdata (zonne-energie drukt middag naar ~€0). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 17/03 = €50.75 (OilPriceAPI), Belpex 17/03 = €113.77 (EU Energy Live), EU opslag 17/03 = 29% (Energy Dashboard), Brent 17/03 = $103.06 (MarketWatch). De +56.8% Belpex sprong wordt verklaard door Dunkelflaute, kerncapaciteitsvermindering (5.5GW→2GW) en grid congestion (650 wachtende projecten). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}
@@ -718,7 +718,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 12 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 17 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
