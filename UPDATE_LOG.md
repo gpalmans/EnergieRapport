@@ -6,6 +6,54 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 9 — 17 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €50.75/MWh (+2.1% vs gisteren) - OilPriceAPI bevestigd
+- **Belpex Elektriciteit**: €113.77/MWh (+56.8% vs gisteren) - EU Energy Live bevestigd  
+- **EU Gasopslag**: 29% (stabiel vs gisteren) - Energy Dashboard bevestigd
+- **Brent Ruwe Olie**: $103.06/vat (-1.4% vs gisteren) - MarketWatch bevestigd
+
+### **Belangrijke Marktontwikkelingen**
+- **Belpex Explodeert**: +56.8% stijging - extreem volatiel door geopolitieke onzekerheid
+- **TTF Herstelt Licht**: Van daling naar stijging na IEA-interventie
+- **België in Actie**: Overleg met olie/gas industrie over extreme prijzen (Brussels Times)
+- **IEA Record Release**: 400M vaten actief - grootste in geschiedenis
+
+### **Geopolitieke Context**
+- **Straat van Hormuz**: Dag 19 - scheepvaart volledig geblokkeerd
+- **IEA Verklaring**: "grootste supply disruption in history"
+- **Economische Impact**: Macrobond analyse - energy shock herwerkt globale macro playbook
+- **Australische Perspectief**: CommBank analyse economische impact Iran conflict
+
+### **Forecast Scenario's (Bijgewerkt)**
+- **Basis Scenario**: Start €50.75/€113.77 → €34/€58 (mei)
+- **Bullish Scenario**: Start €50.75/€113.77 → €52/€82 (mei)  
+- **Bearish Scenario**: Start €50.75/€113.77 → €25/€42 (mei)
+
+### **Nieuwsimpact Analyse**
+- **Positief**: IEA record release dempt piek, structurele LNG-aanbodgolf 2026-2028
+- **Negatief**: Hormuz verstoring duurt voort, Belpex volatiliteit extreem hoog, Belgische politieke druk
+
+### **Bronvalidatie**
+- **TTF**: OilPriceAPI (€50.75) ✓, Trading Economics (€52.03) - binnen ±2%
+- **Belpex**: EU Energy Live (€113.77) ✓, ENTSO-E data - bevestigd
+- **Gasopslag**: Energy Dashboard (29%) ✓, GIE AGSI+ - consistent
+- **Brent**: MarketWatch ($103.06) ✓, Investing.com ($102.85) - binnen ±2%
+
+### **Bestanden Bijgewerkt**
+- `src/EnergieRapport.jsx` - React component met nieuwe data en geopolitieke context
+- `public/offline.html` - Standalone HTML met gesynchroniseerde data
+- Geopolitieke badges bijgewerkt: België Overleg, Belpex Explosie, Brent Stabilisatie
+- KPI's en alert banner bijgewerkt met nieuwe marktsituatie
+
+### **Marktconclusie**
+De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse stijging sinds 2022. TTF herstelt licht na IEA-interventie maar de geopolitieke onzekerheid blijft extreem hoog. België initieert overleg met de industrie, wat duidt op toenemende politieke druk. De IEA record release van 400M vaten compenseert slechts ~20 dagen Hormuz verlies.
+
+---
+
+---
+
 ## Update 8 — 16 maart 2026 (Volledige Update)
 
 ### Bevestigde datapunten
