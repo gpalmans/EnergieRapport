@@ -184,7 +184,7 @@ svg.chart{width:100%;font-family:Georgia,serif}
   <div class="section">
     <h3 style="margin:0 0 14px;color:#f8fafc;font-size:15px">🛢️ IEA Strategische Oliereserves</h3>
     <div style="background:#172554;border-radius:8px;padding:12px 14px;margin-bottom:12px" id="iea-rows"></div>
-    <p style="font-size:11px;color:#475569;margin:0">Bronnen: Reuters, WSJ, Bloomberg, BNN Bloomberg — 10-12 maart 2026</p>
+    <p style="font-size:11px;color:#475569;margin:0">Bronnen: IEA Oil Market Report (13/03), Reuters Energy Desk (17/03), BloombergNEF (15/03)</p>
   </div>
 
   <div class="section">
@@ -575,7 +575,13 @@ function buildContext() {
     `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e293b;font-size:13px"><span style="color:#94a3b8">${l}</span><span style="color:${c};font-weight:700">${v}</span></div>`
   ).join('');
 
-  const ieaRows = [['Volume','>182 mln vaten (est. 300–400 mln)'],['% totale res.','~25–30%'],['IEA-meeting','10/03/2026, G7 akkoord bevestigd 11/03'],['G7 positie','Akkoord bevestigd — vrijgave in werking'],['Marktreactie','Brent: $119.5 → ~$95/vat (tijdelijk ~$100 op 12/03)']];
+  const ieaRows = [
+  ['Volume','400 mln vaten (recordvrijgave)'],
+  ['% totale res.','~33% van 1.2 mld noodvoorraad'],
+  ['Status','Gezamenlijke vrijgave actief sinds 11/03'],
+  ['Effectiviteit','Dekken ~4 dagen globale vraag; impact beperkt door Hormuz'],
+  ['Marktreactie','Brent: $119 → $103/vat (volatiliteit blijft hoog)']
+];
   document.getElementById('iea-rows').innerHTML = ieaRows.map(([k,v]) =>
     `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1e3a5f;font-size:12px"><span style="color:#94a3b8">${k}</span><span style="color:#60a5fa;font-weight:600">${v}</span></div>`
   ).join('');

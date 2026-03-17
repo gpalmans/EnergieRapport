@@ -350,11 +350,11 @@ export default function EnergieRapport() {
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🛢️ IEA Strategische Oliereserves</h3>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
               {[
-                ["Volume",          ">182 mln vaten (est. 300–400 mln)"],
-                ["% totale res.",   "~25–30%"],
-                ["Status",          "Release actief sinds 11/03"],
-                ["Marktreactie",    "Brent: $119.5 → $102/vat (stabilisatie)"],
-                ["Effectiviteit",   "Beperkt door Qatar LNG verlies"],
+                ["Volume",          "400 mln vaten (recordvrijgave)"],
+                ["% totale res.",   "~33% van 1.2 mld noodvoorraad"],
+                ["Status",          "Gezamenlijke vrijgave actief sinds 11/03"],
+                ["Marktreactie",    "Brent: $119 → $103/vat (volatiliteit blijft hoog)"],
+                ["Effectiviteit",   "Dekken ~4 dagen globale vraag; impact beperkt door Hormuz"],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
                   <span style={{ color: "#94a3b8" }}>{k}</span>
@@ -362,7 +362,7 @@ export default function EnergieRapport() {
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>Bronnen: Reuters, WSJ, Bloomberg — 10-11 maart 2026</p>
+            <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>Bronnen: IEA Oil Market Report (13/03), Reuters Energy Desk (17/03), BloombergNEF (15/03)</p>
           </div>
 
           <div style={SECTION}>
