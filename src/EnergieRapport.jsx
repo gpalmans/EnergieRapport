@@ -367,7 +367,7 @@ export default function EnergieRapport() {
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Energiemix</h3>
-            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gas is de <strong style={{ color: "#f8fafc" }}>marginale producent</strong> in ~60–70% van de handelssessies en bepaalt daardoor direct de Belpex-prijs.</p>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gas is de <strong style={{ color: "#f8fafc" }}>marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De +56.8% sprong op 17/03 wordt verklaard door een perfecte storm: <strong style={{ color: "#f8fafc" }}>Dunkelflaute</strong> (zonnewindstilte), <strong style={{ color: "#f8fafc" }}>kerncapaciteitsvermindering</strong> (5.5GW→2GW), en <strong style={{ color: "#f8fafc" }}>grid congestion</strong> (650 projecten wachten op aansluiting).</p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px" }}>
               {[
                 ["Kern (Doel 4, Tihange 3)", "verlengd tot 2035"],
@@ -673,15 +673,12 @@ export default function EnergieRapport() {
                 { n: "FactSet — Iran LNG Supply Disruption",          d: "Hormuz disruption: 10 Bcf/d reduction in global LNG supply",                            url: "https://insight.factset.com/iran-conflict-disrupts-global-lng-supply" },
                 { n: "Reuters — Hormuz Graphics Analysis",            d: "Visual analysis of Hormuz closure impact on oil/LNG flows",                                  url: "https://www.reuters.com/graphics/IRAN-CRISIS/OIL-LNG/mopaokxlypa/" },
                 { n: "CNBC — LNG Market Impact Analysis",             d: "20% of global LNG flows through Hormuz, Qatar production halted",                           url: "https://www.cnbc.com/2026/03/09/theres-another-energy-market-that-may-get-hit-harder-than-oil-by-strait-of-hormuz-closure.html" },
-                { n: "New York Times — Iran War Impact",               d: "IEA: Iran war causing 'largest supply disruption in history'",                                  url: "https://www.nytimes.com/2026/03/12/world/middleeast/iran-war-oil-iea.html" },
-                { n: "Al Jazeera — Strategic Oil Release",           d: "IEA releases 400M barrels - largest coordinated drawdown ever",                              url: "https://www.aljazeera.com/economy/2026/3/15/strategic-oil-release-may-calm-markets-but-cannot-fix-hormuz-disruption" },
-                { n: "Reuters — Iran War Prolonged Impact",         d: "War threatens prolonged hit to global energy markets",                                          url: "https://www.reuters.com/business/energy/iran-war-threatens-prolonged-hit-global-energy-markets-2026-03-07/" },
-                { n: "Brussels Times — Belgium Industry Talks",     d: "Belgium holding talks with oil and gas industry over high prices (16/03/2026)",                   url: "https://www.brusselstimes.com/belgium/2025520/belgium-holding-talks-with-oil-and-gas-industry-over-high-prices" },
-                { n: "Macrobond — Energy Shock Analysis",           d: "Energy shock rewrites global macro playbook - risk premia rising",                              url: "https://www.macrobond.com/resources/macro-trends/energy-shock-rewrites-the-global-macro-playbook" },
-                { n: "CommBank — Iran Economic Impact",             d: "Middle East conflict: assessing economic impact across politics and economies",                    url: "https://www.commbank.com.au/articles/newsroom/2026/03/iran-conflict-economic-impact.html" },
-                { n: "Internationaal Energieagentschap (IEA)",         d: "Officiële energiestatistieken, noodreserves en beleidsaanbevelingen",                      url: "https://www.iea.org" },
-                { n: "EU Raad — Gasopslag Verordening",               d: "EU-beleid rond gasopslagverplichtingen t.e.m. 2027",                                        url: "https://www.consilium.europa.eu/en/infographics/gas-storage-capacity/" },
-                { n: "European Gas Hub — Storage Analysis",           d: "EU gas storage below 30% - injection challenge builds",                                      url: "https://europeangashub.com/european-gas-storage-starts-2026-from-a-weaker-position.html" },
+                { n: "Brussels Times — Belgium Industry Talks", d: "Belgium holding talks with oil and gas industry over high prices (16/03/2026)", url: "https://www.brusselstimes.com/belgium/2025520/belgium-holding-talks-with-oil-and-gas-industry-over-high-prices" },
+                { n: "Macrobond — Energy Shock Analysis", d: "Energy shock rewrites global macro playbook - risk premia rising", url: "https://www.macrobond.com/resources/macro-trends/energy-shock-rewrites-the-global-macro-playbook" },
+                { n: "CommBank — Iran Economic Impact", d: "Middle East conflict: assessing economic impact across politics and economies", url: "https://www.commbank.com.au/articles/newsroom/2026/03/iran-conflict-economic-impact.html" },
+                { n: "VRT NWS — Dunkelflaute", d: "Dark wind lull causes electricity price peaks (€135/MWh) - renewable generation at lowest level since winter", url: "https://www.vrt.be/vrtnws/en/2026/01/28/_dunkelflaute_-causes-electricity-price-to-peak/" },
+                { n: "Belga News Agency — Grid Congestion", d: "Flemish employers warn grid congestion risks billions - projects waiting for connections up from 35 to 650", url: "https://www.belganewsagency.eu/power-grid-congestion-risks-billions-in-economic-damage" },
+                { n: "Montel Energy — Nuclear Uncertainty", d: "Belgium nuclear capacity reduced from 5.5GW to 2GW - Doel 4 and Tihange 3 maintenance until November 2026", url: "https://montel.energy/commentary/nuclear-uncertainty-can-belgium-still-shine-bright" },
               ],
             },
             {

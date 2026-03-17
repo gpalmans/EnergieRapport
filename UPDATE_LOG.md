@@ -47,8 +47,22 @@ en welke databronnen de cijfers hebben bevestigd.
 - Geopolitieke badges bijgewerkt: België Overleg, Belpex Explosie, Brent Stabilisatie
 - KPI's en alert banner bijgewerkt met nieuwe marktsituatie
 
+### **Diepgaande Analyse: Belpex +56.8% Explodeert**
+De extreme stijging wordt verklaard door een perfecte storm van factoren:
+- **Dunkelflaute**: Zonnewindstilte met extreem lage zonne- en windproductie (VRT NWS)
+- **Kerncapaciteitsvermindering**: Nucleaire capaciteit gereduceerd van 5.5GW naar ~2GW (Montel Energy)
+- **Grid Congestion**: 650 projecten wachten op grid-aansluiting vs 35 in 2025 (Belga News Agency)
+- **Gas als Marginale Producent**: Bepaalt prijs in 87% van de sessies (vs 60-70% eerder aangenomen)
+
+### **Nieuwe Bronnen Toegevoegd**
+- VRT NWS: Dunkelflaute verklaring (€135/MWh pieken)
+- Belga News Agency: Grid congestion economische impact
+- Montel Energy: Nucleaire onzekerheid en capaciteitsvermindering
+- Brussels Times: Belgisch industrie overleg
+- Macrobond: Energy shock macro playbook analyse
+
 ### **Marktconclusie**
-De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse stijging sinds 2022. TTF herstelt licht na IEA-interventie maar de geopolitieke onzekerheid blijft extreem hoog. België initieert overleg met de industrie, wat duidt op toenemende politieke druk. De IEA record release van 400M vaten compenseert slechts ~20 dagen Hormuz verlies.
+De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse stijging sinds 2022. De sprong is niet louter speculatief maar wordt gedreven door concrete structurele factoren: grid congestion, nucleaire capaciteitsvermindering, en weersafhankelijke productie. TTF herstelt licht na IEA-interventie maar de geopolitieke onzekerheid blijft extreem hoog. België initieert overleg met de industrie, wat duidt op toenemende politieke druk. De IEA record release van 400M vaten compenseert slechts ~20 dagen Hormuz verlies.
 
 ---
 
