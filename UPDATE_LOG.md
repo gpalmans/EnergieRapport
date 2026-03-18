@@ -6,6 +6,49 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 10 — 18 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €51.56/MWh (+1.32% vs gisteren) - Trading Economics bevestigd
+- **Belpex Elektriciteit**: €80.92/MWh (-28.9% vs gisteren) - Elexys berekend gemiddelde
+- **EU Gasopslag**: 29.0% (stabiel) - Bruegel bevestigd
+- **Brent Ruwe Olie**: $101.06/vat (-2.28% vs gisteren) - Trading Economics bevestigd
+
+### **Belangrijke Marktontwikkelingen**
+- **Belpex Extreme Volatiliteit**: Negatieve prijzen overdag (€-1.67), avondpieken €180
+- **Grid Congestion Crisis**: Miljardenschade risico, 650 projecten wachten op aansluiting
+- **TTF Stijgt Licht**: +1.3% na IEA release maar Hormuz druk blijft hoog
+- **Brent Daalt Verder**: -2.3% na IEA intervention maar structurele onzekerheid blijft
+
+### **Geopolitieke Context**
+- **Hormuz Crisis**: Dag 19 - scheepvaart volledig geblokkeerd, IEA: "grootste supply disruption in history"
+- **IEA Record Release**: 400M vaten (~33% van 1.2 mld noodvoorraad) actief sinds 11/03
+- **Belgische Overleggesprekken**: Politieke druk toeneemt op industrie
+- **Nucleaire Beperkingen**: Capaciteit verminderd tot ~2.7GW door onderhoud
+
+### **Belpex Analyse 18/03**
+Extreme volatiliteit door structurele problemen:
+- Negatieve prijzen tijdens zonnepiek door overproductie
+- Avondpieken tot €180/MWh door grid congestion
+- Daggemiddelde €80.92/MWh (-28.9% vs vorige dag)
+
+### **Technische Updates**
+- **React Component**: Alle KPI's, rawData arrays en analyse secties bijgewerkt
+- **Offline HTML**: Volledige synchronisatie met React data en JavaScript arrays
+- **Data Structuur**: March 18 toegevoegd, "Vandaag" label correct geplaatst
+- **Bronvermeldingen**: Bijgewerkt met Trading Economics, Elexys, Bruegel, Al Jazeera
+
+### **Nieuwe Bronnen**
+- Elexys - Belpex Hourly Data (negatieve prijzen bevestigd)
+- Bruegel - EU Gas Storage 29% bevestiging
+- Al Jazeera - Strategic Oil Release analyse
+- Energy Industry Review - Hormuz impact op oliemarkt
+
+### **Marktconclusie**
+Markt blijft in crisismodus met structurele supply beperkingen (Hormuz) versus tijdelijke vraagdaling (lente). Grid congestion in België wordt steeds kritieker voor elektriciteitsprijzen. IEA release dempt prijzen maar kan structurele verstoring niet oplossen.
+
+---
+
 ## Update 9 — 17 maart 2026
 
 ### **Bevestigde Marktdata (✓)**

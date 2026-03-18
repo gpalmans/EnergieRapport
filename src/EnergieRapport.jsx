@@ -6,12 +6,11 @@ import {
 } from "recharts";
 
 // === DATA ===
-// Confirmed points (✓): TTF 27/02=31.96 (Bloomberg), TTF 09/03=59.57 (Xinhua)
-// TTF 16/03=49.69 (OilPriceAPI ✓✓), Trading Economics €52.03 - daling -1.3% vs gisteren
-// Belpex 16/03=72.52 (EU Energy Live ✓✓), stijging +1.4% vs gisteren
-// EU opslag 16/03=29.2% (Energy Dashboard ✓), kritiek laag niveau
-// Brent 16/03=$104.56 (MarketWatch ✓), stabilisatie rond $105 na IEA release
-// Geopolitical: Hormuz crisis dag 18, IEA "grootste supply disruption in history", Qatar LNG verstoring
+// Confirmed points (✓): TTF 17/03=50.75 (OilPriceAPI), TTF 18/03=51.56 (Trading Economics) +1.32%
+// Belpex 18/03=80.92 (Elexys calculated average), extreme volatiliteit met negatieve prijzen
+// EU opslag 18/03=29% (Bruegel), stabiel niveau
+// Brent 18/03=$101.06 (Trading Economics), -2.28% daling vs gisteren
+// Geopolitical: Hormuz crisis dag 19, IEA 400M vaten release, Belgium grid congestion, nucleaire problemen
 const rawData = [
   { date: "12/02", ttf: 30.2,  belpex: 65.0,  note: "" },
   { date: "13/02", ttf: 31.0,  belpex: 78.0,  note: "" },
@@ -39,8 +38,8 @@ const rawData = [
   { date: "13/03", ttf: 50.33, belpex: 71.50, note: "OKVandaag" },
   { date: "14/03", ttf: 48.15, belpex: 69.82, note: "OK" },
   { date: "15/03", ttf: 46.88, belpex: 73.45, note: "OK" },
-  { date: "16/03", ttf: 49.69, belpex: 72.52, note: "Vandaag" },
-  { date: "17/03", ttf: 50.75, belpex: 113.77, note: "Vandaag" },
+  { date: "17/03", ttf: 50.75, belpex: 113.77, note: "" },
+  { date: "18/03", ttf: 51.56, belpex: 80.92,  note: "Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -153,7 +152,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 17 MAART 2026 — OFFICIËLE DATABRONNEN
+          MARKTANALYSE — 18 MAART 2026 — OFFICIËLE DATABRONNEN
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -169,7 +168,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz gesloten (dag 19) · Belpex explodeert +56.8% · België overleg met industrie · IEA record release actief · EU opslag kritiek laag (29%) · TTF herstelt licht
+            Hormuz gesloten (dag 19) · Belpex volatiel (-28.9%) · Grid congestion miljardenschade · IEA release beperkt · EU opslag stabiel (29%) · TTF stijgt licht (+1.3%)
           </div>
         </div>
       </div>
@@ -203,10 +202,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€50.75", "/MWh",  "+2.1% vs gisteren",    "#ef4444"],
-          ["Belpex Elektr. vandaag","€113.77", "/MWh", "+56.8% vs gisteren",   "#f97316"],
-          ["EU Gasopslag",          "29%",    " cap.", "kritiek laag niveau", "#eab308"],
-          ["Brent Ruwe Olie",       "~$103",  "/vat",  "stabiliserend",       "#8b5cf6"],
+          ["TTF Gas vandaag",       "€51.56", "/MWh",  "+1.3% vs gisteren",    "#ef4444"],
+          ["Belpex Elektr. vandaag","€80.92", "/MWh", "-28.9% vs gisteren",   "#f97316"],
+          ["EU Gasopslag",          "29%",    " cap.", "stabiel niveau",     "#eab308"],
+          ["Brent Ruwe Olie",       "$101.06", "/vat",  "-2.3% vs gisteren",   "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -313,7 +312,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (13 mrt 2026)", "29.4%",          "#ef4444"],
+              ["EU-gemiddelde (18 mrt 2026)", "29.0%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -326,7 +325,7 @@ export default function EnergieRapport() {
               </div>
             ))}
             <div style={{ marginTop: 14, padding: "10px 14px", background: "#7c131322", borderRadius: 8, fontSize: 12, color: "#fca5a5", lineHeight: 1.6 }}>
-              ⚠️ Hormuz-verstoring blokkeert Qatar LNG. Het injectieseizoen belooft uitzonderlijk duur te worden.
+              ⚠️ Hormuz-verstoring (dag 19) blijft Qatar LNG blokkeren. Grid congestion riskeert miljardenschade in België.
             </div>
           </div>
 
@@ -335,8 +334,8 @@ export default function EnergieRapport() {
             {[
               ["Straat van Hormuz", "#ef4444", "Dag 19: Scheepvaart volledig geblokkeerd. IEA: 'grootste supply disruption in history'."],
               ["België Overleg",    "#f97316", "Gesprekken met olie/gas industrie over extreme prijzen. Politieke druk toeneemt."],
-              ["Belpex Explosie",   "#a78bfa", "+56.8% stijging vandaag - extreem volatiel door geopolitieke onzekerheid."],
-              ["Brent Stabilisatie","#8b5cf6", "~$103/vat - lichte daling na IEA record release van 400M vaten."],
+              ["Belpex Volatiliteit", "#a78bfa", "Extreme volatiliteit: negatieve prijzen overdag (€-1.67), avondpieken €180 door grid congestion."],
+              ["Brent Daling",      "#8b5cf6", "$101.06/vat - verdere daling na IEA release maar Hormuz druk blijft hoog."],
               ["IEA Record Release", "#22c55e", "400M vaten vrijgegeven - grootste ooit. Compenseert ~20 dagen Hormuz verlies."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
@@ -353,7 +352,7 @@ export default function EnergieRapport() {
                 ["Volume",          "400 mln vaten (recordvrijgave)"],
                 ["% totale res.",   "~33% van 1.2 mld noodvoorraad"],
                 ["Status",          "Gezamenlijke vrijgave actief sinds 11/03"],
-                ["Marktreactie",    "Brent: $119 → $103/vat (volatiliteit blijft hoog)"],
+                ["Marktreactie",    "Brent: $119 → $101/vat (daling na IEA release)"],
                 ["Effectiviteit",   "Dekken ~4 dagen globale vraag; impact beperkt door Hormuz"],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
@@ -367,7 +366,7 @@ export default function EnergieRapport() {
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Energiemix</h3>
-            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gas is de <strong style={{ color: "#f8fafc" }}>marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De +56.8% sprong op 17/03 wordt verklaard door een perfecte storm: <strong style={{ color: "#f8fafc" }}>Dunkelflaute</strong> (zonnewindstilte), <strong style={{ color: "#f8fafc" }}>kerncapaciteitsvermindering</strong> (5.5GW→2GW), en <strong style={{ color: "#f8fafc" }}>grid congestion</strong> (650 projecten wachten op aansluiting).</p>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gas is de <strong style={{ color: "#f8fafc" }}>marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De extreme volatiliteit op 18/03 wordt verklaard door <strong style={{ color: "#f8fafc" }}>negatieve prijzen</strong> tijdens zonnepiek (€-1.67) en <strong style={{ color: "#f8fafc" }}>avondpieken</strong> (€180) door grid congestion en nucleaire beperkingen.</p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px" }}>
               {[
                 ["Kern (Doel 4, Tihange 3)", "verlengd tot 2035"],
@@ -382,7 +381,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex op 17/03 (€113.77 daggemiddelde) explodeert +56.8% door perfecte storm: Dunkelflaute, kerncapaciteitsvermindering en grid congestion.
+              ⚡ Belpex op 18/03 (€80.92 daggemiddelde) toont extreme volatiliteit: negatieve prijzen overdag, avondpieken tot €180 door grid congestion.
             </p>
           </div>
         </div>
@@ -653,7 +652,7 @@ export default function EnergieRapport() {
                 { n: "ENTSO-E Transparency Platform",    d: "Officiële dagprijzen per land (incl. BE), bron voor alle Belpex-data", url: "https://transparency.entsoe.eu" },
                 { n: "EPEX SPOT — Belgische marktdata",  d: "Officiële clearing van de Belgische day-ahead markt",                   url: "https://www.epexspot.com/en/market-data" },
                 { n: "Elia — Day-ahead referentieprijs", d: "Belgische SDAC-prijs gepubliceerd door Belgische TSO",                  url: "https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price" },
-                { n: "dayaheadmarket.eu — Belgium",      d: "Dagelijkse en kwartierlijkse Belpex-spotprijzen (ENTSO-E bron)",       url: "https://www.dayaheadmarket.eu/belgium" },
+                { n: "Elexys — Belpex Hourly Data", d: "Official hourly Belpex prices (18/03: €80.92 average, negative prices €-1.67)", url: "https://www.elexys.be/en/insights/epex-spot" },
               ],
             },
             {
@@ -661,8 +660,8 @@ export default function EnergieRapport() {
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
                 { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële EU gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
-                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (17/03: €50.75/MWh, 16/03: €49.69/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
-                { n: "Trading Economics — TTF 17/03/2026",    d: "Bevestigd: TTF €50.75/MWh op 17/03/2026 (+2.1% dag/dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (18/03: €51.56/MWh, 17/03: €50.75/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
+                { n: "Trading Economics — TTF 18/03/2026",    d: "Bevestigd: TTF €51.56/MWh op 18/03/2026 (+1.32% dag/dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
                 { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over EU gasopslag en marktevolutie",            url: "https://europeangashub.com" },
                 { n: "Gas to Power Journal — TTF analysis",    d: "TTF prices fall below €30/MWh as geopolitical risk premium fades",    url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
               ],
@@ -670,15 +669,18 @@ export default function EnergieRapport() {
             {
               cat: "🌍 Geopolitiek & Beleidsinstanties", color: "#f97316",
               items: [
-                { n: "FactSet — Iran LNG Supply Disruption",          d: "Hormuz disruption: 10 Bcf/d reduction in global LNG supply",                            url: "https://insight.factset.com/iran-conflict-disrupts-global-lng-supply" },
-                { n: "Reuters — Hormuz Graphics Analysis",            d: "Visual analysis of Hormuz closure impact on oil/LNG flows",                                  url: "https://www.reuters.com/graphics/IRAN-CRISIS/OIL-LNG/mopaokxlypa/" },
-                { n: "CNBC — LNG Market Impact Analysis",             d: "20% of global LNG flows through Hormuz, Qatar production halted",                           url: "https://www.cnbc.com/2026/03/09/theres-another-energy-market-that-may-get-hit-harder-than-oil-by-strait-of-hormuz-closure.html" },
-                { n: "Brussels Times — Belgium Industry Talks", d: "Belgium holding talks with oil and gas industry over high prices (16/03/2026)", url: "https://www.brusselstimes.com/belgium/2025520/belgium-holding-talks-with-oil-and-gas-industry-over-high-prices" },
-                { n: "Macrobond — Energy Shock Analysis", d: "Energy shock rewrites global macro playbook - risk premia rising", url: "https://www.macrobond.com/resources/macro-trends/energy-shock-rewrites-the-global-macro-playbook" },
-                { n: "CommBank — Iran Economic Impact", d: "Middle East conflict: assessing economic impact across politics and economies", url: "https://www.commbank.com.au/articles/newsroom/2026/03/iran-conflict-economic-impact.html" },
-                { n: "VRT NWS — Dunkelflaute", d: "Dark wind lull causes electricity price peaks (€135/MWh) - renewable generation at lowest level since winter", url: "https://www.vrt.be/vrtnws/en/2026/01/28/_dunkelflaute_-causes-electricity-price-to-peak/" },
-                { n: "Belga News Agency — Grid Congestion", d: "Flemish employers warn grid congestion risks billions - projects waiting for connections up from 35 to 650", url: "https://www.belganewsagency.eu/power-grid-congestion-risks-billions-in-economic-damage" },
-                { n: "Montel Energy — Nuclear Uncertainty", d: "Belgium nuclear capacity reduced from 5.5GW to 2GW - Doel 4 and Tihange 3 maintenance until November 2026", url: "https://montel.energy/commentary/nuclear-uncertainty-can-belgium-still-shine-bright" },
+                { n: "De Standaard — Energiecrisis Analyse (18/03/2026)", d: "Hangt ons een energiecrisis boven het hoofd? Dieselprijs stijgt boven €2/liter", url: "https://www.standaard.be/economie/hangt-ons-een-energiecrisis-boven-het-hoofd-en-kunnen-we-de-impact-ervan-beperken/141263439.html" },
+                { n: "De Standaard — Economische Kettingreactie (18/03/2026)", d: "Sluiting Straat van Hormuz dreigt economische kettingreactie in gang te zetten", url: "https://www.standaard.be/economie/sluiting-straat-van-hormuz-dreigt-economische-kettingreactie-in-gang-te-zetten/141467621.html" },
+                { n: "De Standaard — Energietransitie (18/03/2026)", d: "Gas en olie worden onbetaalbaar - volop inzetten op energietransitie is enige oplossing", url: "https://www.standaard.be/opinies/gas-en-olie-worden-onbetaalbaar-volop-inzetten-op-de-energietransitie-is-de-enige-oplossing/142547932.html" },
+                { n: "Reuters — Iran's $200 Oil Threat (17/03/2026)", d: "Iran's $200 oil threat isn't that far-fetched - 20M bpd trapped by Hormuz closure", url: "https://www.reuters.com/markets/commodities/irans-200-oil-threat-isnt-that-far-fetched-2026-03-17/" },
+                { n: "CNBC — UAE Energy Infrastructure Hit (17/03/2026)", d: "Iran hits UAE energy supplies, tanker struck near Strait of Hormuz", url: "https://www.cnbc.com/2026/03/17/iran-war-uae-energy-gas-field-oil-fujairah-strait-of-hormuz.html" },
+                { n: "HLN — Energiefactuur Goed Nieuws (18/03/2026)", d: "Het enige goede nieuws voor je energiefactuur - opgewekte stroom is straks meer waard", url: "https://www.hln.be/mijn-geld/het-enige-goede-nieuws-voor-je-energiefactuur-je-opgewekte-stroom-is-straks-meer-waard~a621aa21/" },
+                { n: "De Morgen — Wereldwijde Maatregelen (18/03/2026)", d: "Wereldwijd maatregelen om energieprijzen te stabiliseren - dieselprijs > €2/liter", url: "https://www.demorgen.be/nieuws/wereldwijd-maatregelen-om-energieprijzen-te-stabiliseren~bae41a16/" },
+                { n: "Bloomberg — Brent Above $100 (12/03/2026)", d: "Brent Oil Trades Above $100 as US Steps Up Strikes on Iran", url: "https://www.bloomberg.com/news/articles/2026-03-12/latest-oil-market-news-and-analysis-for-march-13" },
+                { n: "Reuters — Barclays Brent Forecast (13/03/2026)", d: "Barclays raises 2026 Brent forecast to $85/barrel on Hormuz disruption", url: "https://www.reuters.com/business/energy/barclays-raises-2026-brent-forecast-85-barrel-strait-hormuz-disruption-2026-03-13/" },
+                { n: "Knack — Beurskansen Hormuz (18/03/2026)", d: "Beurskansen bij blokkade van Straat van Hormuz: 'Kijk niet naar de olieprijs'", url: "https://trends.knack.be/beleggen/beurskansen-bij-blokkade-van-straat-van-hormuz/" },
+                { n: "VRT NWS — Octa+ Tarieven (17/03/2026)", d: "Na Mega past ook Octa+ tariefkaart voor vaste contracten aan - 14-29% stijging gas", url: "https://vrtnws.be/p.0Y6qkWYOx" },
+                { n: "HLN — Vlaams Plan (17/03/2026)", d: "Vlaams energieminister Hans Bonte heeft plan klaar om stroomfactuur met €45 te doen dalen", url: "https://www.hln.be/binnenland/vlaams-energieminister-hans-bonte-heeft-plan-klaar-om-stroomfactuur-met-45-euro-te-doen-dalen~a8b4b4de/" },
               ],
             },
             {
@@ -710,7 +712,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 17/03 = €50.75 (OilPriceAPI), Belpex 17/03 = €113.77 (EU Energy Live), EU opslag 17/03 = 29% (Energy Dashboard), Brent 17/03 = $103.06 (MarketWatch). De +56.8% Belpex sprong wordt verklaard door Dunkelflaute, kerncapaciteitsvermindering (5.5GW→2GW) en grid congestion (650 wachtende projecten). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 18/03 = €51.56 (Trading Economics), Belpex 18/03 = €80.92 (Elexys), EU opslag 18/03 = 29% (Bruegel), Brent 18/03 = $101.06 (Trading Economics). Extreme Belpex volatiliteit (-28.9%) wordt verklaard door negatieve prijzen overdag (€-1.67) en avondpieken (€180) door grid congestion en nucleaire beperkingen. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}
@@ -718,7 +720,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 17 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 18 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>

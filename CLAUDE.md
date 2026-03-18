@@ -37,40 +37,50 @@ om te kruisvalideren. Markeer elk cijfer als ✓ (twee bronnen overeenkomen) of
 ~ (één bron of interpolatie).
 
 ### TTF Aardgas (€/MWh)
-```
+
+```text
 tavily_search: "TTF natural gas price today €/MWh"
 tavily_search: "TTF gas spot price [huidige maand] [huidig jaar]"
 tavily_search: "Dutch TTF gas price history last 30 days"
 ```
+
 **Primaire bronnen voor validatie:**
-- **Vandaag**: https://www.oilpriceapi.com/live/dutch-ttf-gas-price
-- **Historisch**: https://www.investing.com/commodities/dutch-ttf-gas-c1-futures-historical-data
+
+- **Vandaag**: <https://www.oilpriceapi.com/live/dutch-ttf-gas-price>
+- **Historisch**: <https://www.investing.com/commodities/dutch-ttf-gas-c1-futures-historical-data>
 
 Doel: dagelijkse slotprijzen voor de afgelopen ~30 handelsdagen.
 Ankerpunten bevestigen via ICE of GIE AGSI+.
 
 ### Belpex / EPEX Elektriciteit (€/MWh)
-```
+
+```text
 tavily_search: "Belpex day-ahead electricity price Belgium today"
 tavily_search: "EPEX SPOT Belgium electricity [huidige maand] [huidig jaar]"
 ```
+
 **Primaire bron voor validatie:**
-- **Vandaag & Historisch**: https://euenergy.live/country.php?a2=BE
+
+- **Vandaag & Historisch**: <https://euenergy.live/country.php?a2=BE>
 
 Doel: daggemiddelde day-ahead prijzen zelfde periode als TTF.
 
 ### EU Gas Storage (%)
-```
+
+```text
 tavily_search: "EU gas storage level percentage today"
 tavily_search: "European gas storage levels 2026"
 ```
+
 **Bronnen:** GIE AGSI+, Energy Dashboard.
 
 ### Brent Crude Oil ($/vat)
-```
+
+```text
 tavily_search: "Brent crude oil price today"
 tavily_search: "Brent oil price March 2026"
 ```
+
 **Bronnen:** Investing.com, Yahoo Finance.
 
 ---
@@ -88,43 +98,67 @@ Belangrijk:
 - Neem alleen items op die **concreet relevant** zijn voor prijsbewegingen,
   marktverwachtingen of Belgische eindklanten.
 
+### 📅 BEST PRACTICES — Nieuws-Horizon & Taal
+
+**4-weken nieuws-horizon:**
+
+- Gebruik alleen nieuwsberichten van maximaal 4 weken oud
+- Prioriteit aan meest recente artikelen (huidige datum > 1 week oud > 2-4 weken oud)
+- Publicatiedatums ALTIJD expliciet vermelden in bronvermeldingen
+
+**NL/EN Taalstrategie:**
+
+- Mix van NL en EN talige bronnen is toegestaan
+- **NL-talig krijgt voorrang** bij dezelfde informatie
+- EN-talig alleen toevoegen voor unieke informatie die niet beschikbaar is in NL
+- Doel: ~70% NL, ~30% EN voor maximale relevantie en internationale context
+
+**Bronvalidatie:**
+
+- Controleer elke URL op geldigheid voor toevoeging
+- Vervang ongeldige links onmiddellijk
+- Gebruik korte, functionele URLs (bv. VRT: vrtnws.be/p.0Y6qkWYOx)
+
 ### Belgische & Nederlandse Energiebronnen
-- **Mijn Energie Blog**: https://www.mijnenergie.be/blog
+
+- **Mijn Energie Blog**: <https://www.mijnenergie.be/blog>
   - Focus: Belgische energiemarkt, tariefontwikkelingen, beleidsupdates
   - Zoektermen: "energieprijzen", "gas elektriciteit", "tarieven"
 
-- **De Tijd**: https://www.tijd.be/
+- **De Tijd**: <https://www.tijd.be/>
   - Focus: Financiële analyse, energiebedrijven, marktontwikkelingen
   - Zoektermen: "energie", "TTF", "Belpex", "gas"
 
-- **VRT Nieuws Energie**: https://www.vrt.be/vrtnws/nl/dossiers/2021/09/energieprijzen/
+- **VRT Nieuws Energie**: <https://www.vrt.be/vrtnws/nl/dossiers/2021/09/energieprijzen/>
   - Focus: Nieuws over energieprijzen, beleid, consumentenimpact
   - Zoektermen: "energieprijzen", "gas elektriciteit"
 
-- **VRT Nieuws Milieu & Energie**: https://www.vrt.be/vrtnws/nl/net-binnen/milieu-en-klimaat/energie/
+- **VRT Nieuws Milieu & Energie**: <https://www.vrt.be/vrtnws/nl/net-binnen/milieu-en-klimaat/energie/>
   - Focus: Klimaatbeleid, hernieuwbare energie, energietransitie
   - Zoektermen: "hernieuwbaar", "zonne-energie", "wind"
 
-- **De Redactie**: https://www.deredactie.be
+- **De Redactie**: <https://www.deredactie.be>
   - Focus: Politiek nieuws, energiebeleid, EU-regelgeving
   - Zoektermen: "energiebeleid", "EU", "klimaat"
 
 ### Regulatorische & Marktdata Bronnen
-- **CREG Publicaties**: https://www.creg.be/en/publications
+
+- **CREG Publicaties**: <https://www.creg.be/en/publications>
   - Focus: Belgische energieregulator, marktrapporten, tariefbesluiten
   - Zoektermen: "tariff", "market report", "electricity", "gas"
 
-- **Montel News**: https://montelnews.com/
+- **Montel News**: <https://montelnews.com/>
   - Focus: Europese energiemarkt nieuws, trading, prijzen
   - Zoektermen: "power prices", "gas", "TTF", "Belgium"
 
-- **EEX Newsroom**: https://www.eex.com/en/newsroom
+- **EEX Newsroom**: <https://www.eex.com/en/newsroom>
   - Focus: Energy Exchange nieuws, marktdata, trading
   - Zoektermen: "power", "gas", "market news"
 
 ### Scan Strategie per Update
 
 Scan per update **minstens 4 van deze bronnen**, waarvan:
+
 - minstens 1 Belgische consumenten- of nieuwsbron
 - minstens 1 regulatorische of professionele marktbron
 - minstens 1 bron met expliciete geopolitieke of beleidscontext
@@ -178,15 +212,17 @@ De gevonden informatie wordt verwerkt in:
 
 ### Geopolitieke context (extra scanning)
 
-```
+```text
 tavily_search: "energy market geopolitical risk [huidige maand] [huidig jaar]"
 tavily_search: "Strait of Hormuz LNG supply disruption [huidig jaar]"
 tavily_search: "IEA energy policy announcement [huidige maand] [huidig jaar]"
 tavily_search: "Belgium energy tariff VREG [huidige maand] [huidig jaar]"
 ```
+
 Doel: actieve crisissituaties, beleidswijzigingen, marktbewegende nieuwsfeiten.
 
 ### Validatieregel
+
 Gebruik een datapunt ALLEEN als ✓ als minstens twee onafhankelijke bronnen
 hetzelfde cijfer (±2%) bevestigen. Noteer bij elk punt de bronnen.
 
@@ -214,9 +250,26 @@ Forecastperiode = rapportdatum + 6 à 8 weken, in 5-6 datapunten.
 2. `forecastBase/Bull/Bear` arrays — startpunt = laatste ✓ datapunt, einddatum = +6-8 weken
 3. KPI blokken — actuele TTF, Belpex, EU opslag%, Brent + wijziging vs. vorige ankerpunt
 4. Alert banner — tekst aanpassen aan actuele crisissituatie (of verwijderen als markt rustig)
-5. Datum in header — `MARKTANALYSE — DD MAAND YYYY`
-6. Geopolitieke sectie (tab "context") — feiten bijwerken
-7. Bronnen tab — gebruikte bronnen voor deze update toevoegen
+5. **Header datum — `MARKTANALYSE — DD MAAND YYYY` (altijd up-to-date)**
+6. **Alle secties up-to-date houden — Analyse, Geopolitiek, Forecast, Bronnen**
+7. **Geopolitieke sectie (tab "context") — feiten bijwerken met NL/EN mix**
+8. **Bronnen tab — gebruikte bronnen met publicatiedatums, NL voorrang**
+
+### 📅 BEST PRACTICES — Data Consistentie
+
+**Datumconsistentie:**
+
+- Header datum = huidige rapportdatum
+- Alle publicatiedatums in bronnen moeten relevant en up-to-date zijn
+- Geen verouderde artikelen (bv. 2013) in bronvermeldingen
+- Forecast data start vanaf laatste datapunt
+
+**Prijstabel labeling:**
+
+- **SLECHTS 1x 'vandaag' label** in de prijs tabel
+- 'Vandaag' label alleen op huidige rapportdatum
+- Geen dubbele 'vandaag' labels of verwarrende markeringen
+- Status badges consistent: Hormuz Shock, Piekprijs, IEA, Vandaag, Weekend
 
 ### Wat NIET aanpassen zonder expliciete opdracht:
 - Algehele structuur (5 tabs, KPI grid, sectie-indeling)
@@ -236,7 +289,9 @@ Na het updaten van de JSX, pas identiek aan:
 2. `forecastBase/Bull/Bear` arrays
 3. KPI-blokken in de HTML
 4. Alert-banner tekst
-5. Datum in de header
+5. **Header datum — identiek aan JSX versie**
+6. **Bronvermeldingen — identiek aan JSX, met NL/EN mix en datums**
+7. **Prijstabel — identieke 'vandaag' labeling als JSX**
 
 ### KRITISCH — apostrof-regel:
 Controleer altijd op apostrofs in JavaScript strings in de offline HTML.
@@ -259,20 +314,38 @@ git push origin main
 ```
 
 Cloudflare Pages bouwt automatisch na de push (~1-2 minuten).
-Controleer de build status op https://dash.cloudflare.com na de push.
+Controleer de build status op <https://dash.cloudflare.com> na de push.
 
 ---
 
 ## Datavalidatie checklist (uitvoeren vóór commit)
 
+### Data Kwaliteit
+
 - [ ] Minimaal 3 datapunten met ✓ (twee bronnen bevestigd)
 - [ ] TTF en Belpex data lopen tot en met de rapportdatum
 - [ ] Forecast startpunt = laatste ✓ datapunt
+- [ ] Alle datums zijn up-to-date en relevant
+
+### Synchronisatie
+
 - [ ] KPI's in JSX en offline.html zijn identiek
-- [ ] Datum in header klopt in beide bestanden
+- [ ] Header datum klopt in beide bestanden
+- [ ] Bronvermeldingen zijn identiek in beide bestanden
+- [ ] **SLECHTS 1x 'vandaag' label** in beide versies
+
+### Technische Validatie
+
 - [ ] Geen kapotte apostrofs in offline.html JavaScript
+- [ ] Alle bron URLs zijn geldig en testbaar
+- [ ] **Geen verouderde bronnen** (ouder dan 4 weken, tenzij unieke historische context)
+- [ ] **NL/EN mix correct** (~70% NL, ~30% EN, NL voorrang bij duplicate info)
+
+### Documentatie
+
 - [ ] UPDATE_LOG.md bijgewerkt met deze sessie
 - [ ] Commit message is beschrijvend
+- [ ] Publicatiedatums staan in alle bronvermeldingen
 
 ---
 
@@ -280,14 +353,14 @@ Controleer de build status op https://dash.cloudflare.com na de push.
 
 | Bron | Wat | URL |
 |------|-----|-----|
-| ENTSO-E | Belpex dagprijzen | https://transparency.entsoe.eu |
-| dayaheadmarket.eu | Belpex dagprijzen | https://www.dayaheadmarket.eu/belgium |
-| Elia | Belgische day-ahead ref | https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price |
-| GIE AGSI+ | EU gasopslag % | https://agsi.gie.eu |
-| ICE TTF | TTF futures/spot | https://www.ice.com/products/27996665 |
-| IEA | Beleidswijzigingen | https://www.iea.org |
-| VREG | Belgische tariefwijzigingen | https://www.vreg.be |
-| CREG | Belgische marktmonitor | https://www.creg.be |
+| ENTSO-E | Belpex dagprijzen | <https://transparency.entsoe.eu> |
+| dayaheadmarket.eu | Belpex dagprijzen | <https://www.dayaheadmarket.eu/belgium> |
+| Elia | Belgische day-ahead ref | <https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price> |
+| GIE AGSI+ | EU gasopslag % | <https://agsi.gie.eu> |
+| ICE TTF | TTF futures/spot | <https://www.ice.com/products/27996665> |
+| IEA | Beleidswijzigingen | <https://www.iea.org> |
+| VREG | Belgische tariefwijzigingen | <https://www.vreg.be> |
+| CREG | Belgische marktmonitor | <https://www.creg.be> |
 
 ---
 
@@ -298,15 +371,28 @@ Open Claude Code in de projectmap en typ:
 ```
 Lees CLAUDE.md en UPDATE_LOG.md.
 Voer een volledige update uit voor vandaag.
+
+**Data verzameling:"
 Gebruik Tavily om actuele TTF, Belpex, EU gasopslag en Brent data op te halen.
-Gebruik Tavily om actuele nieuwsberichten te zoeken die een postieve of negatieve impact kunnen hebben op de energieprijzen. Neem deze resultaten mee op in:
- - De Analyse
- - Het Geopolitieke luik
- - De Forecast scenario's
- - De bronnen
-Update src/EnergieRapport.jsx en public/offline.html.
-Vul UPDATE_LOG.md in.
-Push naar GitHub.
+Valideer datapunten met minstens 2 bronnen (✓).
+
+**Context analyse:"
+Gebruik Tavily om actuele nieuwsberichten te zoeken (max 4 weken oud).
+- NL-talige bronnen krijgen voorrang
+- EN-talig alleen voor unieke informatie
+- Publicatiedatums altijd vermelden
+- URLs valideren op geldigheid
+
+**Implementatie:"
+- Update alle secties (Analyse, Geopolitiek, Forecast, Bronnen)
+- Zorg voor 1x 'vandaag' label in prijstabel
+- Sync JSX en offline.html identiek
+- Header datum up-to-date
+
+**Validatie & push:"
+- Controleer alle URLs en datums
+- Vul UPDATE_LOG.md in.
+- Push naar GitHub.
 ```
 
 Claude Code voert dan autonoom alle stappen uit.
