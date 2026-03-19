@@ -99,8 +99,8 @@ svg.chart{width:100%;font-family:Georgia,serif}
   </div>
   <div class="kpi" style="border:1px solid #eab30844">
     <div class="kpi-label">EU Gasopslag</div>
-    <div class="kpi-val" style="color:#eab308">N.v.t.<span class="kpi-sub"> cap.</span></div>
-    <div class="kpi-note" style="color:#eab308">data niet beschikbaar</div>
+    <div class="kpi-val" style="color:#eab308">~29%<span class="kpi-sub"> cap.</span></div>
+    <div class="kpi-note" style="color:#eab308">laagste peil in jaren</div>
   </div>
   <div class="kpi" style="border:1px solid #8b5cf644">
     <div class="kpi-label">Brent Ruwe Olie</div>
@@ -172,8 +172,8 @@ svg.chart{width:100%;font-family:Georgia,serif}
       <p style="margin-top:7px;margin-bottom:0;font-size:13px;color:#94a3b8;line-height:1.6">Extreme volatiliteit: negatieve prijzen overdag (€-1.67), avondpieken €180 door grid congestion.</p>
     </div>
     <div style="margin-bottom:14px">
-      <span class="badge" style="background:#8b5cf622;color:#8b5cf6;border:1px solid #8b5cf644">Brent Daling</span>
-      <p style="margin-top:7px;margin-bottom:0;font-size:13px;color:#94a3b8;line-height:1.6">$101.06/vat - verdere daling na IEA release maar Hormuz druk blijft hoog.</p>
+      <span class="badge" style="background:#8b5cf622;color:#8b5cf6;border:1px solid #8b5cf644">Brent Herstel</span>
+      <p style="margin-top:7px;margin-bottom:0;font-size:13px;color:#94a3b8;line-height:1.6">$97.06/vat - licht herstel na IEA release maar Hormuz druk blijft hoog.</p>
     </div>
     <div>
       <span class="badge" style="background:#22c55e22;color:#22c55e;border:1px solid #22c55e44">IEA Record Release</span>
@@ -189,9 +189,9 @@ svg.chart{width:100%;font-family:Georgia,serif}
 
   <div class="section">
     <h3 style="margin:0 0 14px;color:#f8fafc;font-size:15px">🇧🇪 Belgische Energiemix</h3>
-    <p style="margin-top:0;font-size:13px;color:#94a3b8;line-height:1.6">Gas is de <strong style="color:#f8fafc">marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De extreme volatiliteit op 18/03 wordt verklaard door <strong style="color:#f8fafc">negatieve prijzen</strong> tijdens zonnepiek (€-1.67) en <strong style="color:#f8fafc">avondpieken</strong> (€180) door grid congestion en nucleaire beperkingen.</p>
+    <p style="margin-top:0;font-size:13px;color:#94a3b8;line-height:1.6">Gas is de <strong style="color:#f8fafc">marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De recente volatiliteit wordt verklaard door <strong style="color:#f8fafc">prijsfluctuaties</strong> door grid congestion en nucleaire beperkingen.</p>
     <div style="background:#172554;border-radius:8px;padding:12px 14px" id="mix-rows"></div>
-    <p style="font-size:12px;color:#f97316;margin-top:10px;margin-bottom:0">⚡ Belpex op 18/03 (€80.92 daggemiddelde) toont extreme volatiliteit: negatieve prijzen overdag, avondpieken tot €180 door grid congestion.</p>
+    <p style="font-size:12px;color:#f97316;margin-top:10px;margin-bottom:0">⚡ Belpex op 19/03 (€100.30 daggemiddelde) toont herstel na extreme volatiliteit: +23.9% vs gisteren.</p>
   </div>
 
 </div>
@@ -564,7 +564,7 @@ function buildPriceTable() {
 // ===== BUILD CONTEXT ROWS =====
 function buildContext() {
   const storageRows = [
-    ['EU-gemiddelde (18 mrt 2026)', '29.0%', '#ef4444'],
+    ['EU-gemiddelde (mrt 2026)', '~29%', '#ef4444'],
     ['Laagste seizoenspeil', 'in jaren', '#ef4444'],
     ['Einde 2025', '~61%', '#eab308'],
     ['Einde 2024', '~72%', '#22c55e'],

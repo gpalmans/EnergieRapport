@@ -205,7 +205,7 @@ export default function EnergieRapport() {
         {[
           ["TTF Gas vandaag",       "€54.66", "/MWh",  "+6.0% vs gisteren",    "#ef4444"],
           ["Belpex Elektr. vandaag","€100.30", "/MWh", "+23.9% vs gisteren",   "#f97316"],
-          ["EU Gasopslag",          "N.v.t.", " cap.", "data niet beschikbaar",     "#eab308"],
+          ["EU Gasopslag",          "~29%",   " cap.", "laagste peil in jaren",     "#eab308"],
           ["Brent Ruwe Olie",       "$97.06", "/vat",  "+0.8% vs gisteren",   "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
@@ -712,7 +712,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 19/03 = €54.66 (Trading Economics), Brent 19/03 = $97.06 (Trading Economics). Geen actuele Belpex data gevonden, extreme volatiliteit gemeld (+32.29% vs 13/03). EU gasopslag data niet beschikbaar. Hormuz crisis blijft dicht, Iran-oorlog in week 3 met VS schatting van 4-6 weken duur. Benzineprijzen stijgen opnieuw fors. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 19/03 = €54.66 (Trading Economics), Brent 19/03 = $97.06 (Trading Economics), Belpex 19/03 = €100.30 (dayaheadmarket.eu), EU gasopslag mrt 2026 = ~29% (Swiss Info, GIE AGSI via Chinese financial sources). Hormuz crisis blijft dicht, Iran-oorlog in week 3 met VS schatting van 4-6 weken duur. Benzineprijzen stijgen opnieuw fors. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}
