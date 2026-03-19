@@ -355,6 +355,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 |------|-----|-----|
 | ENTSO-E | Belpex dagprijzen | <https://transparency.entsoe.eu> |
 | dayaheadmarket.eu | Belpex dagprijzen | <https://www.dayaheadmarket.eu/belgium> |
+| EU-Energy | Belpex dagprijzen | <https://euenergy.live/electricity-prices/belgium/antwerpen> |
 | Elia | Belgische day-ahead ref | <https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price> |
 | GIE AGSI+ | EU gasopslag % | <https://agsi.gie.eu> |
 | ICE TTF | TTF futures/spot | <https://www.ice.com/products/27996665> |

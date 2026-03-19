@@ -6,6 +6,54 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 11 — 19 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €54.66/MWh (+6.02% vs gisteren) - Trading Economics bevestigd
+- **Belpex Elektriciteit**: €100.30/MWh (+23.9% vs gisteren) - dayaheadmarket.eu bevestigd (€0.1003/kWh)
+- **EU Gasopslag**: Data niet beschikbaar
+- **Brent Ruwe Olie**: $97.06/vat (+0.77% vs gisteren) - Trading Economics bevestigd
+
+### **Belangrijke Marktontwikkelingen**
+- **TTF Stijgt Sterk**: +6.0% door aanhoudende Hormuz-blokkade (dag 20)
+- **Belpex Herstelt**: +23.9% na extreme daling gisteren, terug naar €100.30/MWh
+- **Brent Licht Herstel**: +0.8% na IEA-interventie maar blijft onder $100/vat
+- **Benzineprijzen Stijgen**: Opnieuw forse stijging door Iran-oorlog impact
+
+### **Geopolitieke Context**
+- **Hormuz Crisis**: Dag 20 - scheepvaart blijft volledig geblokkeerd
+- **Iran-Oorlog**: Week 3 - VS schat nog 4-6 weken duur, bestookt dronefabrieken
+- **VS Briefing**: Trump krijgt ontnuchterende briefings, vrees dat Iraans regime in zadel blijft
+- **EU Leaders Summit**: Focus op energy shocks, competitiveness en security (19/03)
+- **Emissiehandel Discussie**: Nieuwe energieschok zet discussie over ETS weer op scherp
+
+### **Bronnen Update**
+- **NL/EN Mix**: 73% Nederlands, 27% Engels (conform best practices)
+- **Publicatiedatums**: Alle bronnen gedateerd 19/03/2026
+- **Nieuwe Bronnen**: 
+  - dayaheadmarket.eu voor actuele Belpex data
+  - EPC EU Leaders Summit rapport
+  - Global Banking & Finance analyse Iran war energy shock
+  - Selectra Belpex tracking (+32.29% vs 13/03)
+
+### **Technische Updates**
+- **'Vandaag' Label**: Correct op 19/03 gezet, 18/03 label verwijderd
+- **Forecast Aangepast**: Startpunt nu 19/03 met TTF €54.66 en Belpex €100.30
+- **Data Synchronisatie**: JSX en offline.html volledig gesynchroniseerd
+- **CLAUDE.md**: EU-Energy bron toegevoegd aan databronnen tabel
+
+### **Databronnen Gebruikt**
+- Trading Economics (TTF, Brent)
+- dayaheadmarket.eu (Belpex average price)
+- De Standaard (meerdere artikelen over energiecrisis, benzineprijzen, VS dronefabrieken)
+- HLN (Trump briefing)
+- Business AM (tariefwijzigingen)
+- Selectra (Belpex tracking)
+- EPC (EU Leaders Summit)
+- Global Banking & Finance (Iran war analysis)
+
+---
+
 ## Update 10 — 18 maart 2026
 
 ### **Bevestigde Marktdata (✓)**
