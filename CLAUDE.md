@@ -400,6 +400,109 @@ Claude Code voert dan autonoom alle stappen uit.
 
 ---
 
+## Lessons Learned (Update 20-03-2026)
+
+### Critical Analysis of Advice Sections
+
+**Probleem: Verouderde Argumenten na Geopolitieke Escalatie**
+- IEA-argument was te optimistisch na gasveld aanvallen
+- Praktisch advies had onrealistische tijdslijnen (2-3 weken te kort)
+- Prijsdoelen waren niet aangepast aan nieuwe realiteit (€40 onhaalbaar)
+- **Oplossing**: Altijd kritisch her-evalueren van advies bij structurele marktveranderingen
+
+**Aanpassingen Vaste vs. Variabel Sectie:**
+- IEA-argument: "breekt piek binnen weken" → "dempt maar lost structurele schade niet op"
+- Observatieperiode: 2-3 weken → 4-6 weken (gasveld herstel duurt 3-5 maanden)
+- Prijsdoelen: €40 variabel aantrekkelijk → €50 (realistischer)
+- Prijsdoelen: €50 vast overwegen → €60 voor 6+ weken
+- Adviesmatrix: Genuanceerde motivering met korte vs. middellange termijn onderscheid
+
+**Kernboodschap Tijdshorizon:**
+- **Korte termijn (2-5 maanden)**: Verhoogd niveau door fysieke schade
+- **Middellange termijn (6-18 maanden)**: Normalisatie door seizoen + LNG-golf
+- Onderscheid tussen psychologische piek vs. fysieke supply disruption
+
+### Forecast Grafiek Technische Issues
+
+**Probleem: Y-as Cap Te Laag**
+- Bullisch scenario stijgt tot €85/MWh
+- Grafiek had maximum van €80/MWh
+- Lijnen vielen buiten zichtbaar bereik
+- **Oplossing**: Y-axis domain aangepast van [20, 80] naar [20, 90] in beide JSX en offline.html
+
+### Data Consistentie Validatie
+
+**Checklist Uitgebreid:**
+- [ ] Forecast grafiek Y-as past bij scenario maxima
+- [ ] Advies sectie argumenten passen bij huidige geopolitieke situatie
+- [ ] Tijdslijnen zijn realistisch gegeven fysieke herstelperiodes
+- [ ] Prijsdoelen reflecteren actuele marktrealiteit
+- [ ] Onderscheid tussen korte en middellange termijn duidelijk
+
+---
+
+## Lessons Learned (Update 19-03-2026)
+
+### Data Consistentie Issues
+
+**Probleem 1: Brent Prijs Inconsistentie**
+- Header KPI: $97.06/vat
+- Geopolitiek sectie: $101.06/vat
+- **Oplossing**: Altijd alle voorkomens van dezelfde data synchroniseren
+
+**Probleem 2: EU Gasopslag Data "Niet Beschikbaar"**
+- Header KPI: "N.v.t. - data niet beschikbaar"
+- Context sectie: 29.0% (18/03/2026)
+- **Oplossing**: Zoek actief naar alternatieve bronnen (Swiss Info, GIE AGSI via Chinese financial sources)
+
+**Probleem 3: Verouderde Datumreferenties**
+- Tekst bevatte nog 18/03 referenties na update naar 19/03
+- **Oplossing**: Systematisch alle verouderde data verwijderen of updaten
+
+### Data Verzamelingsstrategie
+
+**EU Gasopslag Alternatieve Bronnen:**
+- Swiss Info: Europese storage facilities percentages
+- Chinese financial sources: GIE AGSI data vertalingen
+- Bruegel: European natural gas imports datasets
+- Caliber.az: Europe gas storage level mentions
+
+**Belpex Data Validatie:**
+- dayaheadmarket.eu: Average Price (€/kWh → omrekenen naar €/MWh)
+- euenergy.live: Real-time prijzen (check op actualiteit)
+- Elia.be: Day-ahead reference price (scraping nodig)
+
+### Consistentie Validatie Checklist
+
+**Voor Commit:**
+- [ ] Alle KPI's identiek in JSX en offline.html
+- [ ] Geopolitiek sectie data matches KPI's
+- [ ] Geen verouderde datumreferenties in tekst
+- [ ] Alle bron URLs geldig en up-to-date
+- [ ] Publicatiedatums relevant (max 4 weken oud)
+
+**Data Cross-Check:**
+- [ ] TTF prijs consistent overal
+- [ ] Belpex prijs consistent overal  
+- [ ] Brent prijs consistent overal
+- [ ] EU gasopslag consistent overal
+- [ ] Header datum = huidige rapportdatum
+
+### Bronnen Strategie
+
+**NL/EN Mix Realisatie:**
+- 73% NL, 27% EN is haalbaar en effectief
+- NL bronnen krijgen voorrang bij duplicate info
+- EN bronnen voor unieke internationale context
+
+**Data Verificatie:**
+- Trading Economics: TTF en Brent (betrouwbaar)
+- dayaheadmarket.eu: Belpex average (nauwkeurig)
+- Swiss Info: EU gasopslag (actueel)
+- GIE AGSI: Primaire bron (via secondary sources)
+
+---
+
 ## Projectlocatie
 
 - **Repository:** `https://github.com/gpalmans/TariffAnalysisComparison`

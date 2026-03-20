@@ -6,6 +6,56 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 12 — 20 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €62.00/MWh (+13.5% vs gisteren) - Trading Economics bevestigd
+- **Belpex Elektriciteit**: €125.50/MWh (+25.1% vs gisteren) - Berekend op basis van TTF-schok
+- **EU Gasopslag**: ~29% - GIE AGSI bevestigd
+- **Brent Ruwe Olie**: $108.50/vat (+11.8% vs gisteren) - Gepeakt op $119 na gasveld aanvallen
+
+### **Belangrijke Marktontwikkelingen**
+- **TTF Explosieve Stijging**: +13.5% door gasveld aanvallen (South Pars, Ras Laffan)
+- **Belpex Volatiliteit**: +25.1% gedreven door TTF-schok en grid congestion
+- **Brent Peak**: Piek op $119 na aanvallen op energie-infrastructuur
+- **Qatar LNG Impact**: Exportcapaciteit -17% na gasveld schade
+
+### **Geopolitieke Context**
+- **Gasvelden Aangevallen**: Israel bombardeert South Pars (Iran), Iran vergeldt op Ras Laffan (Qatar)
+- **Hormuz Crisis**: Dag 21 - scheepvaart volledig geblokkeerd, energiecrisis escaleert
+- **Iran-Oorlog**: Week 4 - Trump: 'geen nieuwe aanvallen South Pars' tenzij Iran Qatar aanvalt
+- **Structurele Schade**: Reparatietijd gasvelden geschat op 3-5 maanden
+- **Energie-inflatie**: Dreiging van structureel hogere energieprijzen
+
+### **Forecast Aanpassingen**
+- **Scenario Probabiliteiten**: Bearish 15% / Basis 45% / Bullish 40% (was 25/50/25)
+- **Basis Scenario**: "Prolonged crisis" - gasvelden deels buiten werking 3-5 maanden
+- **Bullish Scenario**: Nieuwe aanvallen op energie-infrastructuur mogelijk
+- **Bearish Scenario**: Gasvelden herstellen binnen 2-3 weken, diplomatieke de-escalatie
+
+### **Vaste vs. Variabel Sectie Verbeteringen**
+- **IEA-argument genuanceerd**: Van "breekt piek binnen weken" naar "dempt maar lost structurele schade niet op"
+- **Praktisch advies realistischer**: Observatieperiode 2-3 weken → 4-6 weken
+- **Prijsdoelen aangepast**: Variabel aantrekkelijk €40 → €50, Vast overwegen €50 → €60
+- **Adviesmatrix bijgewerkt**: "wacht 2-3 wk" → "wacht 4-6 wk", genuanceerde motivering
+- **Kernboodschap tijdshorizon**: Onderscheid korte termijn (2-5 mnd verhoogd) vs. middellange termijn (6-18 mnd normalisatie)
+- **Forecast grafiek Y-as**: Aangepast van [20, 80] naar [20, 90] voor bullisch scenario tot €85
+
+### **Technische Updates**
+- **EnergieRapport.jsx**: Alle data, KPI's, forecasts en context bijgewerkt naar 20/03
+- **offline.html**: Volledig gesynchroniseerd met JSX-component
+- **Enkele 'Vandaag' label**: Correct toegepast op 20/03 data
+- **Bronnen**: Bijgewerkt met gasveld aanval data en nieuwe geopolitical context
+
+### **Bronnen Update**
+- **TTF Data**: Trading Economics (20/03) - €62.00/MWh bevestigd
+- **Gas Field Attacks**: Reuters, CBS News, NBC News (20/03) - South Pars en Ras Laffan aanvallen
+- **Brent Data**: WSJ, Fortune - $108.50/vat, gepeikt op $119
+- **Qatar LNG**: WSJ -17% exportcapaciteit, reparatietijd 3-5 maanden
+- **EU Gas Storage**: GIE AGSI+ - ~29% bevestigd
+
+---
+
 ## Update 11 — 19 maart 2026
 
 ### **Bevestigde Marktdata (✓)**

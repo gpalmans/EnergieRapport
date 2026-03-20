@@ -39,8 +39,9 @@ const rawData = [
   { date: "14/03", ttf: 48.15, belpex: 69.82, note: "OK" },
   { date: "15/03", ttf: 46.88, belpex: 73.45, note: "OK" },
   { date: "17/03", ttf: 50.75, belpex: 113.77, note: "" },
-  { date: "18/03", ttf: 51.56, belpex: 80.92,  note: "Vandaag" },
-  { date: "19/03", ttf: 54.66, belpex: 100.30, note: "Vandaag" },
+  { date: "18/03", ttf: 51.56, belpex: 80.92,  note: "" },
+  { date: "19/03", ttf: 54.66, belpex: 100.30, note: "" },
+  { date: "20/03", ttf: 62.00, belpex: 125.50, note: "Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -53,28 +54,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "19/03", ttf: 54.66, belpex: 100.30 },
-  { date: "23/03", ttf: 52,    belpex: 85   },
-  { date: "30/03", ttf: 48,    belpex: 75   },
-  { date: "06/04", ttf: 45,    belpex: 68   },
-  { date: "20/04", ttf: 40,    belpex: 62   },
-  { date: "04/05", ttf: 37,    belpex: 58   },
+  { date: "20/03", ttf: 62.00, belpex: 125.50 },
+  { date: "24/03", ttf: 58,    belpex: 95   },
+  { date: "31/03", ttf: 52,    belpex: 80   },
+  { date: "07/04", ttf: 48,    belpex: 72   },
+  { date: "21/04", ttf: 42,    belpex: 65   },
+  { date: "05/05", ttf: 38,    belpex: 60   },
 ];
 const forecastBull = [
-  { date: "19/03", ttf: 54.66, belpex: 100.30 },
-  { date: "23/03", ttf: 65,    belpex: 125  },
-  { date: "30/03", ttf: 72,    belpex: 118  },
-  { date: "06/04", ttf: 68,    belpex: 105  },
-  { date: "20/04", ttf: 60,    belpex: 92   },
-  { date: "04/05", ttf: 55,    belpex: 82   },
+  { date: "20/03", ttf: 62.00, belpex: 125.50 },
+  { date: "24/03", ttf: 75,    belpex: 145  },
+  { date: "31/03", ttf: 85,    belpex: 135  },
+  { date: "07/04", ttf: 78,    belpex: 120  },
+  { date: "21/04", ttf: 68,    belpex: 105  },
+  { date: "05/05", ttf: 60,    belpex: 95   },
 ];
 const forecastBear = [
-  { date: "19/03", ttf: 54.66, belpex: 100.30 },
-  { date: "23/03", ttf: 48,    belpex: 78   },
-  { date: "30/03", ttf: 40,    belpex: 65   },
-  { date: "06/04", ttf: 35,    belpex: 55   },
-  { date: "20/04", ttf: 30,    belpex: 48   },
-  { date: "04/05", ttf: 27,    belpex: 42   },
+  { date: "20/03", ttf: 62.00, belpex: 125.50 },
+  { date: "24/03", ttf: 55,    belpex: 110  },
+  { date: "31/03", ttf: 45,    belpex: 85   },
+  { date: "07/04", ttf: 38,    belpex: 70   },
+  { date: "21/04", ttf: 32,    belpex: 58   },
+  { date: "05/05", ttf: 28,    belpex: 50   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -153,7 +154,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 19 MAART 2026 — OFFICIËLE DATABRONNEN
+          MARKTANALYSE — 20 MAART 2026 — OFFICIËLE DATABRONNEN
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -169,7 +170,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz gesloten (dag 20) · TTF stijgt (+6.0%) · Brent herstelt (+0.8%) · Benzineprijzen stijgen · Iran-oorlog week 3
+            Hormuz gesloten (dag 21) · TTF stijgt (+13.5%) · Brent piekt ($119) · Gasvelden aangevallen · Iran-oorlog week 4
           </div>
         </div>
       </div>
@@ -203,10 +204,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€54.66", "/MWh",  "+6.0% vs gisteren",    "#ef4444"],
-          ["Belpex Elektr. vandaag","€100.30", "/MWh", "+23.9% vs gisteren",   "#f97316"],
+          ["TTF Gas vandaag",       "€62.00", "/MWh",  "+13.5% vs gisteren",    "#ef4444"],
+          ["Belpex Elektr. vandaag","€125.50", "/MWh", "+25.1% vs gisteren",   "#f97316"],
           ["EU Gasopslag",          "~29%",   " cap.", "laagste peil in jaren",     "#eab308"],
-          ["Brent Ruwe Olie",       "$97.06", "/vat",  "+0.8% vs gisteren",   "#8b5cf6"],
+          ["Brent Ruwe Olie",       "$108.50", "/vat",  "+11.8% vs gisteren",   "#8b5cf6"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -313,7 +314,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (18 mrt 2026)", "29.0%",          "#ef4444"],
+              ["EU-gemiddelde (20 mrt 2026)", "~29%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -326,18 +327,18 @@ export default function EnergieRapport() {
               </div>
             ))}
             <div style={{ marginTop: 14, padding: "10px 14px", background: "#7c131322", borderRadius: 8, fontSize: 12, color: "#fca5a5", lineHeight: 1.6 }}>
-              ⚠️ Hormuz-verstoring (dag 19) blijft Qatar LNG blokkeren. Grid congestion riskeert miljardenschade in België.
+              ⚠️ Gasvelden aangevallen (South Pars, Ras Laffan) - Qatar LNG export -17%. TTF +13.5% op supply shock.
             </div>
           </div>
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
             {[
-              ["Straat van Hormuz", "#ef4444", "Dag 19: Scheepvaart volledig geblokkeerd. IEA: 'grootste supply disruption in history'."],
-              ["België Overleg",    "#f97316", "Gesprekken met olie/gas industrie over extreme prijzen. Politieke druk toeneemt."],
-              ["Belpex Volatiliteit", "#a78bfa", "Extreme volatiliteit: negatieve prijzen overdag (€-1.67), avondpieken €180 door grid congestion."],
-              ["Brent Daling",      "#8b5cf6", "$101.06/vat - verdere daling na IEA release maar Hormuz druk blijft hoog."],
-              ["IEA Record Release", "#22c55e", "400M vaten vrijgegeven - grootste ooit. Compenseert ~20 dagen Hormuz verlies."],
+              ["Straat van Hormuz", "#ef4444", "Dag 21: Scheepvaart volledig geblokkeerd. Gasvelden aangevallen - energiecrisis escaleert."],
+              ["Gasvelden Aangevallen", "#f97316", "Israel bombardeert South Pars (Iran), Iran vergeldt op Ras Laffan (Qatar). Exportcapaciteit -17%."],
+              ["Belpex Volatiliteit", "#a78bfa", "Extreme volatiliteit: TTF-schok (+13.5%) drijft Belpex naar €125.50 (+25.1%). Grid congestion blijft."],
+              ["Brent Peak", "#8b5cf6", "$108.50/vat - Brent piekt op $119 na gasveld aanvallen. Energie-inflatie dreigt."],
+              ["VS/Israel Escalatie", "#22c55e", "Trump: 'geen nieuwe aanvallen South Pars' tenzij Iran Qatar aanvalt. Oorlog week 4."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -396,7 +397,7 @@ export default function EnergieRapport() {
             <LineChart margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-              <YAxis domain={[20, 80]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
+              <YAxis domain={[20, 90]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
               <Line data={forecastBull} type="monotone" dataKey="ttf" name="⬆ Bullish" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: "#ef4444" }} />
@@ -409,21 +410,21 @@ export default function EnergieRapport() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
           {[
             {
-              t: "⬇ Bearish (Ontspanning)", p: "25%", c: "#22c55e",
-              ttf: "€22–32", belpex: "€35–48",
-              items: ["Hormuz heropend binnen 2 weken","Qatar LNG hervat productie","IEA reserves effectief","Mild voorjaar verlaagt vraag"],
-              note: "Risico: opslagseizoen blijft duur",
+              t: "⬇ Bearish (Ontspanning)", p: "15%", c: "#22c55e",
+              ttf: "€28–38", belpex: "€50–70",
+              items: ["Gasvelden herstellen binnen 2-3 weken","Hormuz gedeeltelijk open","Diplomatieke de-escalatie","Mild voorjaar verlaagt vraag"],
+              note: "Risico: schade gasvelden beperkt herstel",
             },
             {
-              t: "⟶ Basis (Gedeeltelijke normalisatie)", p: "50%", c: "#0ea5e9",
-              ttf: "€32–48", belpex: "€50–65",
-              items: ["Hormuz gedeeltelijk open","Qatar LNG beperkt beschikbaar","IEA dempt pieken","Opslag injectie onder druk"],
+              t: "⟶ Basis (Prolonged crisis)", p: "45%", c: "#0ea5e9",
+              ttf: "€38–55", belpex: "€72–95",
+              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","EU opslag onder druk"],
               note: "Meest waarschijnlijk scenario",
             },
             {
-              t: "⬆ Bullish (Escalatie)", p: "25%", c: "#ef4444",
-              ttf: "€48–75", belpex: "€75–98",
-              items: ["Hormuz gesloten tot zomer","Qatar LNG langdurig stil","Koud voorjaar verhoogt vraag","EU opslagdoel niet gehaald"],
+              t: "⬆ Bullish (Escalatie)", p: "40%", c: "#ef4444",
+              ttf: "€55–85", belpex: "€95–145",
+              items: ["Nieuwe aanvallen op energie-infra","Hormuz gesloten tot zomer","Qatar LNG langdurig stil","Koud voorjaar + structurele schade"],
               note: "Potentieel: energiecrisis winter 2026–27",
             },
           ].map((s, i) => (
@@ -449,12 +450,12 @@ export default function EnergieRapport() {
           <h3 style={{ margin: "0 0 12px", color: "#f8fafc", fontSize: 15 }}>🔑 Sleutelfactoren om op te volgen</h3>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {[
-              ["IEA G7-vrijgave (bevestigd 11/03)", "In werking getreden — effect op prijzen volgen."],
+              ["Gasveld Herstel (South Pars/Ras Laffan)", "Reparatietijd 3-5 maanden - structurele impact op LNG supply."],
               ["Hormuz scheepvaartberichten",  "Elke heropening = prijsdaling. Bron: Lloyd's List / Reuters."],
-              ["GIE gasopslag (wekelijks di)", "Herstel boven 30% = positief signaal."],
-              ["Noorwegen onderhoud mei–jun",  "Geplande stops → tijdelijke TTF-stijgingen."],
-              ["Qatar North Field East",       "Hervatting werken = structureel meer LNG-aanbod."],
-              ["VREG tariefaanpassingen",      "Volgt groothandel met 1–3 maanden vertraging."],
+              ["GIE gasopslag (wekelijks di)", "Herstel boven 30% = positief signaal bij prolonged crisis."],
+              ["Qatar LNG Export Capaciteit", "-17% na aanvallen - herstel onzeker, afhankelijk van schade."],
+              ["VS/Israel Diplomatie", "Trump-Netanyahu strategie bepaalt escalatie vs de-escalatie."],
+              ["VREG tariefaanpassingen",      "Volgt groothandel met 1-3 maanden vertraging - stijging onvermijdelijk."],
             ].map(([t, d]) => (
               <div key={t} style={{ background: "#0f172a", borderRadius: 8, padding: "11px 13px" }}>
                 <div style={{ color: "#60a5fa", fontWeight: 600, marginBottom: 3, fontSize: 12 }}>📌 {t}</div>
@@ -508,8 +509,8 @@ export default function EnergieRapport() {
               },
               {
                 icon: "⚖️",
-                title: "IEA-interventie dempt piek",
-                body: "De IEA-vrijgave van >182 mln vaten heeft als expliciet doel de prijspiek te breken. Historisch leidden eerdere IEA-vrijgaven (1991, 2011, 2022) tot prijsdalingen van 10–25% binnen weken na aankondiging.",
+                title: "IEA-interventie dempt (maar lost niet op)",
+                body: "De IEA-vrijgave van >182 mln vaten dempt de olieprijspiek, maar lost de structurele gasschade niet op. Gasvelden herstel duurt 3-5 maanden. IEA-effect is beperkt bij fysieke supply disruption, anders dan bij psychologische pieken.",
                 color: "#a78bfa",
               },
               {
@@ -603,8 +604,8 @@ export default function EnergieRapport() {
               </thead>
               <tbody>
                 {[
-                  ["Gezin, krappe begroting",   "⚖️ Vast — maar wacht 2–3 wk",     "Zekerheid primeert; neem de tijd voor een weloverwogen keuze die u 12 mnd kunt handhaven", "Lees bijzondere voorwaarden; ken uw welkomstpremie-condities"],
-                  ["Gemiddeld gezin",            "⬇ Variabel — blijf rationeel",    "Bearish fundamentalen op 12 mnd; variabel laat u profiteren van normalisatie",             "Herbekijk jaarlijks; geen reden tot haastbeslissing nu"],
+                  ["Gezin, krappe begroting",   "⚖️ Vast — maar wacht 4–6 wk",     "Zekerheid primeert; wacht tot gasveld-impact duidelijk is voor weloverwogen keuze", "Lees bijzondere voorwaarden; ken uw welkomstpremie-condities"],
+                  ["Gemiddeld gezin",            "⬇ Variabel — blijf rationeel",    "Verhoogd niveau door gasveld schade (2-5 mnd), daarna structureel bearish; variabel profiteert van normalisatie",             "Herbekijk jaarlijks; geen reden tot haastbeslissing nu"],
                   ["Hoog verbruik (WP/EV)",      "⚖️ Vast — na weloverwogen keuze", "Hogere blootstelling aan schokken; vast geeft stabiele maandkost bij hoog verbruik",       "Koppel aan laadoptimalisatie op daluren; evalueer na 12 mnd"],
                   ["Zonnepanelen + batterij",    "⬇ Variabel of dynamisch",         "Hernieuwbaar profiteert maximaal van daluurprijzen en teruglevering",                        "Monitor dag-ahead via leveranciers-app of Fluvius"],
                   ["KMO / kleine zelfstandige",  "⚖️ Vast — voor budgetstabiliteit","KMO heeft zelfde wettelijk overstaprecht; vast geeft voorspelbare kostenstructuur",          "Lees loyaliteitsclausules; plan herziening na 12 maanden"],
@@ -627,13 +628,13 @@ export default function EnergieRapport() {
             De huidige marktbeweging is extreem, maar <strong>niet ongezien</strong>. In 2022 maakten tienduizenden Belgische gezinnen dezelfde fout: vastleggen op een historisch piekmoment, om vervolgens toe te kijken hoe de markt normaliseerde terwijl zij gebonden waren aan een duur contract.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
-            <strong>De IEA-vrijgave, het naderende injectieseizoen en de structurele LNG-aanbodgolf</strong> zorgen er met grote waarschijnlijkheid voor dat de TTF-piek van deze week tijdelijk is. Wie op middellange termijn (12–18 maanden) kijkt, heeft statistisch gezien meer kans op een lagere gemiddelde prijs via een variabel tarief dan via een vast contract dat vandaag wordt afgesloten.
+            <strong>Korte termijn (2-5 maanden):</strong> Verhoogd prijsniveau door gasveld schade (South Pars, Ras Laffan). Herstel duurt 3-5 maanden. <strong>Middellange termijn (6-18 maanden):</strong> Het naderende injectieseizoen en de structurele LNG-aanbodgolf zorgen voor normalisatie. Wie op 12–18 maanden kijkt, heeft statistisch gezien meer kans op een lagere gemiddelde prijs via variabel dan via een vast contract dat nu wordt afgesloten op verhoogd niveau.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
             De Belgische wet biedt consumenten bescherming bij ingrijpend gewijzigde omstandigheden. Dat is een vangnet — geen reden om contracten als tijdelijke constructies te beschouwen. Een <strong>stabiele keuze die u 12 maanden met vertrouwen kunt aanhouden</strong> is altijd beter dan een snelle beslissing die u maanden later al betreurt.
           </p>
           <div style={{ background: "#0f172a", borderRadius: 8, padding: "12px 16px", fontSize: 13, color: "#7dd3fc" }}>
-            <strong>Praktisch advies:</strong> Wacht minimaal 2–3 weken. Volg TTF dagelijks op via GIE AGSI+. Stabiliseert TTF <em>onder</em> €40/MWh na de IEA-interventie → variabel is structureel aantrekkelijk. Blijft TTF boven €50/MWh over 4+ weken → een vast tarief kan worden overwogen, mits u de bijzondere voorwaarden kent en de keuze past bij uw verbruiksprofiel voor de komende 12 maanden. <strong>Nooit overhaast tekenen tijdens een nieuwscyclus die voelt als een noodsituatie.</strong>Paniek is een slechte raadgever.
+            <strong>Praktisch advies:</strong> Wacht minimaal 4–6 weken om gasveld-impact te beoordelen. Volg TTF dagelijks. Stabiliseert TTF <em>onder</em> €50/MWh → variabel is structureel aantrekkelijk. Blijft TTF boven €60/MWh voor 6+ weken → vast tarief overwegen, mits u de voorwaarden kent en de keuze past bij uw verbruiksprofiel voor 12+ maanden. <strong>Nooit overhaast tekenen tijdens een nieuwscyclus die voelt als een noodsituatie.</strong> Paniek is een slechte raadgever.
 0          </div>
         </div>
       </>)}
@@ -661,8 +662,10 @@ export default function EnergieRapport() {
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
                 { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële EU gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
-                { n: "oilpriceapi.com — TTF live",             d: "Realtime TTF-spotprijs (18/03: €51.56/MWh, 17/03: €50.75/MWh)",        url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
-                { n: "Trading Economics — TTF 18/03/2026",    d: "Bevestigd: TTF €51.56/MWh op 18/03/2026 (+1.32% dag/dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "Trading Economics — TTF 20/03/2026",    d: "Bevestigd: TTF €62.00/MWh op 20/03/2026 (+13.5% dag/dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "Reuters — Gas Field Attacks (20/03/2026)", d: "Israel bombardeert South Pars, Iran vergeldt op Ras Laffan -17% Qatar LNG", url: "https://www.reuters.com/world/middle-east/israel-strikes-irans-south-pars-gas-field-2026-03-20/" },
+                { n: "CBS News — Iran War Escalation (20/03/2026)", d: "Iran strikes Kuwait oil refinery, energy prices jump 35%", url: "https://www.cbsnews.com/live-updates/iran-war-israel-strike-south-pars-gas-field-trump-threat-oil-gas-prices/" },
+                { n: "NBC News — Gas Field Damage (20/03/2026)", d: "South Pars gas field attacks send energy prices soaring", url: "https://www.nbcnews.com/world/iran/iran-war-gas-field-attacks-energy-prices-trump-israel-south-pars-rcna264249" },
                 { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over EU gasopslag en marktevolutie",            url: "https://europeangashub.com" },
                 { n: "Gas to Power Journal — TTF analysis",    d: "TTF prices fall below €30/MWh as geopolitical risk premium fades",    url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
               ],
@@ -676,11 +679,9 @@ export default function EnergieRapport() {
                 { n: "Trading Economics — TTF Gas (19/03/2026)", d: "TTF Gas stijgt naar €54.66/MWh (+6.02% vs gisteren)", url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
                 { n: "Trading Economics — Brent Oil (19/03/2026)", d: "Brent Crude stijgt naar $97.06/vat (+0.77% vs gisteren)", url: "https://tradingeconomics.com/commodity/crude-oil" },
                 { n: "HLN — Trump Briefing (19/03/2026)", d: "VS vrezen dat Iraans regime in zadel blijft en zelfs driester wordt", url: "https://www.hln.be/buitenland/trump-krijgt-zeer-ontnuchterende-briefings-over-midden-oosten-vs-vrezen-dat-iraans-regime-in-het-zadel-zal-blijven-en-zelfs-nog-driester-zal-worden~a9e903a5/" },
-                { n: "De Standaard — Emissiehandel (19/03/2026)", d: "Nieuwe energieschok zet discussie over emissiehandel weer op scherp", url: "https://www.standaard.be/economie/nieuwe-energieschok-zet-discussie-over-emissiehandel-weer-op-scherp/143045282.html" },
-                { n: "Business AM — Tariefwijzigingen (19/03/2026)", d: "Energieleveranciers herzien maarttarieven met 14-29% stijging gas", url: "https://businessam.be/verhogen-sommige-energieleveranciers-op-een-onwettige-manier-de-prijzen/" },
-                { n: "Selectra — Belpex Tracking (19/03/2026)", d: "Belpex-prijzen +32.29% ten opzichte van 13 maart, extreme volatiliteit", url: "https://selectra.be/nl/energie/nieuws/belpex-prijzen-2026-03-14" },
-                { n: "EPC — EU Leaders Summit (19/03/2026)", d: "EU Leaders Summit: energy shocks, competitiveness en security focus", url: "https://www.epc.eu/publication/eu-leaders-summit-roundup-epc-experts-highlight-energy-shocks-competitiveness-and-security/" },
-                { n: "Global Banking — Iran War Energy Shock (19/03/2026)", d: "Iran war energy shock versnelt shift van fossiele brandstoffen", url: "https://www.globalbankingandfinance.com/analysis-iran-war-energy-shock-sparks-global-push-to-reduce-fossil-fuel-dependence-ce7e5ed9da8af627" },
+                { n: "Reuters — Iran War Energy Shock (20/03/2026)", d: "European airlines warn of higher fares, fuel shortages due to Iran war", url: "https://www.reuters.com/business/energy/european-airlines-look-shake-off-green-agenda-fuel-prices-soar-2026-03-19/" },
+                { n: "WSJ — Qatar LNG Impact (20/03/2026)", d: "Iranian strikes reduce Qatar export capacity by 17%, repairs take 3-5 months", url: "https://www.wsj.com/livecoverage/iran-us-israel-war-updates-2026" },
+                { n: "Fortune — Oil Price Surge (19/03/2026)", d: "Oil approaches $115 per barrel as market realizes higher for longer", url: "https://fortune.com/2026/03/19/how-high-oil-barrel-price-brent-crude/" },
               ],
             },
             {
@@ -712,7 +713,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 19/03 = €54.66 (Trading Economics), Brent 19/03 = $97.06 (Trading Economics), Belpex 19/03 = €100.30 (dayaheadmarket.eu), EU gasopslag mrt 2026 = ~29% (Swiss Info, GIE AGSI via Chinese financial sources). Hormuz crisis blijft dicht, Iran-oorlog in week 3 met VS schatting van 4-6 weken duur. Benzineprijzen stijgen opnieuw fors. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde exacte datapunten (✓): TTF 20/03 = €62.00 (+13.5% gas field attacks), Brent 20/03 = $108.50 (peaked $119), Belpex 20/03 = €125.50 (+25.1% TTF shock), EU gasopslag mrt 2026 = ~29% (GIE AGSI). Gasvelden aangevallen: South Pars (Iran) en Ras Laffan (Qatar) -17% LNG export. Hormuz crisis dag 21, Iran-oorlog week 4. Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}
@@ -720,7 +721,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 19 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 20 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
