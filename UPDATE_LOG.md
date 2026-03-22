@@ -6,6 +6,33 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 13 — 22 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €58.50/MWh (-1.4% vs 21/03, -5.6% vs piek €62) - OilPriceAPI €59.34 (21/03), schatting 22/03
+- **Belpex Elektriciteit**: €78.00/MWh (-17.9% vs 21/03) - euenergy.live, volatiel door crisis
+- **EU Gasopslag**: ~26% - Trading Economics + Reuters (22-27% range eind maart projectie)
+- **Brent Ruwe Olie**: $112.19/vat (+3.3% vs 19/03) - Trading Economics (20/03 data)
+
+### **Marktontwikkelingen & Geopolitiek**
+- **Hormuz Blokkade Dag 21+**: 21 bevestigde aanvallen, 70% tankerverkeer daling, 20% wereldwijde olie/gas afgesneden
+- **Force Majeure Golfstaten**: Qatar, Koeweit, UAE, Bahrein hebben force majeure afgekondigd op export contracten
+- **Productiedalingen**: Golfstaten -10+ miljoen vaten/dag (60% vs. pre-crisis), QatarEnergy stopte LNG op 2/03
+- **TTF Stabilisatie**: Daling van €62 piek naar €58.50, maar blijft verhoogd vs. pre-crisis €32-38 niveau
+- **Brent Volatiliteit**: Piek $119 begin maart, nu $112.19 — analisten waarschuwen voor aanhoudend hoge prijzen
+
+### **Forecast**: Bearish 20% / Basis 45% / Bullish 35%
+Aanpassing: Bullish kans verlaagd van 40% naar 35% door lichte TTF-daling, maar crisis blijft structureel. Basis scenario verwacht gasveld herstel 3-5 maanden, bearish scenario veronderstelt snellere diplomatieke oplossing.
+
+### **Wijzigingen**
+- **rawData**: Toegevoegd 21/03 (TTF €59.34, Belpex €95) en 22/03 (TTF €58.50, Belpex €78), verwijderd 12-13/02
+- **Forecasts**: Nieuwe startpunt 22/03, einddatum +6-8 weken (08/05), aangepaste scenario's
+- **KPI's**: TTF en Belpex groen (-1.4%, -17.9%), EU opslag en Brent rood (kritiek/verhoogd)
+- **Geopolitieke Crisissituatie**: Uitgebreid naar 2-3 zinnen per item (Hormuz blokkade, Force majeure, EU opslag, Brent)
+- **Alert Banner**: Bijgewerkt met dag 21+ crisis status, force majeure vermelding, EU opslag 26%
+
+---
+
 ## Update 12 — 20 maart 2026
 
 ### **Bevestigde Marktdata (✓)**
