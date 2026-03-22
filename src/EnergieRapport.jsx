@@ -366,8 +366,20 @@ export default function EnergieRapport() {
           </div>
 
           <div style={SECTION}>
-            <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Energiemix</h3>
-            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gas is de <strong style={{ color: "#f8fafc" }}>marginale producent</strong> in ~87% van de handelssessies (2021: 87% gas-price setting) en bepaalt daardoor direct de Belpex-prijs. De extreme volatiliteit op 18/03 wordt verklaard door <strong style={{ color: "#f8fafc" }}>negatieve prijzen</strong> tijdens zonnepiek (€-1.67) en <strong style={{ color: "#f8fafc" }}>avondpieken</strong> (€180) door grid congestion en nucleaire beperkingen.</p>
+            <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Energiemix — Waarom Gasprijzen de Elektriciteitsprijs Bepalen</h3>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
+              België gebruikt het <strong style={{ color: "#f8fafc" }}>merit order principe</strong>: elektriciteitscentrales worden geactiveerd van goedkoop naar duur (kern → wind/zon → gas → olie). 
+              De <strong style={{ color: "#f8fafc" }}>laatste centrale</strong> die nodig is om aan de vraag te voldoen, bepaalt de prijs voor <em>alle</em> elektriciteit in dat uur — dit is de "marginale producent".
+            </p>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
+              In België is gas de marginale producent in <strong style={{ color: "#f8fafc" }}>~87% van de uren</strong> (CREG-data 2021-2024). 
+              Dit betekent: zelfs als 80% van de elektriciteit uit kern en hernieuwbaar komt, bepaalt de gasprijs de Belpex-prijs zodra gascentrales nodig zijn voor de laatste 20%. 
+              Resultaat: <strong style={{ color: "#f8fafc" }}>TTF stijgt +13.5% → Belpex stijgt +25%</strong> (versterkt effect door grid congestion en nucleaire beperkingen).
+            </p>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
+              <strong style={{ color: "#f8fafc" }}>Waarom gas zo vaak marginaal is:</strong> Kern draait continu (baseload), wind/zon zijn variabel, gas vult de gaten. 
+              Bij hoge vraag (ochtend/avond) of weinig zon/wind → gascentrales starten → gasprijs = elektriciteitsprijs voor dat uur.
+            </p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px" }}>
               {[
                 ["Kern (Doel 4, Tihange 3)", "verlengd tot 2035"],
@@ -446,19 +458,20 @@ export default function EnergieRapport() {
         </div>
 
         <div style={{ ...SECTION, marginTop: 18 }}>
-          <h3 style={{ margin: "0 0 12px", color: "#f8fafc", fontSize: 15 }}>🔑 Sleutelfactoren om op te volgen</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <h3 style={{ margin: "0 0 8px", color: "#f8fafc", fontSize: 15 }}>🔑 Sleutelfactoren om op te volgen</h3>
+          <p style={{ fontSize: 12, color: "#64748b", marginTop: 0, marginBottom: 14 }}>Gerangschikt op impact: 🔴 Kritiek · 🟡 Belangrijk · 🟢 Moderate invloed</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
             {[
-              ["Gasveld Herstel (South Pars/Ras Laffan)", "Reparatietijd 3-5 maanden - structurele impact op LNG supply."],
-              ["Hormuz scheepvaartberichten",  "Elke heropening = prijsdaling. Bron: Lloyd's List / Reuters."],
-              ["GIE gasopslag (wekelijks di)", "Herstel boven 30% = positief signaal bij prolonged crisis."],
-              ["Qatar LNG Export Capaciteit", "-17% na aanvallen - herstel onzeker, afhankelijk van schade."],
-              ["VS/Israel Diplomatie", "Trump-Netanyahu strategie bepaalt escalatie vs de-escalatie."],
-              ["VREG tariefaanpassingen",      "Volgt groothandel met 1-3 maanden vertraging - stijging onvermijdelijk."],
-            ].map(([t, d]) => (
-              <div key={t} style={{ background: "#0f172a", borderRadius: 8, padding: "11px 13px" }}>
-                <div style={{ color: "#60a5fa", fontWeight: 600, marginBottom: 3, fontSize: 12 }}>📌 {t}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8" }}>{d}</div>
+              ["🔴", "1. Hormuz Blokkade — Heropening vs. Prolongatie", "OORZAAK: Iran blokkeert 20% wereldwijde olie/gas transit. GEVOLG: Elke dag langer = hogere prijzen door supply shock. Heropening binnen 2 weken → TTF daalt naar €45-50. Blokkade >6 weken → TTF blijft boven €60. Bron: Lloyd's List, Reuters Shipping."],
+              ["🔴", "2. Gasveld Herstel (South Pars/Ras Laffan)", "OORZAAK: Aanvallen vernietigden 17% Qatar LNG-capaciteit. GEVOLG: Reparatie duurt 3-5 maanden (QatarEnergy schatting). Geen herstel voor juni 2026 = structureel tekort 15-20 bcm LNG voor Europa. Impact: TTF blijft verhoogd €50-65 tot Q3 2026."],
+              ["🟡", "3. EU Gasopslag — Injectieseizoen Maart-Oktober", "OORZAAK: Huidige niveau 26% is kritiek laag (norm: 50%+ eind maart). GEVOLG: Zomerinjectie moet 90% bereiken vóór winter 2026/27. Elke week onder 30% = hogere LNG-importprijzen. Herstel boven 35% eind april = positief signaal. Bron: GIE AGSI+ (update elke dinsdag)."],
+              ["🟡", "4. IEA Strategische Reserves — Restcapaciteit", "OORZAAK: 400M vaten vrijgegeven (33% van 1.2 mld totaal). GEVOLG: Nog 800M vaten beschikbaar, maar politieke wil afnemend. Tweede vrijgave onwaarschijnlijk tenzij Brent >$130. Huidige release dempt olieprijzen maar lost gasschade niet op."],
+              ["🟢", "5. VS/Israel Diplomatie — Escalatie vs. De-escalatie", "OORZAAK: Trump 'geen nieuwe aanvallen South Pars' tenzij Iran Qatar aanvalt. GEVOLG: Diplomatieke signalen beïnvloeden marktsentiment. Escalatie (nieuwe aanvallen) → +10-15% prijsstijging. De-escalatie (wapenstilstand) → -20-30% prijsdaling binnen weken."],
+              ["🟢", "6. VREG Tariefaanpassingen — Consumentenprijzen", "OORZAAK: Groothandelsprijzen stijgen maart 2026. GEVOLG: VREG-tarieven volgen met 1-3 maanden vertraging. Verwacht: +15-25% stijging variabele tarieven mei-juni 2026. Vaste contracten nu afgesloten bevatten volledige risicopremie."],
+            ].map(([icon, t, d]) => (
+              <div key={t} style={{ background: "#0f172a", borderRadius: 8, padding: "13px 15px", border: "1px solid #1e293b" }}>
+                <div style={{ color: "#60a5fa", fontWeight: 700, marginBottom: 6, fontSize: 13 }}>{icon} {t}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>{d}</div>
               </div>
             ))}
           </div>
@@ -489,7 +502,7 @@ export default function EnergieRapport() {
           <h3 style={{ margin: "0 0 14px", color: "#38bdf8", fontSize: 16 }}>📉 Waarom variabel op de (middel)lange termijn waarschijnlijk goedkoper uitvalt</h3>
 
           <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.8, marginBottom: 16 }}>
-            De huidige prijspiek is reëel, maar de <strong style={{ color: "#f8fafc" }}>structurele marktfundamentelen voor 2026–2027 zijn overwegend bearish</strong>. Dat betekent dat wie vandaag een vast tarief neemt voor 1–3 jaar, waarschijnlijk méér betaalt dan de gemiddelde marktprijs over diezelfde periode.
+            De huidige prijspiek is reëel, maar de <strong style={{ color: "#f8fafc" }}>structurele marktfundamentelen voor de komende 12-18 maanden zijn overwegend bearish</strong>. Dat betekent dat wie vandaag een vast tarief neemt voor 12-18 maanden, waarschijnlijk méér betaalt dan de gemiddelde marktprijs over diezelfde periode. <strong style={{ color: "#f8fafc" }}>Belangrijk:</strong> U bent wettelijk vrij om maand-op-maand te wisselen, maar een weloverwogen keuze voor minimaal 12 maanden levert financieel het meeste op (zie hieronder waarom).
           </p>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 16 }}>
@@ -533,7 +546,7 @@ export default function EnergieRapport() {
               <div>
                 <div style={{ color: "#4ade80", fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Historisch precedent: 2022 crisis vs. daarna</div>
                 <p style={{ fontSize: 13, color: "#86efac", lineHeight: 1.7, margin: 0 }}>
-                  Wie in september–oktober 2022 (het absolute piekmoment) overstapte naar een vast tarief van 3 jaar, betaalde gemiddeld <strong>2–3× meer</strong> dan de marktprijs in 2023–2024. Wie in paniek vastzat aan een crisiscontract terwijl de markt normaliseerde, kon niet profiteren van de dalende prijzen. Dezelfde dynamiek is nu opnieuw relevant.
+                  Wie in september–oktober 2022 (het absolute piekmoment) overstapte naar een vast tarief voor 12-18 maanden, betaalde gemiddeld <strong>2–3× meer</strong> dan de marktprijs in 2023–2024. Wie in paniek vastzat aan een crisiscontract terwijl de markt normaliseerde, kon pas na afloop van de contractperiode profiteren van dalende prijzen. Dezelfde dynamiek is nu opnieuw relevant: crisis-contracten bevatten de volledige risicopremie van dit moment.
                 </p>
               </div>
             </div>
@@ -621,20 +634,45 @@ export default function EnergieRapport() {
           </div>
         </div>
 
-        <div style={{ ...SECTION, background: "#172554", border: "1px solid #3b82f644" }}>
-          <h3 style={{ margin: "0 0 10px", color: "#60a5fa", fontSize: 15 }}>🎯 Kernboodschap: Weloverwogen keuzen duren langer dan een nieuwscyclus</h3>
-          <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
+        <div style={{ ...SECTION, background: "#172554", border: "3px solid #3b82f6", borderRadius: 14, padding: "24px 28px" }}>
+          <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
+          
+          <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
             De huidige marktbeweging is extreem, maar <strong>niet ongezien</strong>. In 2022 maakten tienduizenden Belgische gezinnen dezelfde fout: vastleggen op een historisch piekmoment, om vervolgens toe te kijken hoe de markt normaliseerde terwijl zij gebonden waren aan een duur contract.
           </p>
-          <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
-            <strong>Korte termijn (2-5 maanden):</strong> Verhoogd prijsniveau door gasveld schade (South Pars, Ras Laffan). Herstel duurt 3-5 maanden. <strong>Middellange termijn (6-18 maanden):</strong> Het naderende injectieseizoen en de structurele LNG-aanbodgolf zorgen voor normalisatie. Wie op 12–18 maanden kijkt, heeft statistisch gezien meer kans op een lagere gemiddelde prijs via variabel dan via een vast contract dat nu wordt afgesloten op verhoogd niveau.
+          
+          <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
+            <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
+              <strong style={{ color: "#60a5fa" }}>Korte termijn (2-5 maanden):</strong> Verhoogd prijsniveau door gasveld schade (South Pars, Ras Laffan). Herstel duurt 3-5 maanden volgens QatarEnergy. TTF blijft waarschijnlijk €50-65 tot Q3 2026.
+            </p>
+            <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: 0 }}>
+              <strong style={{ color: "#60a5fa" }}>Middellange termijn (6-18 maanden):</strong> Het naderende injectieseizoen (maart-oktober) en de structurele LNG-aanbodgolf (VS, Qatar, Mozambique) zorgen voor normalisatie. Wie op 12–18 maanden kijkt, heeft statistisch gezien meer kans op een lagere gemiddelde prijs via variabel dan via een vast contract dat nu wordt afgesloten op verhoogd niveau met volledige risicopremie.
+            </p>
+          </div>
+          
+          <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 16px", fontWeight: 500 }}>
+            De Belgische wet biedt consumenten bescherming bij ingrijpend gewijzigde omstandigheden (wettelijk recht op kosteloze opzegging). Dat is een vangnet — geen reden om contracten als tijdelijke constructies te beschouwen. Een <strong>stabiele keuze die u 12 maanden met vertrouwen kunt aanhouden</strong> is altijd beter dan een snelle beslissing die u maanden later al betreurt.
           </p>
-          <p style={{ fontSize: 14, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 12px" }}>
-            De Belgische wet biedt consumenten bescherming bij ingrijpend gewijzigde omstandigheden. Dat is een vangnet — geen reden om contracten als tijdelijke constructies te beschouwen. Een <strong>stabiele keuze die u 12 maanden met vertrouwen kunt aanhouden</strong> is altijd beter dan een snelle beslissing die u maanden later al betreurt.
-          </p>
-          <div style={{ background: "#0f172a", borderRadius: 8, padding: "12px 16px", fontSize: 13, color: "#7dd3fc" }}>
-            <strong>Praktisch advies:</strong> Wacht minimaal 4–6 weken om gasveld-impact te beoordelen. Volg TTF dagelijks. Stabiliseert TTF <em>onder</em> €50/MWh → variabel is structureel aantrekkelijk. Blijft TTF boven €60/MWh voor 6+ weken → vast tarief overwegen, mits u de voorwaarden kent en de keuze past bij uw verbruiksprofiel voor 12+ maanden. <strong>Nooit overhaast tekenen tijdens een nieuwscyclus die voelt als een noodsituatie.</strong> Paniek is een slechte raadgever.
-0          </div>
+          
+          <div style={{ background: "#0c4a6e", border: "2px solid #0ea5e9", borderRadius: 10, padding: "16px 20px", fontSize: 14, color: "#e0f2fe" }}>
+            <h4 style={{ margin: "0 0 12px", color: "#38bdf8", fontSize: 15, fontWeight: 700 }}>📋 PRAKTISCH ADVIES — Concrete Stappen</h4>
+            
+            <div style={{ marginBottom: 12 }}>
+              <strong style={{ color: "#7dd3fc" }}>1. Observatieperiode (4-6 weken):</strong> Wacht tot eind april 2026 om gasveld-herstel impact te beoordelen. Volg TTF dagelijks via Trading Economics of OilPriceAPI. Monitor EU gasopslag via GIE AGSI+ (update elke dinsdag).
+            </div>
+            
+            <div style={{ marginBottom: 12 }}>
+              <strong style={{ color: "#7dd3fc" }}>2. Beslissingscriteria TTF:</strong> Stabiliseert TTF <em>structureel onder</em> €50/MWh voor 2+ weken → variabel is aantrekkelijk voor 12-18 maanden. Blijft TTF boven €60/MWh voor 6+ weken → vast tarief overwegen, <em>mits</em> u de voorwaarden grondig gelezen heeft en de keuze past bij uw verbruiksprofiel voor minimaal 12 maanden.
+            </div>
+            
+            <div style={{ marginBottom: 12 }}>
+              <strong style={{ color: "#7dd3fc" }}>3. Contractvoorwaarden checklist:</strong> Lees bijzondere voorwaarden. Check welkomstpremie terugvorderingsclausules (vaak eerste 6-12 maanden). Verifieer opzegtermijn en eventuele boetes. Vraag naar indexeringsformule bij variabel tarief.
+            </div>
+            
+            <div style={{ background: "#7c2d12", border: "1px solid #f97316", borderRadius: 8, padding: "12px 14px", marginTop: 14 }}>
+              <strong style={{ color: "#fdba74" }}>⚠️ NOOIT OVERHAAST TEKENEN:</strong> Tijdens een nieuwscyclus die voelt als een noodsituatie, nemen leveranciers en media de urgentie op. Dat is marketing, geen financieel advies. Paniek is een slechte raadgever. Neem de tijd om te vergelijken en te begrijpen wat u tekent.
+            </div>
+          </div>
         </div>
       </>)}
 
