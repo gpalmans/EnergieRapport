@@ -631,17 +631,17 @@ function buildScenarios() {
     </div>`).join('');
 
   const factors = [
-    ['IEA G7-vrijgave (bevestigd 11/03)', 'In werking getreden — effect op prijzen volgen.'],
-    ['Hormuz scheepvaartberichten', 'Elke heropening = prijsdaling. Bron: Lloyd\'s List / Reuters.'],
-    ['GIE gasopslag (wekelijks di)', 'Herstel boven 30% = positief signaal.'],
-    ['Noorwegen onderhoud mei–jun', 'Geplande stops → tijdelijke TTF-stijgingen.'],
-    ['Qatar North Field East', 'Hervatting werken = structureel meer LNG-aanbod.'],
-    ['VREG tariefaanpassingen', 'Volgt groothandel met 1–3 maanden vertraging.'],
+    ['🔴', '1. Hormuz Blokkade — Heropening vs. Prolongatie', 'Iran heeft de Straat van Hormuz volledig gesloten sinds 2 maart 2026, waardoor 20% van de wereldwijde olie- en gastransit is afgesneden. Elke dag dat de blokkade aanhoudt, stijgen de prijzen door acute supply shock en verhoogde risicoaversie op de markten. Scenario\'s: heropening binnen 2 weken → TTF daalt snel naar €45-50 door herstel van vertrouwen; blokkade langer dan 6 weken → TTF blijft structureel boven €60 door aanhoudende schaarste. Monitor dagelijks via Lloyd\'s List en Reuters Shipping voor scheepvaartbewegingen en diplomatieke ontwikkelingen.'],
+    ['🔴', '2. Gasveld Herstel (South Pars/Ras Laffan)', 'De aanvallen op South Pars (Iran) en Ras Laffan (Qatar) hebben 17% van Qatar\'s LNG-exportcapaciteit vernietigd, wat neerkomt op een verlies van 15-20 bcm LNG voor Europa. QatarEnergy schat de reparatietijd op 3-5 maanden, wat betekent dat herstel niet voor juni 2026 verwacht wordt. Zolang deze capaciteit offline blijft, moet Europa alternatieve LNG-bronnen vinden tegen verhoogde prijzen, wat TTF structureel tussen €50-65 houdt tot Q3 2026. Dit is de belangrijkste fysieke supply constraint die de huidige prijspiek ondersteunt.'],
+    ['🟡', '3. EU Gasopslag — Injectieseizoen Maart-Oktober', 'Europese gasvoorraden staan op 26% capaciteit eind maart 2026, vergeleken met een normale 50%+ op dit moment van het jaar. Het injectieseizoen (maart-oktober) moet de opslag naar 90% brengen vóór de volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen. Elke week dat de opslag onder 30% blijft, stijgt de nervositeit en worden LNG-contracten duurder. Herstel boven 35% eind april zou een positief signaal zijn dat Europa op schema ligt. Monitor wekelijks via GIE AGSI+ (update elke dinsdag) voor real-time opslagdata per land.'],
+    ['🟡', '4. IEA Strategische Reserves — Restcapaciteit', 'De IEA heeft sinds begin maart 400 miljoen vaten vrijgegeven (33% van de totale 1.2 miljard vaten strategische reserve), wat de olieprijspiek heeft gedempt maar de structurele gasschade niet oplost. Er blijven nog 800 miljoen vaten beschikbaar, maar de politieke wil voor een tweede massale vrijgave neemt af nu Brent onder $120 handelt. Een tweede vrijgave is onwaarschijnlijk tenzij Brent boven $130 stijgt of de crisis significant escaleert. Belangrijk: IEA-reserves zijn olie, niet gas — ze dempen indirecte effecten maar lossen de LNG-schaarste niet op.'],
+    ['🟢', '5. VS/Israel Diplomatie — Escalatie vs. De-escalatie', 'President Trump heeft verklaard dat de VS \'geen nieuwe aanvallen op South Pars zal steunen\' tenzij Iran Qatar aanvalt, wat een signaal is van beperkte escalatiebereidheid. Diplomatieke signalen zoals deze beïnvloeden marktsentiment sterk: escalatie (nieuwe aanvallen op energie-infrastructuur) → +10-15% prijsstijging binnen dagen; de-escalatie (wapenstilstand of heropening Hormuz) → -20-30% prijsdaling binnen weken. De markt reageert extreem gevoelig op nieuws uit Washington, Tel Aviv en Teheran. Monitor dagelijks nieuwsfeeds en officiële verklaringen voor vroege signalen van koerswijzigingen.'],
+    ['🟢', '6. VREG Tariefaanpassingen — Consumentenprijzen', 'De Vlaamse energieregulator (VREG) past consumentenprijzen aan met een vertraging van 1-3 maanden na groothandelsmarkt bewegingen. De huidige stijging in maart 2026 zal zich vertalen in +15-25% hogere variabele tarieven in mei-juni 2026 voor Vlaamse huishoudens. Vaste contracten die nu worden afgesloten, bevatten de volledige risicopremie van dit moment — leveranciers prijzen de onzekerheid in voor 12-18 maanden vooruit. Dit is relevant voor timing: wie nu vastlegt, betaalt voor de piek; wie wacht tot mei-juni, ziet of de markt normaliseert.'],
   ];
-  document.getElementById('key-factors').innerHTML = factors.map(([t,d]) => `
-    <div style="background:#0f172a;border-radius:8px;padding:11px 13px">
-      <div style="color:#60a5fa;font-weight:600;margin-bottom:3px;font-size:12px">📌 ${t}</div>
-      <div style="font-size:12px;color:#94a3b8">${d}</div>
+  document.getElementById('key-factors').innerHTML = factors.map(([icon,t,d]) => `
+    <div style="background:#0f172a;border-radius:8px;padding:13px 15px;border:1px solid #1e293b">
+      <div style="color:#60a5fa;font-weight:700;margin-bottom:6px;font-size:13px">${icon} ${t}</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.6">${d}</div>
     </div>`).join('');
 }
 
