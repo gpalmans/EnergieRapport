@@ -43,7 +43,7 @@ description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, EU
 
 # Stap 5 — Geopolitieke scan
 
-8. Scan ≥4 bronnen (max 4 weken oud, ~70% NL):
+8. Scan minimaal 4 bronnen (max 4 weken oud, ~70% NL):
    - `tavily_search: "energieprijzen België [maand] [jaar]"`
    - `tavily_search: "TTF gas geopolitiek [maand] [jaar]"`
    - `tavily_search: "energy market geopolitical risk [maand] [jaar]"`
@@ -53,11 +53,11 @@ description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, EU
 
 ---
 
-# ⛔ GATE — Bevestig alle 4 variabelen vóór je verdergaat
+# GATE — Bevestig alle 4 variabelen voor je verdergaat
 
-- [ ] TTF (€/MWh) — ✓ via 2+ bronnen: **€___**
-- [ ] Belpex (€/MWh) — ✓ via 2+ bronnen: **€___**
-- [ ] EU Gasopslag (%) — ✓ via 2+ bronnen: **___%**
-- [ ] Brent ($/vat) — ✓ via 2+ bronnen: **$___**
+- [ ] TTF (€/MWh) — bevestigd via 2+ bronnen: €___
+- [ ] Belpex (€/MWh) — bevestigd via 2+ bronnen: €___
+- [ ] EU Gasopslag (%) — bevestigd via 2+ bronnen: ___%
+- [ ] Brent ($/vat) — bevestigd via 2+ bronnen: $___
 
-> Pas na bevestiging van alle 4: voer `update-energie-rapport` uit.
+Pas na bevestiging van alle 4: voer update-energie-rapport uit.
