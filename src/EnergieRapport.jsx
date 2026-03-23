@@ -174,7 +174,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 23 MAART 2026 · 12:37
+          MARKTANALYSE — 23 MAART 2026 · 20:30
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -381,7 +381,7 @@ export default function EnergieRapport() {
             {[
               ["Straat van Hormuz Blokkade", "#ef4444", "Iran heeft de Straat van Hormuz volledig gesloten sinds 2 maart 2026, met 21 bevestigde aanvallen op koopvaardijschepen tot 12 maart. Tankerverkeer is met 70% gedaald, waardoor 20% van de wereldwijde olie- en gasvoorziening is afgesneden. De blokkade blijft van kracht met geen tekenen van deëscalatie; analisten verwachten dat dit minstens 4-6 weken aanhoudt."],
               ["Force Majeure Golfstaten", "#f97316", "Qatar, Koeweit, UAE en Bahrein hebben force majeure afgekondigd op energie-export contracten wegens onmogelijkheid om te leveren via Hormuz. QatarEnergy stopte LNG-productie op 2 maart; Golfstaten verminderden olieproductie met 10+ miljoen vaten/dag (60% daling vs. pre-crisis). Alternatieve routes via Rode Zee worden onderzocht maar hebben beperkte capaciteit."],
-              ["EU Gasopslag Kritiek", "#eab308", "Europese gasvoorraden staan op ~26% capaciteit op 23 maart 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen."],
+              ["EU Gasopslag Kritiek", "#eab308", "Europese gasvoorraden staan op ~26% capaciteit op 23 mrt 2026 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen."],
               ["Brent Olieprijzen", "#8b5cf6", "Brent crude piekte op $119/vat direct na de gasveld aanvallen begin maart, en handelt nu op $112.19/vat (+56.93% maand-op-maand). De prijsstijging wordt gedreven door de Hormuz-blokkade en productiedalingen in Irak, Saoedi-Arabië en andere Golfstaten. Analisten van Goldman Sachs en Barclays waarschuwen voor aanhoudend hoge prijzen als de blokkade langer dan 6 weken duurt."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
@@ -806,7 +806,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 23 maart 2026 · 12:37 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 23 maart 2026 · 20:30 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>

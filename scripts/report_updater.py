@@ -10,6 +10,9 @@ from datetime import datetime
 from typing import Dict, Optional
 import logging
 
+from scripts.jsx_to_html_compiler import JsxToHtmlCompiler
+from scripts.sync_validator import SyncValidator
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -17,6 +20,7 @@ class ReportUpdater:
     def __init__(self):
         self.jsx_path = 'src/EnergieRapport.jsx'
         self.html_path = 'public/offline.html'
+        self.template_path = 'templates/energy_report_template.html'
         self.update_mode = os.getenv('UPDATE_MODE', 'daily')
     
     def load_market_data(self) -> Dict:
@@ -344,17 +348,36 @@ class ReportUpdater:
     def run_update(self):
         """Voer volledige update uit"""
         logger.info(f"Starting report update (mode: {self.update_mode})...")
-        
+
         market_data = self.load_market_data()
         ai_analysis = self.load_ai_analysis()
-        
-        # Update beide bestanden
+
+        # Step 1: Update JSX file
         self.update_jsx_file(market_data)
-        self.update_html_file(market_data)
-        
+
+        # Step 2: Compile HTML from JSX (single source of truth)
+        logger.info("Compiling offline.html from updated JSX...")
+        compiler = JsxToHtmlCompiler()
+        try:
+            compiler.compile(self.jsx_path, self.template_path, self.html_path)
+            logger.info(f"Successfully compiled {self.html_path} from {self.jsx_path}")
+        except Exception as e:
+            logger.error(f"Compilation failed: {e}")
+            raise
+
+        # Step 3: Validate synchronization between JSX and HTML
+        logger.info("Validating JSX and HTML synchronization...")
+        validator = SyncValidator()
+        try:
+            validator.validate_sync(self.jsx_path, self.html_path)
+            logger.info("OK: JSX and HTML are perfectly synchronized")
+        except ValueError as e:
+            logger.error(f"Synchronization validation failed: {e}")
+            raise
+
         if ai_analysis:
             logger.info("AI analysis available - consider manual integration")
-        
+
         logger.info("Report update completed successfully")
 
 def main():
