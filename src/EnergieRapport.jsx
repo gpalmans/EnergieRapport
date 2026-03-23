@@ -349,6 +349,9 @@ export default function EnergieRapport() {
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🛢️ IEA Strategische Oliereserves</h3>
+            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
+              Als reactie op de Hormuz-blokkade heeft het Internationaal Energieagentschap (IEA) een <strong style={{ color: "#f8fafc" }}>recordvrijgave van 400 miljoen vaten</strong> uit strategische oliereserves gecoördineerd — de grootste gezamenlijke actie sinds de oprichting in 1974. Deze maatregel is bedoeld om de acute olieprijsstijging te dempen en marktpaniek te voorkomen. De impact is echter <strong style={{ color: "#f8fafc" }}>beperkt en tijdelijk</strong>: de vrijgave dekt slechts ~4 dagen wereldwijde vraag en lost de onderliggende fysieke verstoring (geblokkeerde Straat van Hormuz) niet op. Brent daalde initieel van $119 naar $101/vat, maar stabiliseert nu rond $112-113/vat — wat aangeeft dat de markt de structurele supply-shock zwaarder weegt dan de tijdelijke buffermaatregel.
+            </p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
               {[
                 ["Volume",          "400 mln vaten (recordvrijgave)"],
