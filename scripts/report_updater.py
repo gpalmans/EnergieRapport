@@ -133,6 +133,59 @@ class ReportUpdater:
         logger.info(f"Updated dates to {date_full} {time_str}")
         return content
     
+    def enforce_gasopslag_consistency(self, content: str, market_data: Dict) -> str:
+        """Enforce gasopslag consistency across all sections in JSX"""
+        storage_value = f"~{market_data['eu_storage']:.0f}%"
+        date_str = self.format_date(market_data.get('timestamp'))
+        
+        # Parse date for full format: "23 mrt 2026"
+        if market_data.get('timestamp'):
+            dt = datetime.fromisoformat(market_data['timestamp'].replace('Z', '+00:00'))
+        else:
+            dt = datetime.now()
+        month_short = {1:"jan",2:"feb",3:"mrt",4:"apr",5:"mei",6:"jun",
+                      7:"jul",8:"aug",9:"sep",10:"okt",11:"nov",12:"dec"}[dt.month]
+        date_label = f"{dt.day} {month_short} {dt.year}"
+        
+        # 1. Update Europese Gasvoorraden section label and value
+        pattern1 = r'(\["EU-gemiddelde \()[^)]+\)", "~\d+%"'
+        content = re.sub(pattern1, f'\\g<1>{date_label})", "{storage_value}"', content)
+        
+        # 2. Update Geopolitieke section text
+        pattern2 = r'(Europese gasvoorraden staan op ~)\d+(% capaciteit )(op|eind) [^,]+( 2026)'
+        content = re.sub(pattern2, f'\\g<1>{market_data["eu_storage"]:.0f}\\g<2>op {date_label}\\g<4>', content)
+        
+        logger.info(f"Enforced gasopslag consistency: {storage_value} ({date_label})")
+        return content
+    
+    def update_confirmed_dates(self, content: str, market_data: Dict) -> str:
+        """Update list of confirmed dates for checkmarks in JSX"""
+        date_str = self.format_date(market_data.get('timestamp'))
+        
+        # Find the confirmed dates array and add new date if not present
+        pattern = r'(const confirmed = \[)([^\]]+)(\]\.includes\(r\.date\))'
+        
+        def add_date_if_missing(match):
+            dates_str = match.group(2)
+            dates = [d.strip().strip('"').strip("'") for d in dates_str.split(',')]
+            
+            if date_str not in dates:
+                dates.append(date_str)
+                # Keep only last 10 confirmed dates
+                dates = dates[-10:]
+                new_dates_str = ', '.join([f'"{d}"' for d in dates])
+                logger.info(f"Added {date_str} to confirmed dates")
+                return f"{match.group(1)}{new_dates_str}{match.group(3)}"
+            return match.group(0)
+        
+        content = re.sub(pattern, add_date_if_missing, content)
+        
+        # Also update footer text with confirmed dates list
+        footer_pattern = r'(✓ = bevestigd officieel datapunt \()([^)]+)(\) ·)'
+        content = re.sub(footer_pattern, add_date_if_missing, content)
+        
+        return content
+    
     def update_html_marketdata(self, content: str, market_data: Dict) -> str:
         """Update marketData array in HTML"""
         date_str = self.format_date(market_data.get('timestamp'))
@@ -204,11 +257,67 @@ class ReportUpdater:
         content = self.update_jsx_kpis(content, market_data)
         content = self.update_jsx_dates(content, market_data)
         
+        # CONSISTENCY ENFORCEMENT
+        content = self.enforce_gasopslag_consistency(content, market_data)
+        content = self.update_confirmed_dates(content, market_data)
+        
         # Sla op
         with open(self.jsx_path, 'w', encoding='utf-8') as f:
             f.write(content)
         
         logger.info(f"Successfully updated {self.jsx_path}")
+    
+    def enforce_html_gasopslag_consistency(self, content: str, market_data: Dict) -> str:
+        """Enforce gasopslag consistency in HTML"""
+        storage_value = f"~{market_data['eu_storage']:.0f}%"
+        date_str = self.format_date(market_data.get('timestamp'))
+        
+        # Parse date for full format
+        if market_data.get('timestamp'):
+            dt = datetime.fromisoformat(market_data['timestamp'].replace('Z', '+00:00'))
+        else:
+            dt = datetime.now()
+        month_short = {1:"jan",2:"feb",3:"mrt",4:"apr",5:"mei",6:"jun",
+                      7:"jul",8:"aug",9:"sep",10:"okt",11:"nov",12:"dec"}[dt.month]
+        date_label = f"{dt.day} {month_short} {dt.year}"
+        
+        # 1. Update JavaScript buildContext storageRows
+        pattern1 = r"(\['EU-gemiddelde \()[^)]+\)', '~\d+%'"
+        content = re.sub(pattern1, f"\\g<1>{date_label})', '{storage_value}'", content)
+        
+        # 2. Update geopolitical text in HTML
+        pattern2 = r'(Europese gasvoorraden staan op ~)\d+(% capaciteit )(op|eind) [^,]+( 2026)'
+        content = re.sub(pattern2, f'\\g<1>{market_data["eu_storage"]:.0f}\\g<2>op {date_label}\\g<4>', content)
+        
+        logger.info(f"Enforced HTML gasopslag consistency: {storage_value} ({date_label})")
+        return content
+    
+    def update_html_confirmed_dates(self, content: str, market_data: Dict) -> str:
+        """Update confirmed dates array in HTML JavaScript"""
+        date_str = self.format_date(market_data.get('timestamp'))
+        
+        # Update confirmed array in buildPriceTable function
+        pattern = r"(const confirmed = \[)([^\]]+)(\]\.includes\(r\.date\))"
+        
+        def add_date_if_missing(match):
+            dates_str = match.group(2)
+            dates = [d.strip().strip('"').strip("'") for d in dates_str.split(',')]
+            
+            if date_str not in dates:
+                dates.append(date_str)
+                dates = dates[-10:]  # Keep last 10
+                new_dates_str = ', '.join([f"'{d}'" for d in dates])
+                logger.info(f"Added {date_str} to HTML confirmed dates")
+                return f"{match.group(1)}{new_dates_str}{match.group(3)}"
+            return match.group(0)
+        
+        content = re.sub(pattern, add_date_if_missing, content)
+        
+        # Update footer text
+        footer_pattern = r'(✓ = bevestigd officieel datapunt \()([^)]+)(\) ·)'
+        content = re.sub(footer_pattern, add_date_if_missing, content)
+        
+        return content
     
     def update_html_file(self, market_data: Dict):
         """Update HTML bestand"""
@@ -221,6 +330,10 @@ class ReportUpdater:
         content = self.update_html_marketdata(content, market_data)
         content = self.update_html_dates(content, market_data)
         content = self.update_html_kpis(content, market_data)
+        
+        # CONSISTENCY ENFORCEMENT
+        content = self.enforce_html_gasopslag_consistency(content, market_data)
+        content = self.update_html_confirmed_dates(content, market_data)
         
         # Sla op
         with open(self.html_path, 'w', encoding='utf-8') as f:
