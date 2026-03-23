@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Vlaamse Energieprijzen: Analyse &amp; Forecast — {{ month_year }}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f172a;color:#e2e8f0;font-family:Georgia,serif;padding:24px 20px;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#1e293b}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+h1,h2,h3,h4{font-family:Georgia,serif}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.kpi{background:#1e293b;border-radius:10px;padding:13px 15px;border:1px solid #ef444444}
+.kpi-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.kpi-val{font-size:22px;font-weight:700;color:#ef4444}
+.kpi-sub{font-size:11px}
+@media(max-width:700px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div style="text-align:center;margin-bottom:28px">
+  <div style="color:#0ea5e9;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;font-family:monospace">MARKTANALYSE — {{ report_date_upper }} · {{ report_time }}</div>
+  <h1 style="font-size:26px;font-weight:700;margin:0 0 8px;color:#f8fafc">Vlaamse Energieprijzen: Analyse &amp; Forecast</h1>
+  <p style="color:#64748b;font-size:13px;margin:0">TTF (gas) · Belpex/EPEX (elektriciteit) · Geopolitieke context · Tariefadvies</p>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-label">TTF Gas vandaag</div>
+    <div class="kpi-val">€{{ kpis_ttf }}<span class="kpi-sub">/MWh</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Belpex Elektr. vandaag</div>
+    <div class="kpi-val">€{{ kpis_belpex }}<span class="kpi-sub">/MWh</span></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">EU Gasopslag</div>
+    <div class="kpi-val">~{{ kpis_storage }}%</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Brent Crude</div>
+    <div class="kpi-val">${{ kpis_brent }}<span class="kpi-sub">/vat</span></div>
+  </div>
+</div>
+
+<!-- DATA ARRAYS -->
+<script>
+const marketData = {{ market_data_json }};
+const forecastBase = {{ forecast_base_json }};
+const forecastBull = {{ forecast_bull_json }};
+const forecastBear = {{ forecast_bear_json }};
+</script>
+
+<p style="color:#64748b;font-size:11px;margin-top:40px;text-align:center">Generated: {{ report_date }} {{ report_time }}</p>
+
+</body>
+</html>
