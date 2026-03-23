@@ -60,6 +60,12 @@ jobs:
         if: steps.mode.outputs.mode == 'daily'
         run: |
           python scripts/crisis_detector.py
+          if [ -f "data/crisis_detected.txt" ]; then
+            CRISIS_DETECTED=$(cat data/crisis_detected.txt)
+            echo "crisis_detected=$CRISIS_DETECTED" >> $GITHUB_OUTPUT
+          else
+            echo "crisis_detected=false" >> $GITHUB_OUTPUT
+          fi
       
       - name: Run AI analysis
         if: steps.mode.outputs.mode == 'weekly' || steps.crisis.outputs.crisis_detected == 'true'

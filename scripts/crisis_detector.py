@@ -163,20 +163,30 @@ def main():
             print("\n=== CRISIS GEDETECTEERD ===")
             for detail in detector.crisis_details:
                 print(f"{detail['commodity']}: {detail['change_pct']:+.1f}% {detail['direction']}")
-            print("::set-output name=crisis_detected::true")
+            # Create output file for GitHub Actions
+            os.makedirs('data', exist_ok=True)
+            with open('data/crisis_detected.txt', 'w') as f:
+                f.write('true')
             sys.exit(0)  # Success maar met crisis flag
         else:
             print("\n=== Geen crisis gedetecteerd ===")
-            print("::set-output name=crisis_detected::false")
+            # Create output file for GitHub Actions
+            os.makedirs('data', exist_ok=True)
+            with open('data/crisis_detected.txt', 'w') as f:
+                f.write('false')
             sys.exit(0)
     
     except FileNotFoundError as e:
         logger.error(f"Data file not found: {e}")
-        print("::set-output name=crisis_detected::false")
+        os.makedirs('data', exist_ok=True)
+        with open('data/crisis_detected.txt', 'w') as f:
+            f.write('false')
         sys.exit(1)
     except Exception as e:
         logger.error(f"Crisis detection failed: {e}")
-        print("::set-output name=crisis_detected::false")
+        os.makedirs('data', exist_ok=True)
+        with open('data/crisis_detected.txt', 'w') as f:
+            f.write('false')
         sys.exit(1)
 
 if __name__ == '__main__':

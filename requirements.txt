@@ -6,7 +6,7 @@ anthropic>=0.18.0
 # Web Scraping & Data Collection
 requests>=2.31.0
 beautifulsoup4>=4.12.0
-lxml>=5.1.0
+lxml>=4.9.0
 
 # Data Processing
 python-dateutil>=2.8.2
