@@ -62,6 +62,12 @@ Voeg toe in GitHub repository settings → Secrets and variables → Actions:
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 
+### 2. Cloudflare Pages Environment Variables
+
+**BELANGRIJK:** Zorg dat `NODE_ENV` NIET op `production` staat in Cloudflare Pages settings.
+- Set `NODE_ENV=development` of verwijder de variabele volledig
+- Anders worden devDependencies (zoals vite) niet geïnstalleerd
+
 ### 2. Lokale Development
 
 ```bash
