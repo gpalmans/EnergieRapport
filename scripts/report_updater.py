@@ -47,6 +47,27 @@ class ReportUpdater:
         # Format: "23/03"
         return dt.strftime("%d/%m")
     
+    def format_datetime_full(self, date_str: Optional[str] = None) -> tuple:
+        """Formatteer datum en tijd voor header/footer"""
+        if date_str:
+            dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+        else:
+            dt = datetime.now()
+        
+        # Return: ("23 maart 2026", "20:30")
+        month_names = {
+            1: "januari", 2: "februari", 3: "maart", 4: "april",
+            5: "mei", 6: "juni", 7: "juli", 8: "augustus",
+            9: "september", 10: "oktober", 11: "november", 12: "december"
+        }
+        date_full = f"{dt.day} {month_names[dt.month]} {dt.year}"
+        time_str = dt.strftime("%H:%M")
+        
+        # Also return uppercase version for header
+        date_upper = f"{dt.day:02d} {month_names[dt.month].upper()} {dt.year}"
+        
+        return (date_full, time_str, date_upper)
+    
     def update_jsx_rawdata(self, content: str, market_data: Dict) -> str:
         """Update rawData array in JSX"""
         date_str = self.format_date(market_data.get('timestamp'))
@@ -98,19 +119,18 @@ class ReportUpdater:
         return content
     
     def update_jsx_dates(self, content: str, market_data: Dict) -> str:
-        """Update header en footer datums"""
-        date_str = self.format_date(market_data.get('timestamp'))
+        """Update header en footer datums met tijd"""
+        date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
         
-        # Update header datum
-        header_pattern = r'(Energie.*?Rapport.*?)\d{2}/\d{2}'
-        content = re.sub(header_pattern, f'\\g<1>{date_str}', content, count=1)
+        # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30"
+        header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})?'
+        content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str}', content)
         
-        # Update footer datum
-        footer_pattern = r'(Laatst bijgewerkt:.*?)\d{2}/\d{2}/\d{4}'
-        full_date = datetime.now().strftime("%d/%m/%Y")
-        content = re.sub(footer_pattern, f'\\g<1>{full_date}', content)
+        # Update footer: "Opgesteld: 23 maart 2026 · 20:30 ·"
+        footer_pattern = r'(Opgesteld: )\d{1,2} \w+ \d{4}( · \d{2}:\d{2})?( ·)'
+        content = re.sub(footer_pattern, f'\\g<1>{date_full} · {time_str}\\g<3>', content)
         
-        logger.info(f"Updated dates to {date_str}")
+        logger.info(f"Updated dates to {date_full} {time_str}")
         return content
     
     def update_html_marketdata(self, content: str, market_data: Dict) -> str:
@@ -139,6 +159,21 @@ class ReportUpdater:
             logger.info(f"Added new HTML marketData entry for {date_str}")
         
         return updated
+    
+    def update_html_dates(self, content: str, market_data: Dict) -> str:
+        """Update header en footer datums met tijd in HTML"""
+        date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
+        
+        # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30"
+        header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})?'
+        content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str}', content)
+        
+        # Update footer: "Opgesteld: 23 maart 2026 · 20:30 ·"
+        footer_pattern = r'(Opgesteld: )\d{1,2} \w+ \d{4}( · \d{2}:\d{2})?( ·)'
+        content = re.sub(footer_pattern, f'\\g<1>{date_full} · {time_str}\\g<3>', content)
+        
+        logger.info(f"Updated HTML dates to {date_full} {time_str}")
+        return content
     
     def update_html_kpis(self, content: str, market_data: Dict) -> str:
         """Update KPI waarden in HTML"""
@@ -184,6 +219,7 @@ class ReportUpdater:
         
         # Voer updates uit
         content = self.update_html_marketdata(content, market_data)
+        content = self.update_html_dates(content, market_data)
         content = self.update_html_kpis(content, market_data)
         
         # Sla op
