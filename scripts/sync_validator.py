@@ -57,6 +57,9 @@ class SyncValidator:
         if not self._check_structural_integrity(jsx_path, html_path):
             self.errors.append("❌ Structural elements missing")
 
+        if not self._check_complete_structure(jsx_path, html_path, jsx_data):
+            self.errors.append("❌ Complete structure validation failed")
+
         return len(self.errors) == 0
 
     def _check_timestamp_match(self, jsx_path: str, html_path: str) -> bool:
@@ -178,6 +181,44 @@ class SyncValidator:
             return False
 
         return True
+
+    def _check_complete_structure(self, jsx_path: str, html_path: str, jsx_data) -> bool:
+        """Verify complete HTML structure with all tabs, charts, and critical sections"""
+        with open(html_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+
+        structure_ok = True
+
+        # Check all 5 tab panels present
+        required_tabs = ['tab-analyse', 'tab-context', 'tab-forecast', 'tab-advies', 'tab-bronnen']
+        for tab_id in required_tabs:
+            if f'id="{tab_id}"' not in html_content:
+                self.errors.append(f"  Missing tab panel: {tab_id}")
+                structure_ok = False
+
+        # Check canvas elements for charts
+        required_canvases = ['ttf-chart', 'belpex-chart', 'forecast-chart']
+        for canvas_id in required_canvases:
+            if f'id="{canvas_id}"' not in html_content:
+                self.errors.append(f"  Missing canvas element: {canvas_id}")
+                structure_ok = False
+
+        # Check KERNBOODSCHAP section (critical content)
+        if 'Weloverwogen keuzen' not in html_content:
+            self.errors.append("  KERNBOODSCHAP section missing from HTML")
+            structure_ok = False
+
+        # Check price table row count matches price history
+        table_row_count = html_content.count('<tr ')
+        expected_rows = len(jsx_data.price_history)
+        # Account for header row (should have expected_rows + 1 total tr elements)
+        if table_row_count < expected_rows:
+            self.errors.append(
+                f"  Price table row count mismatch: expected ~{expected_rows}, found {table_row_count - 1}"
+            )
+            structure_ok = False
+
+        return structure_ok
 
     def report(self) -> str:
         """Generate validation report"""
