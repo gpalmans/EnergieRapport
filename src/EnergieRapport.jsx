@@ -4,6 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, ReferenceLine, Legend
 } from "recharts";
+import PDFDownloadButton from "./components/PDFDownloadButton";
 
 // === DATA ===
 // Confirmed points (✓): TTF 21/03=€59.34 (OilPriceAPI), TTF 22/03=€58.50 (schatting -1.4%)
@@ -194,12 +195,20 @@ export default function EnergieRapport() {
       {/* DOWNLOAD BANNER */}
       <div style={{ background: "#0f172a", border: "1px solid #334155", borderRadius: 10, padding: "12px 20px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
         <div style={{ fontSize: 13, color: "#64748b" }}>
-          📥 <strong style={{ color: "#94a3b8" }}>Offline versie beschikbaar</strong> — werkt zonder internetverbinding
+          📥 <strong style={{ color: "#94a3b8" }}>Downloads beschikbaar</strong> — offline HTML & print-vriendelijke PDF
         </div>
-        <a href="/offline.html" download="energie_analyse_2026.html"
-          style={{ background: "#1e293b", border: "1px solid #334155", color: "#94a3b8", padding: "7px 16px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
-          ⬇ Download offline HTML
-        </a>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <a href="/offline.html" download="energie_analyse_2026.html"
+            style={{ background: "#1e293b", border: "1px solid #334155", color: "#94a3b8", padding: "7px 16px", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
+            ⬇ Download offline HTML
+          </a>
+          <PDFDownloadButton reportData={{
+            marketData,
+            rawData,
+            currentDate: "23 maart 2026",
+            currentTime: "12:37"
+          }} />
+        </div>
       </div>
 
       {/* KPIs */}

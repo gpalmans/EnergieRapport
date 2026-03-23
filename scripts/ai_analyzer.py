@@ -23,7 +23,6 @@ class AIAnalyzer:
     # Model preferences: use active Claude models (not deprecated/retired)
     MODELS = [
         "claude-haiku-4-5-20251001",  # Claude Haiku 4.5 (cost-effective, active until Oct 2026)
-        "claude-sonnet-4-6",  # Claude Sonnet 4.6 (fallback, more expensive)
     ]
     
     def __init__(self):
