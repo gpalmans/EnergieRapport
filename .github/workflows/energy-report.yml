@@ -33,12 +33,6 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
@@ -99,13 +93,12 @@ jobs:
             git push
           fi
       
-      - name: Deploy to Cloudflare Pages
+      - name: Build completed notification
         if: success()
         run: |
-          npm install
-          npm run build
-        env:
-          NODE_ENV: production
+          echo "✅ EnergieRapport data update completed successfully!"
+          echo "📊 Mode: ${{ steps.mode.outputs.mode }}"
+          echo "🔄 Next scheduled run: Daily at 19:00 CET"
       
       - name: Notify on failure
         if: failure()
