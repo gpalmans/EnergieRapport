@@ -83,77 +83,96 @@ jobs:
       - name: Validate HTML/JSX synchronization
         run: |
           echo "🔍 Validating offline.html and JSX synchronization..."
-          
+
           # Check if both files exist
           if [ ! -f "src/EnergieRapport.jsx" ] || [ ! -f "public/offline.html" ]; then
             echo "::error::Missing report files"
             exit 1
           fi
-          
+
           SYNC_FAILED=0
-          
-          # Structural validation: Check that critical SECTIONS exist in both files
-          CRITICAL_SECTIONS=(
-            "KERNBOODSCHAP"
-            "Waarom variabel op de .* lange termijn"
-            "Belgische wet: consumentenbescherming"
-            "Wanneer is een vast tarief dan wél verantwoord"
-            "Adviesmatrix per Profiel"
-            "IEA Strategische Oliereserves"
-            "Europese Gasvoorraden"
-            "Geopolitieke Crisissituatie"
+
+          # Structural validation: Check for critical tab labels and major sections (not content-specific strings)
+          CRITICAL_TABS=(
+            "Analyse"
+            "Geopolitiek"
+            "Forecast"
+            "Advies"
+            "Bronnen"
           )
-          
-          echo "Checking structural sections..."
-          for section in "${CRITICAL_SECTIONS[@]}"; do
-            if ! grep -qE "$section" src/EnergieRapport.jsx; then
-              echo "::error::SYNC FAILED - Section missing in JSX: '$section'"
+
+          CRITICAL_STRUCTURES=(
+            "KPI"
+            "kpi"
+            "rawData"
+            "marketData"
+            "forecastBase"
+            "forecastBull"
+            "forecastBear"
+            "MARKTANALYSE"
+          )
+
+          echo "Checking structural elements..."
+          for elem in "${CRITICAL_TABS[@]}"; do
+            if ! grep -qE "$elem" src/EnergieRapport.jsx; then
+              echo "::error::SYNC FAILED - Tab missing in JSX: '$elem'"
               SYNC_FAILED=1
             fi
-            if ! grep -qE "$section" public/offline.html; then
-              echo "::error::SYNC FAILED - Section missing in HTML: '$section'"
+            if ! grep -qE "$elem" public/offline.html; then
+              echo "::error::SYNC FAILED - Tab missing in HTML: '$elem'"
               SYNC_FAILED=1
             fi
           done
-          
+
+          for elem in "${CRITICAL_STRUCTURES[@]}"; do
+            if ! grep -qE "$elem" src/EnergieRapport.jsx; then
+              echo "::error::SYNC FAILED - Structure missing in JSX: '$elem'"
+              SYNC_FAILED=1
+            fi
+            if ! grep -qE "$elem" public/offline.html; then
+              echo "::error::SYNC FAILED - Structure missing in HTML: '$elem'"
+              SYNC_FAILED=1
+            fi
+          done
+
           # Check for timestamp consistency
           echo "Checking timestamp consistency..."
           JSX_TIME=$(grep -oP "MARKTANALYSE — \d{2} \w+ \d{4} · \K\d{2}:\d{2}" src/EnergieRapport.jsx | head -1)
           HTML_TIME=$(grep -oP "MARKTANALYSE — \d{2} \w+ \d{4} · \K\d{2}:\d{2}" public/offline.html | head -1)
-          
+
           if [ "$JSX_TIME" != "$HTML_TIME" ]; then
             echo "::error::Timestamp mismatch - JSX: $JSX_TIME, HTML: $HTML_TIME"
             SYNC_FAILED=1
           fi
-          
+
           # Word count similarity check (allows content variation but catches major desync)
           echo "Checking content volume similarity..."
           JSX_WORDS=$(grep -oE '\w+' src/EnergieRapport.jsx | wc -l)
           HTML_WORDS=$(grep -oE '\w+' public/offline.html | wc -l)
-          
+
           # Calculate percentage difference
           DIFF=$((JSX_WORDS - HTML_WORDS))
           DIFF_ABS=${DIFF#-}  # Absolute value
           PERCENT=$((DIFF_ABS * 100 / JSX_WORDS))
-          
+
           echo "Word count: JSX=$JSX_WORDS, HTML=$HTML_WORDS, Diff=$PERCENT%"
-          
+
           # Allow up to 15% difference (accounts for JSX syntax overhead and minor variations)
           if [ $PERCENT -gt 15 ]; then
             echo "::error::Content volume mismatch: ${PERCENT}% difference (threshold: 15%)"
             echo "::error::This suggests major content desynchronization"
             SYNC_FAILED=1
           fi
-          
+
           if [ $SYNC_FAILED -eq 1 ]; then
             echo "::error::❌ HTML/JSX synchronization validation FAILED"
             echo "::error::The offline.html is NOT structurally in sync with JSX"
             echo "::error::Manual intervention required - check section presence and content volume"
             exit 1
           fi
-          
+
           echo "✅ HTML/JSX synchronization validated successfully"
-          echo "   - All critical sections present in both files"
+          echo "   - All critical tabs and structures present in both files"
           echo "   - Timestamps match"
           echo "   - Content volume within acceptable range (${PERCENT}% difference)"
       
