@@ -33,6 +33,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
       
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
@@ -96,7 +102,7 @@ jobs:
       - name: Deploy to Cloudflare Pages
         if: success()
         run: |
-          npm ci
+          npm install
           npm run build
         env:
           NODE_ENV: production
