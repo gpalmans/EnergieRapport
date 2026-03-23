@@ -37,7 +37,10 @@ class EnergyReportData:
     forecast_bull: List[ForecastPoint]
     forecast_bear: List[ForecastPoint]
     kpis: Dict[str, float]  # {ttf, belpex, storage, brent}
+    kpi_deltas: Dict[str, str]  # {ttf_delta, belpex_delta, storage_note, brent_delta}
     alert_banner: str
+    alert_banner_title: str
+    alert_banner_text: str
 
 
 class DataExtractor:
@@ -87,8 +90,11 @@ class DataExtractor:
         # Extract KPI values
         kpis = self._extract_kpis(content)
 
-        # Extract alert banner text
-        alert_banner = self._extract_alert_banner(content)
+        # Extract KPI deltas
+        kpi_deltas = self._extract_kpi_deltas(content)
+
+        # Extract alert banner
+        alert_banner_title, alert_banner_text = self._extract_alert_banner(content)
 
         return EnergyReportData(
             report_date=report_date,
@@ -98,7 +104,10 @@ class DataExtractor:
             forecast_bull=forecast_bull,
             forecast_bear=forecast_bear,
             kpis=kpis,
-            alert_banner=alert_banner
+            kpi_deltas=kpi_deltas,
+            alert_banner=alert_banner_title,  # For backwards compatibility
+            alert_banner_title=alert_banner_title,
+            alert_banner_text=alert_banner_text
         )
 
     def _extract_rawdata(self, content: str) -> List[PriceDataPoint]:
@@ -157,41 +166,94 @@ class DataExtractor:
         return points
 
     def _extract_kpis(self, content: str) -> Dict[str, float]:
-        """Extract KPI values from JSX"""
+        """Extract KPI values from JSX - using LAST rawData entry (current prices)"""
         kpis = {}
 
-        # Extract TTF from first price in last rawData entry
-        # Look for: { date: "23/03", ttf: 60.60, belpex: 104.00, note: "Vandaag" }
-        last_entry_match = re.search(
-            r'\{\s*date:\s*"[^"]+",\s*ttf:\s*([\d.]+),\s*belpex:\s*([\d.]+)',
+        # Extract rawData section
+        rawdata_match = re.search(
+            r'const rawData = \[([\s\S]*?)\];',
             content
         )
-        if last_entry_match:
-            kpis['ttf'] = float(last_entry_match.group(1))
-            kpis['belpex'] = float(last_entry_match.group(2))
+        if rawdata_match:
+            rawdata_section = rawdata_match.group(1)
+            # Find ALL price entries in rawData
+            all_entries = re.findall(
+                r'\{\s*date:\s*"[^"]+",\s*ttf:\s*([\d.]+),\s*belpex:\s*([\d.]+)',
+                rawdata_section
+            )
+            if all_entries:
+                # Use LAST entry (most recent prices)
+                last_ttf, last_belpex = all_entries[-1]
+                kpis['ttf'] = float(last_ttf)
+                kpis['belpex'] = float(last_belpex)
 
         # EU Storage percentage: look for pattern like "~26%"
         storage_match = re.search(r'~(\d+(?:\.\d+)?)%', content)
         if storage_match:
             kpis['storage'] = float(storage_match.group(1))
 
-        # Brent crude: look for pattern like "$112.19"
-        brent_match = re.search(r'\$(\d+(?:\.\d+)?)', content)
+        # Brent crude: target the KPI grid specifically
+        # Look for "Brent" label followed by $ amount
+        brent_match = re.search(r'Brent.*?\$(\d+(?:\.\d+)?)', content, re.DOTALL)
         if brent_match:
             kpis['brent'] = float(brent_match.group(1))
 
         return kpis
 
-    def _extract_alert_banner(self, content: str) -> str:
-        """Extract alert banner text from JSX"""
-        # Look for alert banner div with critical market situation text
+    def _extract_kpi_deltas(self, content: str) -> Dict[str, str]:
+        """Extract KPI delta labels from JSX - the "+3.6% vs gisteren" style labels"""
+        deltas = {}
+
+        # Extract the KPI array from JSX
+        # Look for patterns like: { label: "TTF Gas vandaag", value: "€60.60", sub: "/MWh", delta: "+3.6% vs gisteren" }
+
+        # Extract TTF delta
+        ttf_delta_match = re.search(r'TTF Gas vandaag.*?delta:\s*"([^"]+)"', content, re.DOTALL)
+        if ttf_delta_match:
+            deltas['ttf_delta'] = ttf_delta_match.group(1)
+        else:
+            deltas['ttf_delta'] = ""
+
+        # Extract Belpex delta
+        belpex_delta_match = re.search(r'Belpex.*?delta:\s*"([^"]+)"', content, re.DOTALL)
+        if belpex_delta_match:
+            deltas['belpex_delta'] = belpex_delta_match.group(1)
+        else:
+            deltas['belpex_delta'] = ""
+
+        # Extract storage note/label
+        storage_note_match = re.search(r'EU Gasopslag.*?sub:\s*"([^"]+)"', content, re.DOTALL)
+        if storage_note_match:
+            deltas['storage_note'] = storage_note_match.group(1)
+        else:
+            deltas['storage_note'] = ""
+
+        # Extract Brent delta
+        brent_delta_match = re.search(r'Brent.*?delta:\s*"([^"]+)"', content, re.DOTALL)
+        if brent_delta_match:
+            deltas['brent_delta'] = brent_delta_match.group(1)
+        else:
+            deltas['brent_delta'] = ""
+
+        return deltas
+
+    def _extract_alert_banner(self, content: str) -> tuple:
+        """Extract alert banner title and text from JSX.
+
+        Returns:
+            tuple: (alert_banner_title, alert_banner_text)
+        """
+        # Look for alert banner with "KRITIEKE MARKTSITUATIE" title
+        # Pattern: KRITIEKE MARKTSITUATIE<...>color: "#fca5a5"...<...>content text
         alert_match = re.search(
-            r'<div[^>]*>⚠️[^<]*</span>\s*<div[^>]*>([^<]+)</div>',
+            r'KRITIEKE MARKTSITUATIE[\s\S]*?color:\s*"#fca5a5"[^>]*>\s*([^<]+?)\s*</',
             content
         )
         if alert_match:
-            return alert_match.group(1).strip()
-        return ""
+            alert_text = alert_match.group(1).strip()
+            return ("⚠️ KRITIEKE MARKTSITUATIE", alert_text)
+
+        return ("", "")
 
     def validate(self, data: EnergyReportData) -> bool:
         """
@@ -212,6 +274,8 @@ class DataExtractor:
             raise ValueError("Missing forecast scenarios")
         if not data.kpis:
             raise ValueError("No KPI values found")
+        if not isinstance(data.kpi_deltas, dict):
+            raise ValueError("KPI deltas missing or invalid")
 
         # Check prices are reasonable
         # TTF typically 20-150 €/MWh
@@ -227,5 +291,11 @@ class DataExtractor:
             raise ValueError("TTF KPI value missing or invalid")
         if data.kpis.get('belpex', 0) <= 0:
             raise ValueError("Belpex KPI value missing or invalid")
+
+        # Alert banner fields may be empty strings in non-critical situations, so just check type
+        if not isinstance(data.alert_banner_title, str):
+            raise ValueError("Alert banner title must be a string")
+        if not isinstance(data.alert_banner_text, str):
+            raise ValueError("Alert banner text must be a string")
 
         return True
