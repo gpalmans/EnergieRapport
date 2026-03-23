@@ -1,0 +1,101 @@
+name: EnergieRapport Auto-Update
+
+on:
+  schedule:
+    # Dagelijks om 18:00 UTC (19:00 CET)
+    - cron: '0 18 * * *'
+    # Wekelijks zondag om 19:00 UTC (20:00 CET)
+    - cron: '0 19 * * 0'
+  workflow_dispatch:
+    inputs:
+      force_ai_analysis:
+        description: 'Force AI analysis (weekly mode)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  update-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Determine update mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.schedule }}" == "0 19 * * 0" ]; then
+            echo "mode=weekly" >> $GITHUB_OUTPUT
+          elif [ "${{ inputs.force_ai_analysis }}" == "true" ]; then
+            echo "mode=weekly" >> $GITHUB_OUTPUT
+          else
+            echo "mode=daily" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Collect energy market data
+        id: collect
+        run: |
+          python scripts/data_collector.py
+        env:
+          DATA_MODE: ${{ steps.mode.outputs.mode }}
+      
+      - name: Detect crisis situation
+        id: crisis
+        if: steps.mode.outputs.mode == 'daily'
+        run: |
+          python scripts/crisis_detector.py
+      
+      - name: Run AI analysis
+        if: steps.mode.outputs.mode == 'weekly' || steps.crisis.outputs.crisis_detected == 'true'
+        run: |
+          python scripts/ai_analyzer.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANALYSIS_TRIGGER: ${{ steps.crisis.outputs.crisis_detected == 'true' && 'crisis' || 'weekly' }}
+      
+      - name: Update report files
+        run: |
+          python scripts/report_updater.py
+        env:
+          UPDATE_MODE: ${{ steps.mode.outputs.mode }}
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add src/EnergieRapport.jsx public/offline.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update: EnergieRapport data (${{ steps.mode.outputs.mode }} mode)"
+            git push
+          fi
+      
+      - name: Deploy to Cloudflare Pages
+        if: success()
+        run: |
+          npm ci
+          npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::EnergieRapport update failed in ${{ steps.mode.outputs.mode }} mode"

@@ -3,3 +3,9 @@ dist/
 .env
 .env.local
 venv/
+
+# Automation data files
+data/
+*.pyc
+__pycache__/
+.pytest_cache/

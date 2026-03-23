@@ -390,9 +390,17 @@ Gebruik Tavily om actuele nieuwsberichten te zoeken (max 4 weken oud).
 - Sync JSX en offline.html identiek
 - Header datum up-to-date
 
+**Kritische Validatie (zie Lessons Learned):"
+- [ ] Forecast grafiek Y-as past bij scenario maxima (bv. 20-90 voor €85 bullisch)
+- [ ] Advies sectie argumenten passen bij huidige geopolitieke situatie
+- [ ] Tijdslijnen realistisch gegeven fysieke herstelperiodes (gasvelden 3-5 mnd)
+- [ ] Prijsdoelen reflecteren actuele marktrealiteit (€50-60 range)
+- [ ] Onderscheid korte vs. middellange termijn duidelijk
+
 **Validatie & push:"
+- Gebruik uitgebreide checklist uit Lessons Learned sectie
 - Controleer alle URLs en datums
-- Vul UPDATE_LOG.md in.
+- Vul UPDATE_LOG.md in (incl. sectie verbeteringen)
 - Push naar GitHub.
 ```
 
