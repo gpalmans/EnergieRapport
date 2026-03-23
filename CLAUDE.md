@@ -30,6 +30,47 @@ Beide bestanden moeten bij elke update gesynchroniseerd worden met identieke dat
 
 ---
 
+## Synchronisatie Architectuur — Single Source of Truth
+
+**NIEUW:** Dit project gebruikt nu een deterministische synchronisatie-architectuur:
+
+### Hoe het werkt
+
+1. **JSX als authoritative bron** — EnergieRapport.jsx is de enige bron van waarheid
+2. **HTML als derived artifact** — offline.html wordt automatisch gegenereerd uit JSX
+3. **Structurele validatie** — Validatie checkt data-integriteit, niet text-patterns
+
+### Automatische workflow
+
+```
+JSX Update
+    ↓
+Compiler (extract data from JSX)
+    ↓
+HTML Compile (generate offline.html)
+    ↓
+Validator (verify perfect sync)
+    ↓
+✓ Deploy or ✗ Reject
+```
+
+### Wat dit betekent voor je
+
+- **JSX updaten is genoeg** — HTML wordt automatisch gegenereerd
+- **Geen handmatige HTML updates meer** — Die gebeurt via de compiler
+- **Garantie perfect in-sync** — Validator controleert vóór deployment
+- **Sneller & betrouwbaarder** — Geen sync-drift mogelijk
+
+### GitHub Actions Integration
+
+De GitHub Actions workflow voert nu automatisch uit:
+1. Update JSX met marktdata
+2. Compileer offline.html uit JSX (`scripts/compile_html.py`)
+3. Valideer synchronisatie (`scripts/validate_sync.py`)
+4. Push alleen als validatie passed
+
+---
+
 ## Stap 1 — Data verzamelen via Tavily
 
 Voer de volgende Tavily searches uit. Gebruik altijd meerdere queries per datapunt
@@ -244,6 +285,34 @@ Forecastperiode = rapportdatum + 6 à 8 weken, in 5-6 datapunten.
 ---
 
 ## Stap 3 — JSX bijwerken (`src/EnergieRapport.jsx`)
+
+### Automatische HTML-Synchronisatie (NEW)
+
+Na het updaten van de JSX, wordt de `offline.html` **automatisch gegenereerd** en **100% gesynchroniseerd**:
+
+```bash
+python scripts/report_updater.py
+```
+
+Dit script:
+1. ✅ Update JSX met nieuwe marktdata
+2. ✅ Generate HTML uit JSX (single source of truth)
+3. ✅ Valideer perfecte synchronisatie
+4. ✅ Commit changes (als validatie passed)
+
+**Geen handmatige HTML-edits meer nodig.** De HTML wordt volledig gegenereerd uit JSX via deterministische compilation.
+
+Voor lokale testing of handmatige stappen:
+
+```bash
+# Only compile HTML (without updating JSX)
+python scripts/jsx_to_html_compiler.py src/EnergieRapport.jsx templates/energy_report_template.html public/offline.html
+
+# Verify synchronization
+python scripts/sync_validator.py
+```
+
+Voor volledig overzicht van architectuur, zie [docs/SYNCHRONIZATION_ARCHITECTURE.md](docs/SYNCHRONIZATION_ARCHITECTURE.md).
 
 ### Wat aanpassen:
 1. `rawData` array — nieuwe dagprijzen toevoegen, oudste verwijderen (houd ~30 handelsdagen)
