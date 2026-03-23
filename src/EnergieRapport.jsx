@@ -5,6 +5,7 @@ import {
   ResponsiveContainer, ReferenceLine, Legend
 } from "recharts";
 import PDFDownloadButton from "./components/PDFDownloadButton";
+import { addTrendlines } from "./utils/trendline";
 
 // === DATA ===
 // Confirmed points (✓): TTF 21/03=€59.34 (OilPriceAPI), TTF 22/03=€58.50 (schatting -1.4%)
@@ -53,6 +54,13 @@ const marketData = rawData.map((row, i) => {
     ttfDod:    prev ? ((row.ttf    - prev.ttf)    / Math.abs(prev.ttf)    * 100) : null,
     belpexDod: prev ? ((row.belpex - prev.belpex) / Math.abs(prev.belpex) * 100) : null,
   };
+});
+
+const chartData = addTrendlines(marketData, {
+  ttfTrendShort:     { valueKey: 'ttf',    lastN: 7 },
+  ttfTrendMedium:    { valueKey: 'ttf'          },
+  belpexTrendShort:  { valueKey: 'belpex', lastN: 7 },
+  belpexTrendMedium: { valueKey: 'belpex'       },
 });
 
 const forecastBase = [
@@ -123,6 +131,16 @@ const TABS = [
 
 export default function EnergieRapport() {
   const [tab, setTab] = useState("analyse");
+  const [ttfTrends, setTtfTrends] = useState({ short: false, medium: false });
+  const [belpexTrends, setBelpexTrends] = useState({ short: false, medium: false });
+
+  const TrendToggle = ({ label, checked, onChange, color }) => (
+    <label style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", fontSize: 11, color: "#94a3b8", userSelect: "none" }}>
+      <input type="checkbox" checked={checked} onChange={onChange}
+        style={{ accentColor: color, width: 14, height: 14, cursor: "pointer" }} />
+      <span style={{ borderBottom: `2px dashed ${color}`, paddingBottom: 1 }}>{label}</span>
+    </label>
+  );
 
   const tabBtn = (t) => ({
     padding: "8px 15px", borderRadius: 6, cursor: "pointer", fontSize: 13,
@@ -235,12 +253,18 @@ export default function EnergieRapport() {
       {/* ── ANALYSE ── */}
       {tab === "analyse" && (<>
         <div style={SECTION}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
             <h3 style={{ margin: 0, color: "#f8fafc", fontSize: 16 }}>TTF Aardgas — Dagelijkse Spotprijzen (€/MWh)</h3>
             <span style={BADGE("#0ea5e9")}>Reuters · Bloomberg · ENTSOG</span>
           </div>
+          <div style={{ display: "flex", gap: 16, marginBottom: 10, paddingLeft: 4 }}>
+            <TrendToggle label="Korte termijn (7d)" checked={ttfTrends.short} color="#f59e0b"
+              onChange={() => setTtfTrends(p => ({ ...p, short: !p.short }))} />
+            <TrendToggle label="Middellange termijn" checked={ttfTrends.medium} color="#22d3ee"
+              onChange={() => setTtfTrends(p => ({ ...p, medium: !p.medium }))} />
+          </div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={marketData} margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
+            <LineChart data={chartData} margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} />
               <YAxis domain={[25, 70]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
@@ -248,17 +272,25 @@ export default function EnergieRapport() {
               <ReferenceLine y={31.96} stroke="#22c55e" strokeDasharray="4 4" label={{ value: "27/02 basis", fill: "#22c55e", fontSize: 10, position: "right" }} />
               <ReferenceLine x="02/03" stroke="#ef4444" strokeDasharray="4 4" label={{ value: "Hormuz", fill: "#ef4444", fontSize: 10 }} />
               <Line type="monotone" dataKey="ttf" name="TTF Gas" stroke="#0ea5e9" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
+              {ttfTrends.short && <Line type="linear" dataKey="ttfTrendShort" name="Trend 7d" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 3" dot={false} connectNulls={false} />}
+              {ttfTrends.medium && <Line type="linear" dataKey="ttfTrendMedium" name="Trend totaal" stroke="#22d3ee" strokeWidth={2} strokeDasharray="8 4" dot={false} />}
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         <div style={SECTION}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
             <h3 style={{ margin: 0, color: "#f8fafc", fontSize: 16 }}>Belpex Elektriciteit — Daggemiddelde Day-Ahead (€/MWh)</h3>
             <span style={BADGE("#a78bfa")}>ENTSO-E · EPEX SPOT</span>
           </div>
+          <div style={{ display: "flex", gap: 16, marginBottom: 10, paddingLeft: 4 }}>
+            <TrendToggle label="Korte termijn (7d)" checked={belpexTrends.short} color="#f59e0b"
+              onChange={() => setBelpexTrends(p => ({ ...p, short: !p.short }))} />
+            <TrendToggle label="Middellange termijn" checked={belpexTrends.medium} color="#22d3ee"
+              onChange={() => setBelpexTrends(p => ({ ...p, medium: !p.medium }))} />
+          </div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={marketData} margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
+            <LineChart data={chartData} margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} />
               <YAxis domain={[40, 150]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
@@ -266,6 +298,8 @@ export default function EnergieRapport() {
               <ReferenceLine x="02/03" stroke="#ef4444" strokeDasharray="4 4" />
               <ReferenceLine x="10/03" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "IEA", fill: "#22c55e", fontSize: 10 }} />
               <Line type="monotone" dataKey="belpex" name="Belpex" stroke="#a78bfa" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
+              {belpexTrends.short && <Line type="linear" dataKey="belpexTrendShort" name="Trend 7d" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 3" dot={false} connectNulls={false} />}
+              {belpexTrends.medium && <Line type="linear" dataKey="belpexTrendMedium" name="Trend totaal" stroke="#22d3ee" strokeWidth={2} strokeDasharray="8 4" dot={false} />}
             </LineChart>
           </ResponsiveContainer>
         </div>
