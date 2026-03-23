@@ -41,7 +41,8 @@ const rawData = [
   { date: "19/03", ttf: 54.66, belpex: 100.30, note: "" },
   { date: "20/03", ttf: 62.00, belpex: 125.50, note: "" },
   { date: "21/03", ttf: 59.34, belpex: 95.00,  note: "" },
-  { date: "22/03", ttf: 58.50, belpex: 78.00,  note: "Vandaag" },
+  { date: "22/03", ttf: 58.50, belpex: 78.00,  note: "" },
+  { date: "23/03", ttf: 60.60, belpex: 104.00, note: "Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -54,28 +55,28 @@ const marketData = rawData.map((row, i) => {
 });
 
 const forecastBase = [
-  { date: "22/03", ttf: 58.50, belpex: 78.00 },
-  { date: "27/03", ttf: 54,    belpex: 85   },
-  { date: "03/04", ttf: 50,    belpex: 75   },
-  { date: "10/04", ttf: 46,    belpex: 68   },
-  { date: "24/04", ttf: 40,    belpex: 62   },
-  { date: "08/05", ttf: 36,    belpex: 58   },
+  { date: "23/03", ttf: 60.60, belpex: 104.00 },
+  { date: "27/03", ttf: 56,    belpex: 90   },
+  { date: "03/04", ttf: 52,    belpex: 78   },
+  { date: "10/04", ttf: 48,    belpex: 70   },
+  { date: "24/04", ttf: 42,    belpex: 64   },
+  { date: "08/05", ttf: 38,    belpex: 60   },
 ];
 const forecastBull = [
-  { date: "22/03", ttf: 58.50, belpex: 78.00 },
-  { date: "27/03", ttf: 72,    belpex: 130  },
-  { date: "03/04", ttf: 80,    belpex: 125  },
-  { date: "10/04", ttf: 75,    belpex: 115  },
-  { date: "24/04", ttf: 65,    belpex: 100  },
-  { date: "08/05", ttf: 58,    belpex: 90   },
+  { date: "23/03", ttf: 60.60, belpex: 104.00 },
+  { date: "27/03", ttf: 74,    belpex: 135  },
+  { date: "03/04", ttf: 82,    belpex: 130  },
+  { date: "10/04", ttf: 77,    belpex: 120  },
+  { date: "24/04", ttf: 67,    belpex: 105  },
+  { date: "08/05", ttf: 60,    belpex: 95   },
 ];
 const forecastBear = [
-  { date: "22/03", ttf: 58.50, belpex: 78.00 },
-  { date: "27/03", ttf: 52,    belpex: 95   },
-  { date: "03/04", ttf: 43,    belpex: 78   },
-  { date: "10/04", ttf: 36,    belpex: 65   },
-  { date: "24/04", ttf: 30,    belpex: 55   },
-  { date: "08/05", ttf: 26,    belpex: 48   },
+  { date: "23/03", ttf: 60.60, belpex: 104.00 },
+  { date: "27/03", ttf: 54,    belpex: 98   },
+  { date: "03/04", ttf: 45,    belpex: 80   },
+  { date: "10/04", ttf: 38,    belpex: 67   },
+  { date: "24/04", ttf: 32,    belpex: 57   },
+  { date: "08/05", ttf: 28,    belpex: 50   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -154,7 +155,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 22 MAART 2026
+          MARKTANALYSE — 23 MAART 2026
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -204,10 +205,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€58.50", "/MWh",  "-1.4% vs gisteren",    "#22c55e"],
-          ["Belpex Elektr. vandaag","€78.00", "/MWh", "-17.9% vs gisteren",   "#22c55e"],
+          ["TTF Gas vandaag",       "€60.60", "/MWh",  "+3.6% vs gisteren",    "#ef4444"],
+          ["Belpex Elektr. vandaag","€104.00", "/MWh", "+33.3% vs gisteren",   "#ef4444"],
           ["EU Gasopslag",          "~26%",   " cap.", "kritiek laag niveau",     "#ef4444"],
-          ["Brent Ruwe Olie",       "$112.19", "/vat",  "+3.3% (20/03)",   "#ef4444"],
+          ["Brent Ruwe Olie",       "$113.00", "/vat",  "+0.7% (23/03)",   "#ef4444"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -394,7 +395,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex op 18/03 (€80.92 daggemiddelde) toont extreme volatiliteit: negatieve prijzen overdag, avondpieken tot €180 door grid congestion.
+              ⚡ Belpex op 23/03 (€104.00 daggemiddelde) toont sterke stijging: +33.3% vs gisteren door aanhoudende TTF-druk en gasveld-impact.
             </p>
           </div>
         </div>
@@ -758,7 +759,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 20 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 23 maart 2026 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
