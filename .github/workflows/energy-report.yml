@@ -80,15 +80,47 @@ jobs:
         env:
           UPDATE_MODE: ${{ steps.mode.outputs.mode }}
       
+      - name: Validate HTML/JSX synchronization
+        run: |
+          echo "🔍 Validating offline.html and JSX synchronization..."
+          
+          # Check if both files exist
+          if [ ! -f "src/EnergieRapport.jsx" ] || [ ! -f "public/offline.html" ]; then
+            echo "::error::Missing report files"
+            exit 1
+          fi
+          
+          # Check for critical sections in both files
+          echo "Checking for Kernboodschap section..."
+          if ! grep -q "Weloverwogen keuzen duren langer" src/EnergieRapport.jsx; then
+            echo "::warning::Kernboodschap missing in JSX"
+          fi
+          if ! grep -q "Weloverwogen keuzen duren langer" public/offline.html; then
+            echo "::error::Kernboodschap missing in offline.html - SYNC FAILED"
+            exit 1
+          fi
+          
+          # Check for timestamp consistency
+          echo "Checking timestamp consistency..."
+          JSX_TIME=$(grep -oP "MARKTANALYSE — \d{2} \w+ \d{4} · \K\d{2}:\d{2}" src/EnergieRapport.jsx | head -1)
+          HTML_TIME=$(grep -oP "MARKTANALYSE — \d{2} \w+ \d{4} · \K\d{2}:\d{2}" public/offline.html | head -1)
+          
+          if [ "$JSX_TIME" != "$HTML_TIME" ]; then
+            echo "::error::Timestamp mismatch - JSX: $JSX_TIME, HTML: $HTML_TIME"
+            exit 1
+          fi
+          
+          echo "✅ HTML/JSX synchronization validated successfully"
+      
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add src/EnergieRapport.jsx public/offline.html
+          git add src/EnergieRapport.jsx public/offline.html UPDATE_LOG.md
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto-update: EnergieRapport data (${{ steps.mode.outputs.mode }} mode)"
+            git commit -m "Auto-update: EnergieRapport data (${{ steps.mode.outputs.mode }} mode) - $(date -u +'%Y-%m-%d %H:%M UTC')"
             git push
           fi
       

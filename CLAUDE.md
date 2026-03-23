@@ -282,6 +282,8 @@ Forecastperiode = rapportdatum + 6 à 8 weken, in 5-6 datapunten.
 
 ## Stap 4 — Offline HTML syncen (`public/offline.html`)
 
+**KRITISCH: HTML en JSX moeten 100% in-sync zijn. Dit is een veelvoorkomend probleem.**
+
 De offline.html is een zelfstandige Canvas-implementatie zonder externe libs.
 Na het updaten van de JSX, pas identiek aan:
 
@@ -292,6 +294,40 @@ Na het updaten van de JSX, pas identiek aan:
 5. **Header datum — identiek aan JSX versie**
 6. **Bronvermeldingen — identiek aan JSX, met NL/EN mix en datums**
 7. **Prijstabel — identieke 'vandaag' labeling als JSX**
+8. **KERNBOODSCHAP sectie — ALTIJD syncen (dit is een veelvoorkomend missend element)**
+9. **Alle tabs en secties — Analyse, Geopolitiek, Forecast, Advies, Bronnen**
+
+### HTML/JSX Synchronisatie Checklist (VERPLICHT)
+
+Voor ELKE update, voer deze checklist uit:
+
+**Structuur & Inhoud:**
+- [ ] Kernboodschap sectie aanwezig in offline.html (check: "Weloverwogen keuzen duren langer")
+- [ ] Alle 5 tabs aanwezig: Analyse, Geopolitiek, Forecast, Advies, Bronnen
+- [ ] KPI-grid identiek (TTF, Belpex, EU Opslag, Brent)
+- [ ] Alert banner tekst identiek
+- [ ] Header datum identiek (MARKTANALYSE — DD MAAND YYYY · HH:MM)
+- [ ] Footer datum identiek (Opgesteld: DD maand YYYY · HH:MM)
+
+**Data Waarden:**
+- [ ] TTF prijs identiek in beide bestanden
+- [ ] Belpex prijs identiek in beide bestanden
+- [ ] Brent prijs identiek in beide bestanden
+- [ ] EU Gasopslag % identiek in beide bestanden
+- [ ] Alle percentages en wijzigingen (vs gisteren) identiek
+
+**Tekst & Bronnen:**
+- [ ] Geopolitieke sectie tekst identiek
+- [ ] Kernboodschap tekst identiek
+- [ ] Praktisch advies stappen identiek
+- [ ] Bronvermeldingen identiek (inclusief publicatiedatums)
+- [ ] Alle links/URLs identiek
+
+**Technisch:**
+- [ ] Geen kapotte apostrofs in offline.html JavaScript
+- [ ] Forecast arrays identiek
+- [ ] rawData/marketData arrays identiek
+- [ ] Geen dubbele 'vandaag' labels
 
 ### KRITISCH — apostrof-regel:
 Controleer altijd op apostrofs in JavaScript strings in de offline HTML.
