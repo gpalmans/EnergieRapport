@@ -90,15 +90,42 @@ jobs:
             exit 1
           fi
           
-          # Check for critical sections in both files
-          echo "Checking for Kernboodschap section..."
-          if ! grep -q "Weloverwogen keuzen duren langer" src/EnergieRapport.jsx; then
-            echo "::warning::Kernboodschap missing in JSX"
-          fi
-          if ! grep -q "Weloverwogen keuzen duren langer" public/offline.html; then
-            echo "::error::Kernboodschap missing in offline.html - SYNC FAILED"
-            exit 1
-          fi
+          # Critical content checks - these MUST be present in both files
+          CRITICAL_PHRASES=(
+            "Weloverwogen keuzen duren langer"
+            "Een goed contract begint met een heldere marktevaluatie"
+            "zie hieronder waarom"
+            "Wie nu vastlegt, mist de goedkopere contracten van 2027"
+            "dat zich statistisch corrigeert"
+            "anders dan bij psychologische pieken"
+            "Dit drukt de gemiddelde Belpex-prijs structureel lager over tijd"
+            "Dit recht bestaat als consumentenbescherming bij gewijzigde omstandigheden"
+            "wettelijk toegestaan voor de eerste 6 maanden"
+            "Lees de bijzondere voorwaarden altijd grondig voor ondertekening"
+            "leveranciers verrekenen het risico van vroegtijdig vertrek als een verborgen risicopremie"
+            "niet gedreven door marktpaniek"
+            "Snel schakelen tussen contractvormen kost u geld"
+            "sociale situatie, schulden"
+            "warmtepomp, elektrische wagen, grote woning"
+            "voor offertes/klanten"
+            "boven marktvolatiliteit"
+            "variabel maximaliseert uw voordeel"
+            "niet door uw verbruiksprofiel"
+            "méér dan 15% boven"
+            "premies, loyaliteitsvoordelen"
+          )
+          
+          SYNC_FAILED=0
+          
+          for phrase in "${CRITICAL_PHRASES[@]}"; do
+            if ! grep -q "$phrase" src/EnergieRapport.jsx; then
+              echo "::warning::Phrase missing in JSX: '$phrase'"
+            fi
+            if ! grep -q "$phrase" public/offline.html; then
+              echo "::error::SYNC FAILED - Missing in HTML: '$phrase'"
+              SYNC_FAILED=1
+            fi
+          done
           
           # Check for timestamp consistency
           echo "Checking timestamp consistency..."
@@ -107,10 +134,17 @@ jobs:
           
           if [ "$JSX_TIME" != "$HTML_TIME" ]; then
             echo "::error::Timestamp mismatch - JSX: $JSX_TIME, HTML: $HTML_TIME"
+            SYNC_FAILED=1
+          fi
+          
+          if [ $SYNC_FAILED -eq 1 ]; then
+            echo "::error::❌ HTML/JSX synchronization validation FAILED"
+            echo "::error::The offline.html is NOT 100% in sync with JSX"
+            echo "::error::Manual intervention required - check all content matches exactly"
             exit 1
           fi
           
-          echo "✅ HTML/JSX synchronization validated successfully"
+          echo "✅ HTML/JSX synchronization validated successfully - all critical content present"
       
       - name: Commit and push changes
         run: |
