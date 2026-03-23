@@ -4,11 +4,15 @@ Update JSX en HTML bestanden met nieuwe marktdata
 """
 
 import os
+import sys
 import json
 import re
 from datetime import datetime
 from typing import Dict, Optional
 import logging
+
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.jsx_to_html_compiler import JsxToHtmlCompiler
 from scripts.sync_validator import SyncValidator
