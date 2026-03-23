@@ -277,10 +277,11 @@ export default function EnergieRapport() {
                   const base  = ((r.ttf - 31.96) / 31.96 * 100).toFixed(1);
                   const shock = parseFloat(base) > 50;
                   const today = r.note.includes("Vandaag");
+                  const confirmed = ["27/02", "09/03", "11/03", "20/03", "21/03", "23/03"].includes(r.date);
                   return (
                     <tr key={i} style={{ borderBottom: "1px solid #1e293b", background: today ? "#0c4a6e22" : shock ? "#7f1d1d22" : "transparent" }}>
                       <td style={{ padding: "7px 11px", color: today ? "#0ea5e9" : "#e2e8f0", fontWeight: today ? 700 : 400, whiteSpace: "nowrap" }}>
-                        {r.date}{today ? " 🔵" : r.note === "✓" ? " ✓" : ""}
+                        {r.date}{today ? " 🔵" : confirmed ? " ✓" : ""}
                       </td>
                       <td style={{ padding: "7px 11px", color: shock ? "#ef4444" : "#f97316", fontWeight: 600 }}>€{r.ttf.toFixed(2)}</td>
                       <td style={{ padding: "7px 11px" }}><DodCell val={r.ttfDod} /></td>
@@ -304,7 +305,7 @@ export default function EnergieRapport() {
             </table>
           </div>
           <p style={{ fontSize: 11, color: "#475569", marginTop: 10, marginBottom: 0 }}>
-            ✓ = bevestigd officieel datapunt · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
+            ✓ = bevestigd officieel datapunt (27/02, 09/03, 11/03, 20/03, 21/03, 23/03) · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
           </p>
         </div>
       </>)}
@@ -315,7 +316,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (20 mrt 2026)", "~29%",          "#ef4444"],
+              ["EU-gemiddelde (23 mrt 2026)", "~26%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -337,7 +338,7 @@ export default function EnergieRapport() {
             {[
               ["Straat van Hormuz Blokkade", "#ef4444", "Iran heeft de Straat van Hormuz volledig gesloten sinds 2 maart 2026, met 21 bevestigde aanvallen op koopvaardijschepen tot 12 maart. Tankerverkeer is met 70% gedaald, waardoor 20% van de wereldwijde olie- en gasvoorziening is afgesneden. De blokkade blijft van kracht met geen tekenen van deëscalatie; analisten verwachten dat dit minstens 4-6 weken aanhoudt."],
               ["Force Majeure Golfstaten", "#f97316", "Qatar, Koeweit, UAE en Bahrein hebben force majeure afgekondigd op energie-export contracten wegens onmogelijkheid om te leveren via Hormuz. QatarEnergy stopte LNG-productie op 2 maart; Golfstaten verminderden olieproductie met 10+ miljoen vaten/dag (60% daling vs. pre-crisis). Alternatieve routes via Rode Zee worden onderzocht maar hebben beperkte capaciteit."],
-              ["EU Gasopslag Kritiek", "#eab308", "Europese gasvoorraden staan op ~26% capaciteit eind maart 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen."],
+              ["EU Gasopslag Kritiek", "#eab308", "Europese gasvoorraden staan op ~26% capaciteit op 23 maart 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen."],
               ["Brent Olieprijzen", "#8b5cf6", "Brent crude piekte op $119/vat direct na de gasveld aanvallen begin maart, en handelt nu op $112.19/vat (+56.93% maand-op-maand). De prijsstijging wordt gedreven door de Hormuz-blokkade en productiedalingen in Irak, Saoedi-Arabië en andere Golfstaten. Analisten van Goldman Sachs en Barclays waarschuwen voor aanhoudend hoge prijzen als de blokkade langer dan 6 weken duurt."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>

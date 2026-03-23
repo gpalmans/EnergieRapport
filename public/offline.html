@@ -142,7 +142,7 @@ svg.chart{width:100%;font-family:Georgia,serif}
   <div style="overflow-x:auto">
     <table id="price-table"></table>
   </div>
-  <p style="font-size:11px;color:#475569;margin-top:10px;margin-bottom:0">✓ = bevestigd officieel datapunt · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen</p>
+  <p style="font-size:11px;color:#475569;margin-top:10px;margin-bottom:0">✓ = bevestigd officieel datapunt (27/02, 09/03, 11/03, 20/03, 21/03, 23/03) · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen</p>
 </div>
 
 </div><!-- /tab-analyse -->
@@ -169,7 +169,7 @@ svg.chart{width:100%;font-family:Georgia,serif}
     </div>
     <div style="margin-bottom:14px">
       <span class="badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">EU Gasopslag Kritiek</span>
-      <p style="margin-top:7px;margin-bottom:0;font-size:13px;color:#94a3b8;line-height:1.6">Europese gasvoorraden staan op ~26% capaciteit eind maart 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen.</p>
+      <p style="margin-top:7px;margin-bottom:0;font-size:13px;color:#94a3b8;line-height:1.6">Europese gasvoorraden staan op ~26% capaciteit op 23 maart 2026, vergeleken met 52% vorig jaar — het laagste niveau in jaren. Duitsland (30%), Frankrijk (29%) en Nederland (23.5%) hebben bijzonder lage niveaus. Zomerinjectie moet 90% bereiken vóór volgende winter, wat agressieve LNG-import vereist tegen verhoogde prijzen.</p>
     </div>
     <div>
       <span class="badge" style="background:#8b5cf622;color:#8b5cf6;border:1px solid #8b5cf644">Brent Olieprijzen</span>
@@ -582,6 +582,7 @@ function buildPriceTable() {
     const base = ((r.ttf - 31.96) / 31.96 * 100).toFixed(1);
     const shock = parseFloat(base) > 50;
     const today = r.note.includes('Vandaag');
+    const confirmed = ['27/02', '09/03', '11/03', '20/03', '21/03', '23/03'].includes(r.date);
     const rowBg = today ? '#0c4a6e22' : shock ? '#7f1d1d22' : 'transparent';
     const dodCell = v => v === null ? '<span style="color:#334155">—</span>' :
       `<span style="color:${Math.abs(v)<0.3?'#94a3b8':v>0?'#ef4444':'#22c55e'};font-weight:700">${v>0?'▲':'▼'} ${Math.abs(v).toFixed(1)}%</span>`;
@@ -594,7 +595,7 @@ function buildPriceTable() {
     const tr = document.createElement('tr');
     tr.style.background = rowBg;
     tr.innerHTML = `
-      <td style="color:${today?'#0ea5e9':'#e2e8f0'};font-weight:${today?700:400};white-space:nowrap">${r.date}${today?' 🔵':r.note==='OK'?' ✓':''}</td>
+      <td style="color:${today?'#0ea5e9':'#e2e8f0'};font-weight:${today?700:400};white-space:nowrap">${r.date}${today?' 🔵':confirmed?' ✓':''}</td>
       <td style="color:${shock?'#ef4444':'#f97316'};font-weight:600">€${r.ttf.toFixed(2)}</td>
       <td>${dodCell(ttfDod)}</td>
       <td style="color:#a78bfa;font-weight:600">€${r.belpex.toFixed(1)}</td>
@@ -609,7 +610,7 @@ function buildPriceTable() {
 // ===== BUILD CONTEXT ROWS =====
 function buildContext() {
   const storageRows = [
-    ['EU-gemiddelde (mrt 2026)', '~29%', '#ef4444'],
+    ['EU-gemiddelde (23 mrt 2026)', '~26%', '#ef4444'],
     ['Laagste seizoenspeil', 'in jaren', '#ef4444'],
     ['Einde 2025', '~61%', '#eab308'],
     ['Einde 2024', '~72%', '#22c55e'],
