@@ -20,13 +20,22 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class AIAnalyzer:
+    # Model preferences: try latest alias first, fallback to specific version
+    MODELS = [
+        "claude-3-5-haiku-latest",  # Alias (if available)
+        "claude-3-5-haiku-20241022",  # Specific version fallback
+    ]
+    
     def __init__(self):
         self.api_key = os.getenv('ANTHROPIC_API_KEY')
         self.client = None
         self.analysis_trigger = os.getenv('ANALYSIS_TRIGGER', 'weekly')
+        # Allow model override via environment variable
+        self.model = os.getenv('CLAUDE_MODEL', self.MODELS[1])
         
         if anthropic and self.api_key:
             self.client = anthropic.Anthropic(api_key=self.api_key)
+            logger.info(f"Using Claude model: {self.model}")
         else:
             logger.warning("Claude API not configured - analysis will be limited")
     
@@ -99,7 +108,7 @@ Maximaal 300 woorden."""
             logger.info("Requesting Claude analysis...")
             
             message = self.client.messages.create(
-                model="claude-3-haiku-20240307",  # Meest cost-effectieve model
+                model=self.model,  # Gebruik configured model
                 max_tokens=1024,
                 messages=[
                     {"role": "user", "content": prompt}
