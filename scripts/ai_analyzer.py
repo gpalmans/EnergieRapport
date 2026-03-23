@@ -20,10 +20,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class AIAnalyzer:
-    # Model preferences: try latest alias first, fallback to specific version
+    # Model preferences: use active Claude models (not deprecated/retired)
     MODELS = [
-        "claude-3-5-haiku-latest",  # Alias (if available)
-        "claude-3-5-haiku-20241022",  # Specific version fallback
+        "claude-haiku-4-5-20251001",  # Claude Haiku 4.5 (cost-effective, active until Oct 2026)
+        "claude-sonnet-4-6",  # Claude Sonnet 4.6 (fallback, more expensive)
     ]
     
     def __init__(self):
@@ -31,7 +31,7 @@ class AIAnalyzer:
         self.client = None
         self.analysis_trigger = os.getenv('ANALYSIS_TRIGGER', 'weekly')
         # Allow model override via environment variable
-        self.model = os.getenv('CLAUDE_MODEL', self.MODELS[1])
+        self.model = os.getenv('CLAUDE_MODEL', self.MODELS[0])
         
         if anthropic and self.api_key:
             self.client = anthropic.Anthropic(api_key=self.api_key)
