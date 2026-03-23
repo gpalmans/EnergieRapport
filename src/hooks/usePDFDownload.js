@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { generatePDF } from '../utils/pdfGenerator';
+import { addTrendlines } from '../utils/trendline';
 
 export const usePDFDownload = () => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -55,6 +56,23 @@ const preparePDFData = (reportData) => {
       ttf: marketData.map(d => ({ date: d.date, value: d.ttf })),
       belpex: marketData.map(d => ({ date: d.date, value: d.belpex })),
     },
+
+    // Trendline data for PDF charts (medium-term only)
+    chartTrends: (() => {
+      const dataWithTrends = addTrendlines(marketData, {
+        ttfTrendMedium:    { valueKey: 'ttf'          },
+        belpexTrendMedium: { valueKey: 'belpex'       },
+      });
+      
+      return {
+        ttf: {
+          medium: dataWithTrends.map(d => d.ttfTrendMedium).filter(v => v != null),
+        },
+        belpex: {
+          medium: dataWithTrends.map(d => d.belpexTrendMedium).filter(v => v != null),
+        },
+      };
+    })(),
 
     priceTable: marketData.slice(-10).map((row, idx, arr) => {
       const prev = idx > 0 ? arr[idx - 1] : null;

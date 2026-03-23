@@ -16,7 +16,7 @@ const secTitle = (text, color) =>
     <div style="flex:1;height:1px;background:linear-gradient(90deg,${color}33,transparent)"></div>
   </div>`;
 
-const svgChart = (points, w, h, color, label) => {
+const svgChart = (points, w, h, color, label, trendlines = {}) => {
   if (!points || points.length < 2) return '';
   const vals = points.map(p => p.value);
   const mn = Math.min(...vals), mx = Math.max(...vals);
@@ -29,6 +29,31 @@ const svgChart = (points, w, h, color, label) => {
 
   const polyline = points.map((p, i) => `${toX(i).toFixed(1)},${toY(p.value).toFixed(1)}`).join(' ');
   const gradId = `g${color.replace('#', '')}`;
+
+  // Trendlines (medium-term only)
+  let trendlineSvg = '';
+  const trendColor = '#22d3ee';
+  const trendLabel = 'Middellange termijn';
+  
+  if (trendlines.medium && Array.isArray(trendlines.medium)) {
+    const trendPolyline = trendlines.medium.map((v, i) => {
+      if (v == null) return '';
+      return `${toX(i).toFixed(1)},${toY(v).toFixed(1)}`;
+    }).filter(Boolean).join(' ');
+    
+    if (trendPolyline) {
+      trendlineSvg += `<polyline points="${trendPolyline}" fill="none" stroke="${trendColor}" stroke-width="2" stroke-dasharray="8,4" stroke-linejoin="round" stroke-linecap="round"/>`;
+    }
+  }
+
+  // Legend
+  let legendSvg = '';
+  if (trendlines.medium && Array.isArray(trendlines.medium)) {
+    const legendY = h - 8;
+    const legendX = mL + 10;
+    legendSvg += `<line x1="${legendX}" y1="${legendY}" x2="${legendX + 15}" y2="${legendY}" stroke="${trendColor}" stroke-width="2" stroke-dasharray="8,4"/>`;
+    legendSvg += `<text x="${legendX + 20}" y="${legendY + 3}" fill="#64748b" font-size="7" font-family="system-ui">${trendLabel}</text>`;
+  }
 
   let yTicks = '';
   for (let i = 0; i <= 4; i++) {
@@ -59,10 +84,12 @@ const svgChart = (points, w, h, color, label) => {
     <line x1="${mL}" y1="${mT+ih}" x2="${mL+iw}" y2="${mT+ih}" stroke="#cbd5e1" stroke-width="0.7"/>
     <polygon points="${toX(0).toFixed(1)},${(mT+ih).toFixed(1)} ${polyline} ${toX(points.length-1).toFixed(1)},${(mT+ih).toFixed(1)}" fill="url(#${gradId})"/>
     <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${trendlineSvg}
     <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="5" fill="#fff" stroke="${color}" stroke-width="2.5"/>
     <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="2" fill="${color}"/>
     <rect x="${lx - 24}" y="${ly - 20}" width="48" height="14" rx="4" fill="${color}"/>
     <text x="${lx.toFixed(1)}" y="${(ly - 10).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="system-ui">\u20AC${lastPt.value.toFixed(1)}</text>
+    ${legendSvg}
   </svg>`;
 };
 
@@ -143,8 +170,8 @@ const buildPage1 = (d) => {
     <!-- CHARTS -->
     ${secTitle('Prijsontwikkeling', '#0284c7')}
     <div style="display:flex;gap:10px;margin-bottom:14px">
-      <div style="flex:1">${svgChart(d.chartData.ttf, 365, 185, '#0284c7', 'TTF Gas (\u20AC/MWh)')}</div>
-      <div style="flex:1">${svgChart(d.chartData.belpex, 365, 185, '#7c3aed', 'Belpex (\u20AC/MWh)')}</div>
+      <div style="flex:1">${svgChart(d.chartData.ttf, 365, 185, '#0284c7', 'TTF Gas (\u20AC/MWh)', d.chartTrends?.ttf || {})}</div>
+      <div style="flex:1">${svgChart(d.chartData.belpex, 365, 185, '#7c3aed', 'Belpex (\u20AC/MWh)', d.chartTrends?.belpex || {})}</div>
     </div>
 
     <!-- PRICE TABLE -->
