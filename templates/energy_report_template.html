@@ -1,64 +1,839 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Vlaamse Energieprijzen: Analyse &amp; Forecast — {{ month_year }}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0f172a;color:#e2e8f0;font-family:Georgia,serif;padding:24px 20px;min-height:100vh}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:#1e293b}
-::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
-h1,h2,h3,h4{font-family:Georgia,serif}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.kpi{background:#1e293b;border-radius:10px;padding:13px 15px;border:1px solid #ef444444}
-.kpi-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
-.kpi-val{font-size:22px;font-weight:700;color:#ef4444}
-.kpi-sub{font-size:11px}
-@media(max-width:700px){
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vlaamse Energieprijzen: Analyse &amp; Forecast — {{ month_year }}</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: Georgia, serif;
+      padding: 24px 20px;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: Georgia, serif;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    h1 { font-size: 26px; font-weight: 700; }
+    h2 { font-size: 20px; font-weight: 600; color: #0ea5e9; }
+    h3 { font-size: 16px; font-weight: 600; color: #94a3b8; }
+    h4 { font-size: 14px; font-weight: 600; }
+
+    p {
+      margin-bottom: 16px;
+      color: #cbd5e1;
+    }
+
+    a {
+      color: #0ea5e9;
+      text-decoration: none;
+      border-bottom: 1px solid #0ea5e9;
+    }
+
+    a:hover {
+      color: #06b6d4;
+      border-bottom-color: #06b6d4;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* HEADER & KPI STYLES */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 20px;
+    }
+
+    .header-date {
+      color: #0ea5e9;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #f8fafc;
+    }
+
+    .header-subtitle {
+      color: #64748b;
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* ALERT BANNER */
+    .alert-banner {
+      background: linear-gradient(135deg, #7f1d1d 0%, #5a0a0a 100%);
+      border-left: 4px solid #fca5a5;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .alert-banner.active {
+      display: block;
+    }
+
+    .alert-banner h4 {
+      color: #fca5a5;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .alert-banner p {
+      color: #fecaca;
+      margin: 0;
+    }
+
+    /* KPI GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .kpi {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid #334155;
+      text-align: center;
+    }
+
+    .kpi-label {
+      font-size: 10px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .kpi-val {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ef4444;
+      margin-bottom: 4px;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-left: 4px;
+    }
+
+    .kpi-delta {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* TAB STYLES */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 16px;
+    }
+
+    .tab-btn {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      background: #334155;
+      color: #cbd5e1;
+    }
+
+    .tab-btn.active {
+      background: #0ea5e9;
+      color: #ffffff;
+      border-color: #0ea5e9;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* PRICE TABLE */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .price-table th {
+      background: #334155;
+      padding: 12px;
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .price-table td {
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+      font-size: 13px;
+    }
+
+    .price-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .price-table tr.today {
+      background: rgba(15, 185, 229, 0.1);
+    }
+
+    .price-table tr.today td {
+      color: #0fb9e5;
+      font-weight: 600;
+    }
+
+    .price-table tr.shock {
+      background: rgba(244, 63, 94, 0.1);
+    }
+
+    .price-table tr.shock td {
+      color: #ff6b7a;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-vandaag {
+      background: #0ea5e9;
+      color: #ffffff;
+    }
+
+    .badge-hormuz,
+    .badge-piek,
+    .badge-iea {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .badge-we {
+      background: #8b5cf6;
+      color: #ffffff;
+    }
+
+    /* CHARTS */
+    canvas {
+      display: block;
+      margin: 24px 0;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+
+    /* CARDS & SECTIONS */
+    .section-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-card h3 {
+      margin-top: 0;
+    }
+
+    .three-column {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .card h4 {
+      margin-top: 0;
+      color: #0ea5e9;
+    }
+
+    .card p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding-top: 40px;
+      margin-top: 40px;
+      border-top: 1px solid #334155;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .three-column {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-bar {
+        flex-direction: column;
+      }
+
+      .tab-btn {
+        width: 100%;
+      }
+
+      body {
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 { font-size: 20px; }
+      h2 { font-size: 16px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div style="text-align:center;margin-bottom:28px">
-  <div style="color:#0ea5e9;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;font-family:monospace">MARKTANALYSE — {{ report_date_upper }} · {{ report_time }}</div>
-  <h1 style="font-size:26px;font-weight:700;margin:0 0 8px;color:#f8fafc">Vlaamse Energieprijzen: Analyse &amp; Forecast</h1>
-  <p style="color:#64748b;font-size:13px;margin:0">TTF (gas) · Belpex/EPEX (elektriciteit) · Geopolitieke context · Tariefadvies</p>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-date">MARKTANALYSE — {{ report_date_upper }} · {{ report_time }}</div>
+    <h1 class="header-title">Vlaamse Energieprijzen: Analyse &amp; Forecast</h1>
+    <p class="header-subtitle">TTF (gas) · Belpex/EPEX (elektriciteit) · Geopolitieke context · Tariefadvies</p>
+  </div>
+
+  <!-- ALERT BANNER -->
+  <div class="alert-banner" id="alert-banner">
+    <h4>{{ alert_banner_title }}</h4>
+    <p>{{ alert_banner_text }}</p>
+  </div>
+
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">TTF Gas vandaag</div>
+      <div class="kpi-val">€{{ kpis_ttf }}<span class="kpi-sub">/MWh</span></div>
+      <div class="kpi-delta">{{ kpis_ttf_delta }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Belpex Elektr. vandaag</div>
+      <div class="kpi-val">€{{ kpis_belpex }}<span class="kpi-sub">/MWh</span></div>
+      <div class="kpi-delta">{{ kpis_belpex_delta }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">EU Gasopslag</div>
+      <div class="kpi-val">~{{ kpis_storage }}%</div>
+      <div class="kpi-delta">{{ kpis_storage_note }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Brent Crude</div>
+      <div class="kpi-val">${{ kpis_brent }}<span class="kpi-sub">/vat</span></div>
+      <div class="kpi-delta">{{ kpis_brent_delta }}</div>
+    </div>
+  </div>
+
+  <!-- TAB NAVIGATION -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="analyse" onclick="showTab('analyse')">📊 Analyse &amp; Data</button>
+    <button class="tab-btn" data-tab="context" onclick="showTab('context')">🌍 Geopolitiek</button>
+    <button class="tab-btn" data-tab="forecast" onclick="showTab('forecast')">📈 Forecast</button>
+    <button class="tab-btn" data-tab="advies" onclick="showTab('advies')">💡 Advies</button>
+    <button class="tab-btn" data-tab="bronnen" onclick="showTab('bronnen')">📚 Bronnen</button>
+  </div>
+
+  <!-- TAB: ANALYSE & DATA -->
+  <div class="tab-panel active" id="tab-analyse">
+    <h2>Analyse &amp; Data</h2>
+
+    <h3>TTF (Aardgas)</h3>
+    <canvas id="ttf-chart" width="800" height="220" style="width: 100%; height: 220px;"></canvas>
+
+    <h3>Belpex (Elektriciteit)</h3>
+    <canvas id="belpex-chart" width="800" height="220" style="width: 100%; height: 220px;"></canvas>
+
+    <h3>Prijsgeschiedenis (afgelopen 30 dagen)</h3>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>TTF (€/MWh)</th>
+          <th>Δ TTF</th>
+          <th>Belpex (€/MWh)</th>
+          <th>Δ Belpex</th>
+          <th>Notitie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ price_table_rows }}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TAB: CONTEXT (GEOPOLITIEK) -->
+  <div class="tab-panel" id="tab-context">
+    <h2>Geopolitieke Context</h2>
+    <p>Deze sectie bevat actuele informatie over geopolitieke factoren die energieprijzen beïnvloeden.</p>
+    <!-- Content from JSX geopolitieke section will be inserted here -->
+  </div>
+
+  <!-- TAB: FORECAST -->
+  <div class="tab-panel" id="tab-forecast">
+    <h2>Forecast Scenario's</h2>
+    <p>Drie mogelijke vervolgscenario's voor de komende 6-8 weken, op basis van actuele marktontwikkelingen.</p>
+
+    <canvas id="forecast-chart" width="800" height="250" style="width: 100%; height: 250px;"></canvas>
+
+    <h3>Scenario's</h3>
+    <div class="three-column">
+      <div class="card">
+        <h4>📈 Bullish (€70-85)</h4>
+        <p>Escalaatie in Midden-Oosten, aanvoerstoornissen Qatar/Kuwait, LNG-contracten stijgen.</p>
+      </div>
+      <div class="card">
+        <h4>📊 Basis (€55-70)</h4>
+        <p>Normalisatie door lente, geleidelijke LNG-aanvoer, storing afgelopen.</p>
+      </div>
+      <div class="card">
+        <h4>📉 Bearish (€40-55)</h4>
+        <p>Snelle de-escalatie, normale LNG-supply, temperaturen normaal.</p>
+      </div>
+    </div>
+
+    <h3>Sleutelfactoren</h3>
+    <ul>
+      <li>Geopolitieke spanning in Midden-Oosten (Hormuz, Qatar)</li>
+      <li>LNG-leveringen naar Europa</li>
+      <li>Europese gasopslag niveaus</li>
+      <li>Weersverwachtingen (temperatuur)</li>
+      <li>EU-beleid en energiesteun</li>
+    </ul>
+  </div>
+
+  <!-- TAB: ADVIES -->
+  <div class="tab-panel" id="tab-advies">
+    <h2>Tariefadvies: Vast vs. Variabel</h2>
+
+    <div class="section-card">
+      <h3>Analyse van Huidige Marktsituatie</h3>
+      <p>De energiemarkt bevindt zich in een kritieke fase. TTF-gasprijzen schommelen rond €60/MWh, aangedreven door geopolitieke spanningen en beperkingen in LNG-aanvoer.</p>
+    </div>
+
+    <div class="section-card">
+      <h3>Vast Tarief</h3>
+      <h4>✅ Voordelen:</h4>
+      <ul>
+        <li>Zekerheid: vaste maandelijkse kosten</li>
+        <li>Bescherming tegen prijsschommelingen</li>
+        <li>Makkelijk budgetteren</li>
+      </ul>
+      <h4>❌ Nadelen:</h4>
+      <ul>
+        <li>Hoger startpunt (verwacht €55-60 basis)</li>
+        <li>Minder voordeel bij prijsdaling</li>
+      </ul>
+    </div>
+
+    <div class="section-card">
+      <h3>Variabel Tarief</h3>
+      <h4>✅ Voordelen:</h4>
+      <ul>
+        <li>Potentieel lagere kosten bij normalisatie</li>
+        <li>Voordeel bij marktstabilisatie</li>
+      </ul>
+      <h4>❌ Nadelen:</h4>
+      <ul>
+        <li>Risico op verdere stijging</li>
+        <li>Onzekere maandelijkse facturen</li>
+        <li>Blootstelling aan marktvolatiliteit</li>
+      </ul>
+    </div>
+
+    <h3>KERNBOODSCHAP</h3>
+    <div class="section-card">
+      <p><strong>Weloverwogen keuzen duren langer, maar leveren duurzaam voordeel.</strong></p>
+      <p>Bij verhoogde marktvolatiliteit en onzekerheid is een <strong>vast tarief met 6-12 maanden zekerheid</strong> momenteel het meest prudente advies. Dit biedt bescherming tegen verder opgaande prijzen, terwijl u op een stabiel niveau vastgezet bent.</p>
+      <p>Voor wie bereid is risico te dragen en op korte termijn kan meewegen met marktbewegingen, kan variabel interessant zijn, maar alleen als u minimaal 3 maanden cashflow-buffer hebt.</p>
+    </div>
+
+    <h3>Praktisch Advies</h3>
+    <ol>
+      <li>📋 <strong>Verzamel je huiskamer-gebruikswerkelijkheden.</strong> Controleer je jaarlijkse gasgebruik (m³) en elektriciteitsgebruik (kWh).</li>
+      <li>🔍 <strong>Vergelijk aanbiedingen van minstens 3 leveranciers.</strong> Let niet alleen op prijs, maar ook op servicekwaliteit en flexibiliteit.</li>
+      <li>⏰ <strong>Timing is geld.</strong> Doen dit nu, voor het volgende seizoen (winter 2026-2027).</li>
+      <li>💾 <strong>Lees de voorwaarden zorgvuldig.</strong> Let op durationsbeperkingen, opzegtermijnen en verborgen kosten.</li>
+      <li>📞 <strong>Onderneem actie.</strong> Neem contact op met leveranciers en vraag om offerte in writing.</li>
+    </ol>
+  </div>
+
+  <!-- TAB: BRONNEN -->
+  <div class="tab-panel" id="tab-bronnen">
+    <h2>Bronnen &amp; Referenties</h2>
+
+    <h3>Marktdata &amp; Energieprijzen</h3>
+    <ul>
+      <li><a href="https://www.oilpriceapi.com">OilPrice API</a> — TTF-gasprijzen real-time</li>
+      <li><a href="https://www.investing.com">Investing.com</a> — TTF futures en historische data</li>
+      <li><a href="https://euenergy.live">EU Energy</a> — Belpex/EPEX spotprijzen</li>
+      <li><a href="https://www.elia.be">Elia.be</a> — Belgische day-ahead referentieprijzen</li>
+    </ul>
+
+    <h3>Gasopslag &amp; Aanbod</h3>
+    <ul>
+      <li><a href="https://agsi.gie.eu">GIE AGSI+</a> — Europese gasopslagstanden</li>
+      <li><a href="https://www.ice.com">ICE</a> — TTF futures en contractdata</li>
+    </ul>
+
+    <h3>Geopolitiek &amp; Marktanalyse</h3>
+    <ul>
+      <li><a href="https://www.iea.org">IEA (International Energy Agency)</a> — Beleid en prognoses</li>
+      <li><a href="https://www.reuters.com">Reuters</a> — Internationaal energienieuws</li>
+    </ul>
+
+    <h3>België-specifiek</h3>
+    <ul>
+      <li><a href="https://www.vreg.be">VREG</a> — Vlaamse regulatieautoriteit</li>
+      <li><a href="https://www.creg.be">CREG</a> — Belgische marktmonitor</li>
+      <li><a href="https://www.mijnenergie.be">Mijn Energie</a> — Consumenten advies</li>
+    </ul>
+  </div>
+
 </div>
 
-<!-- KPIs -->
-<div class="kpi-grid">
-  <div class="kpi">
-    <div class="kpi-label">TTF Gas vandaag</div>
-    <div class="kpi-val">€{{ kpis_ttf }}<span class="kpi-sub">/MWh</span></div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-label">Belpex Elektr. vandaag</div>
-    <div class="kpi-val">€{{ kpis_belpex }}<span class="kpi-sub">/MWh</span></div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-label">EU Gasopslag</div>
-    <div class="kpi-val">~{{ kpis_storage }}%</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-label">Brent Crude</div>
-    <div class="kpi-val">${{ kpis_brent }}<span class="kpi-sub">/vat</span></div>
-  </div>
-</div>
+<!-- FOOTER -->
+<footer class="footer">
+  <p>Opgesteld: {{ report_date }} · {{ report_time }}</p>
+  <p>Dit rapport is een statische kopie gegenereerd op {{ report_date }}. Voor actuele gegevens, bezoek de interactieve versie.</p>
+</footer>
 
-<!-- DATA ARRAYS -->
+<!-- DATA ARRAYS FOR CHARTS -->
 <script>
 const marketData = {{ market_data_json }};
 const forecastBase = {{ forecast_base_json }};
 const forecastBull = {{ forecast_bull_json }};
 const forecastBear = {{ forecast_bear_json }};
+const trendlines = {{ chart_trendlines_json }};
 </script>
 
-<p style="color:#64748b;font-size:11px;margin-top:40px;text-align:center">Generated: {{ report_date }} {{ report_time }}</p>
+<!-- CHART RENDERING -->
+<script>
+function drawLineChart(canvasId, dataSeries, options = {}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+
+  // Layout constants
+  const padding = { top: 20, right: 30, bottom: 40, left: 50 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+
+  // Default options
+  const opts = {
+    yDomain: options.yDomain || [30, 120],
+    yLabel: options.yLabel || 'Price (€/MWh)',
+    xLabel: options.xLabel || 'Date',
+    refLineY: options.refLineY || null,
+    refLineX: options.refLineX || null,
+    ...options
+  };
+
+  // Clear canvas
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, width, height);
+
+  // Draw grid
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 5; i++) {
+    const y = padding.top + (i / 5) * chartHeight;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(width - padding.right, y);
+    ctx.stroke();
+  }
+
+  // Draw axes
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top);
+  ctx.lineTo(padding.left, height - padding.bottom);
+  ctx.lineTo(width - padding.right, height - padding.bottom);
+  ctx.stroke();
+
+  // Y-axis labels
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '11px monospace';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    const value = opts.yDomain[0] + (i / 5) * (opts.yDomain[1] - opts.yDomain[0]);
+    const y = padding.top + (1 - i / 5) * chartHeight;
+    ctx.fillText(value.toFixed(0), padding.left - 8, y + 4);
+  }
+
+  // Draw data series
+  const colors = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444'];
+  dataSeries.forEach((series, idx) => {
+    ctx.strokeStyle = colors[idx % colors.length];
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    let firstPoint = true;
+    series.data.forEach((point, i) => {
+      const x = padding.left + (i / (series.data.length - 1)) * chartWidth;
+      const normValue = (point - opts.yDomain[0]) / (opts.yDomain[1] - opts.yDomain[0]);
+      const y = padding.top + (1 - normValue) * chartHeight;
+
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+  });
+
+  // Legend (simplified)
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '12px Georgia, serif';
+  ctx.textAlign = 'left';
+  dataSeries.forEach((series, idx) => {
+    ctx.fillStyle = colors[idx % colors.length];
+    ctx.fillRect(width - 150, 20 + idx * 20, 10, 10);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillText(series.label || `Series ${idx + 1}`, width - 135, 28 + idx * 20);
+  });
+}
+
+function drawForecastChart() {
+  const canvas = document.getElementById('forecast-chart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+
+  // Simple forecast rendering (similar to above but with 3 scenarios)
+  const padding = { top: 20, right: 30, bottom: 40, left: 50 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+
+  // Clear
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, width, height);
+
+  // Grid
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 5; i++) {
+    const y = padding.top + (i / 5) * chartHeight;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(width - padding.right, y);
+    ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top);
+  ctx.lineTo(padding.left, height - padding.bottom);
+  ctx.lineTo(width - padding.right, height - padding.bottom);
+  ctx.stroke();
+
+  // Draw forecast scenarios
+  const yDomain = [20, 90];
+  const scenarios = [
+    { data: forecastBase, label: 'Basis', color: '#0ea5e9' },
+    { data: forecastBull, label: 'Bullish', color: '#ef4444' },
+    { data: forecastBear, label: 'Bearish', color: '#10b981' }
+  ];
+
+  scenarios.forEach((scenario) => {
+    ctx.strokeStyle = scenario.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    let firstPoint = true;
+    scenario.data.forEach((point, i) => {
+      const x = padding.left + (i / (scenario.data.length - 1)) * chartWidth;
+      const normValue = (point.ttf - yDomain[0]) / (yDomain[1] - yDomain[0]);
+      const y = padding.top + (1 - normValue) * chartHeight;
+
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+  });
+
+  // Legend
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '12px Georgia, serif';
+  ctx.textAlign = 'left';
+  scenarios.forEach((scenario, idx) => {
+    ctx.fillStyle = scenario.color;
+    ctx.fillRect(width - 150, 20 + idx * 20, 10, 10);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillText(scenario.label, width - 135, 28 + idx * 20);
+  });
+}
+
+// Initialize charts on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // TTF Chart
+  drawLineChart('ttf-chart', [
+    { data: marketData.map(p => p.ttf), label: 'TTF' }
+  ], { yDomain: [25, 70], yLabel: 'TTF (€/MWh)' });
+
+  // Belpex Chart
+  drawLineChart('belpex-chart', [
+    { data: marketData.map(p => p.belpex), label: 'Belpex' }
+  ], { yDomain: [40, 150], yLabel: 'Belpex (€/MWh)' });
+
+  // Forecast Chart
+  drawForecastChart();
+
+  // Show alert banner if text is present
+  const banner = document.getElementById('alert-banner');
+  const bannerText = banner ? banner.querySelector('p').textContent : '';
+  if (bannerText && bannerText.trim()) {
+    banner.classList.add('active');
+  }
+});
+</script>
+
+<!-- TAB SWITCHING -->
+<script>
+function showTab(tabName) {
+  // Hide all panels
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.classList.remove('active');
+  });
+
+  // Deactivate all buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  // Show selected panel
+  const panel = document.getElementById('tab-' + tabName);
+  if (panel) {
+    panel.classList.add('active');
+  }
+
+  // Activate selected button
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (btn) {
+    btn.classList.add('active');
+  }
+
+  // Redraw charts if visible
+  setTimeout(() => {
+    if (tabName === 'analyse') {
+      window.dispatchEvent(new Event('resize'));
+    }
+  }, 100);
+}
+
+// Initialize first tab
+document.addEventListener('DOMContentLoaded', function() {
+  showTab('analyse');
+});
+</script>
 
 </body>
 </html>
