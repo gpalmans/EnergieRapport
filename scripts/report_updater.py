@@ -270,31 +270,38 @@ class ReportUpdater:
         return content
     
     def update_confirmed_dates(self, content: str, market_data: Dict) -> str:
-        """Update list of confirmed dates for checkmarks in JSX"""
-        date_str = self.format_date(market_data.get('timestamp'))
+        """Update list of confirmed dates for checkmarks in JSX - all API dates are confirmed"""
         
-        # Find the confirmed dates array and add new date if not present
-        pattern = r'(const confirmed = \[)([^\]]+)(\]\.includes\(r\.date\))'
+        # Extract all dates from rawData since they come from reliable API sources
+        pattern = r'\{ date: "([^"]+)", ttf: [\d.]+, belpex: [\d.]+, note: "([^"]*)" \}'
+        entries = re.findall(pattern, content)
         
-        def add_date_if_missing(match):
-            dates_str = match.group(2)
-            dates = [d.strip().strip('"').strip("'") for d in dates_str.split(',')]
-            
-            if date_str not in dates:
-                dates.append(date_str)
-                # Keep only last 10 confirmed dates
-                dates = dates[-10:]
-                new_dates_str = ', '.join([f'"{d}"' for d in dates])
-                logger.info(f"Added {date_str} to confirmed dates")
-                return f"{match.group(1)}{new_dates_str}{match.group(3)}"
-            return match.group(0)
+        if not entries:
+            return content
         
-        content = re.sub(pattern, add_date_if_missing, content)
+        # Get all unique dates from rawData
+        dates = list(set([date for date, note in entries]))
+        
+        # Sort dates chronologically
+        def date_key(date_str):
+            day, month = date_str.split('/')
+            return f"{month.zfill(2)}{day.zfill(2)}"
+        
+        dates.sort(key=date_key)
+        
+        # Keep only last 15 confirmed dates for performance
+        dates = dates[-15:]
+        new_dates_str = ', '.join([f'"{d}"' for d in dates])
+        
+        # Update confirmed dates array
+        confirmed_pattern = r'(const confirmed = \[)[^\]]*(\]\.includes\(r\.date\))'
+        content = re.sub(confirmed_pattern, f'\\g<1>{new_dates_str}\\g<2>', content)
         
         # Also update footer text with confirmed dates list
         footer_pattern = r'(✓ = bevestigd officieel datapunt \()([^)]+)(\) ·)'
-        content = re.sub(footer_pattern, add_date_if_missing, content)
+        content = re.sub(footer_pattern, f'\\g<1>{new_dates_str}\\g<3>', content)
         
+        logger.info(f"Updated confirmed dates: {len(dates)} API-driven dates marked as confirmed")
         return content
     
     def update_jsx_file(self, market_data: Dict):

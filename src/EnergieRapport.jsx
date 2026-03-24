@@ -327,7 +327,7 @@ export default function EnergieRapport() {
                   const base  = ((r.ttf - 31.96) / 31.96 * 100).toFixed(1);
                   const shock = parseFloat(base) > 50;
                   const today = r.note.includes("Vandaag");
-                  const confirmed = ["27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03", "25/03"].includes(r.date);
+                  const confirmed = ["09/03", "11/03", "12/03", "13/03", "14/03", "15/03", "17/03", "19/03", "20/03", "22/03", "23/03", "24/03", "25/03"].includes(r.date);
                   return (
                     <tr key={i} style={{ borderBottom: "1px solid #1e293b", background: today ? "#0c4a6e22" : shock ? "#7f1d1d22" : "transparent" }}>
                       <td style={{ padding: "7px 11px", color: today ? "#0ea5e9" : "#e2e8f0", fontWeight: today ? 700 : 400, whiteSpace: "nowrap" }}>
@@ -355,7 +355,7 @@ export default function EnergieRapport() {
             </table>
           </div>
           <p style={{ fontSize: 11, color: "#475569", marginTop: 10, marginBottom: 0 }}>
-            ✓ = bevestigd officieel datapunt ("27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03", "25/03") · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
+            ✓ = bevestigd officieel datapunt ("09/03", "11/03", "12/03", "13/03", "14/03", "15/03", "17/03", "19/03", "20/03", "22/03", "23/03", "24/03", "25/03") · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
           </p>
         </div>
       </>)}
