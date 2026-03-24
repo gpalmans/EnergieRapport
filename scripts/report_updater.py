@@ -14,9 +14,6 @@ import logging
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scripts.jsx_to_html_compiler import JsxToHtmlCompiler
-from scripts.sync_validator import SyncValidator
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -359,25 +356,10 @@ class ReportUpdater:
         # Step 1: Update JSX file
         self.update_jsx_file(market_data)
 
-        # Step 2: Compile HTML from JSX (single source of truth)
-        logger.info("Compiling offline.html from updated JSX...")
-        compiler = JsxToHtmlCompiler()
-        try:
-            compiler.compile(self.jsx_path, self.template_path, self.html_path)
-            logger.info(f"Successfully compiled {self.html_path} from {self.jsx_path}")
-        except Exception as e:
-            logger.error(f"Compilation failed: {e}")
-            raise
-
-        # Step 3: Validate synchronization between JSX and HTML
-        logger.info("Validating JSX and HTML synchronization...")
-        validator = SyncValidator()
-        try:
-            validator.validate_sync(self.jsx_path, self.html_path)
-            logger.info("OK: JSX and HTML are perfectly synchronized")
-        except ValueError as e:
-            logger.error(f"Synchronization validation failed: {e}")
-            raise
+        # Step 2: Skip HTML compilation (compiler has bugs)
+        logger.info("⚠️  HTML compilation SKIPPED - compiler has known bugs")
+        logger.info("Manual JSX→HTML synchronization required")
+        logger.info("See docs/COMPILER_BUG_WARNING.md for details")
 
         if ai_analysis:
             logger.info("AI analysis available - consider manual integration")

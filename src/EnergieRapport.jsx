@@ -174,7 +174,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 24 MAART 2026 · 12:58
+          MARKTANALYSE — 24 MAART 2026 · 23:42
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -358,7 +358,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (24 mrt 2026)", "~26%",          "#ef4444"],
+              ["EU-gemiddelde (24 mrt 2026)", "~23%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -878,7 +878,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 24 maart 2026 · 12:58 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 24 maart 2026 · 23:42 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
