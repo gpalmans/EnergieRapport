@@ -247,28 +247,96 @@ class EnergyDataCollector:
                 
                 # Extract price based on data type
                 if data_type == 'ttf':
-                    # Look for TTF price pattern (e.g., "53.25 EUR/MWh" or "€53.25")
-                    price_match = re.search(r'(\d+\.?\d*)\s*(?:EUR|€)/MWh', content)
-                    if price_match:
-                        value = float(price_match.group(1))
-                        if 15 < value < 300:  # Valid TTF range
-                            return {'value': value, 'source': url}
+                    # Look for TTF price pattern - prioritize higher values (more likely to be current price)
+                    # Try multiple patterns and pick the highest valid price
+                    ttf_prices = []
+                    
+                    # Pattern 1: Standard EUR/MWh format
+                    price_matches = re.findall(r'(\d+\.?\d*)\s*(?:EUR|€)/MWh', content)
+                    for match in price_matches:
+                        value = float(match)
+                        if 15 < value < 300:
+                            ttf_prices.append(value)
+                    
+                    # Pattern 2: Decimal with comma (European format)
+                    price_matches_comma = re.findall(r'(\d+,\d*)\s*(?:EUR|€)/MWh', content)
+                    for match in price_matches_comma:
+                        value = float(match.replace(',', '.'))
+                        if 15 < value < 300:
+                            ttf_prices.append(value)
+                    
+                    # Pattern 3: Just number before EUR/MWh
+                    price_matches_simple = re.findall(r'(\d{2,3}\.?\d*)\s*(?:EUR|€)/MWh', content)
+                    for match in price_matches_simple:
+                        value = float(match)
+                        if 15 < value < 300:
+                            ttf_prices.append(value)
+                    
+                    # Return the highest price (most likely to be current)
+                    if ttf_prices:
+                        value = max(ttf_prices)
+                        return {'value': value, 'source': url}
                 
                 elif data_type == 'storage':
+                    # Prioritize reliable sources for gas storage data
+                    reliable_sources = ['gas-risiko.de', 'gie.agsi+', 'agsi.gie.eu', 'energiedashboard.admin.ch']
+                    is_reliable = any(source in url for source in reliable_sources)
+                    
                     # Look for storage percentage (e.g., "26%" or "26.0%")
-                    storage_match = re.search(r'(\d+\.?\d*)\s*%', content)
-                    if storage_match:
-                        value = float(storage_match.group(1))
+                    storage_matches = re.findall(r'(\d+\.?\d*)\s*%', content)
+                    for match in storage_matches:
+                        value = float(match)
                         if 0 < value <= 100:  # Valid storage range
-                            return {'value': value, 'source': url}
+                            # If from reliable source, return immediately
+                            if is_reliable:
+                                return {'value': value, 'source': url}
+                            # Otherwise, store for potential fallback
+                            if 'storage_value' not in locals():
+                                storage_value = value
+                                storage_source = url
+                    
+                    # Return value if found
+                    if 'storage_value' in locals():
+                        return {'value': storage_value, 'source': storage_source}
                 
                 elif data_type == 'brent':
-                    # Look for Brent price (e.g., "$101.55" or "101.55 USD")
-                    brent_match = re.search(r'\$?(\d+\.?\d*)\s*(?:USD|dollars?)/barrel', content, re.IGNORECASE)
-                    if brent_match:
-                        value = float(brent_match.group(1))
-                        if 30 < value < 250:  # Valid Brent range
-                            return {'value': value, 'source': url}
+                    # Look for Brent price - try multiple patterns
+                    brent_prices = []
+                    
+                    # Pattern 1: Standard USD/barrel format
+                    brent_matches = re.findall(r'\$?(\d+\.?\d*)\s*(?:USD|dollars?)/barrel', content, re.IGNORECASE)
+                    for match in brent_matches:
+                        value = float(match)
+                        if 30 < value < 250:
+                            brent_prices.append(value)
+                    
+                    # Pattern 2: Just $ before number
+                    brent_matches_dollar = re.findall(r'\$(\d+\.?\d*)', content)
+                    for match in brent_matches_dollar:
+                        value = float(match)
+                        if 30 < value < 250:
+                            brent_prices.append(value)
+                    
+                    # Pattern 3: Number + USD (without barrel)
+                    brent_matches_usd = re.findall(r'(\d+\.?\d*)\s*USD', content, re.IGNORECASE)
+                    for match in brent_matches_usd:
+                        value = float(match)
+                        if 30 < value < 250:
+                            brent_prices.append(value)
+                    
+                    # Pattern 4: European format with comma
+                    brent_matches_comma = re.findall(r'(\d+,\d*)\s*(?:USD|€)/barrel', content, re.IGNORECASE)
+                    for match in brent_matches_comma:
+                        value = float(match.replace(',', '.'))
+                        if 30 < value < 250:
+                            brent_prices.append(value)
+                    
+                    # Return the most reasonable price (avoid extremes)
+                    if brent_prices:
+                        # Use median to avoid outliers
+                        brent_prices.sort()
+                        value = brent_prices[len(brent_prices)//2]
+                        return {'value': value, 'source': url}
             
             return None
 
