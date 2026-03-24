@@ -53,7 +53,10 @@ class EnergyDataCollector:
 
         # Claude API client
         self.claude_client = None
-        self.claude_model = os.getenv('CLAUDE_MODEL', 'claude-haiku-4-5-20251001')
+        claude_model_env = os.getenv('CLAUDE_MODEL')
+        logger.info(f"   DEBUG: CLAUDE_MODEL env var = '{claude_model_env}'")
+        self.claude_model = claude_model_env if claude_model_env else 'claude-haiku-4-5-20251001'
+        logger.info(f"   DEBUG: Final claude_model = '{self.claude_model}'")
 
         if ANTHROPIC_AVAILABLE:
             api_key = os.getenv('ANTHROPIC_API_KEY')
