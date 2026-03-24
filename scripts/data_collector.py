@@ -176,6 +176,12 @@ CRITICAL RULES:
             response_text = message.content[0].text.strip()
             logger.info(f"   Claude response length: {len(response_text)} chars")
             logger.info(f"   Claude response preview: {response_text[:200]}...")
+            
+            # Log the search queries being used
+            logger.info(f"   Search queries used:")
+            logger.info(f"   1. TTF: 'TTF gas price EUR/MWh latest {datetime.now().strftime('%B %Y')}'")
+            logger.info(f"   2. Storage: 'EU gas storage percentage latest {datetime.now().strftime('%B %Y')}'")
+            logger.info(f"   3. Brent: 'Brent crude oil price USD/barrel latest {datetime.now().strftime('%B %Y')}'")
 
             # Parse JSON response - try multiple extraction methods
             import re
