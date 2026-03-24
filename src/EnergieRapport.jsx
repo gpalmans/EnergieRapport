@@ -31,6 +31,7 @@ const rawData = [
   { date: "06/03", ttf: 57.0,  belpex: 114.0, note: "" },
   { date: "07/03", ttf: 55.0,  belpex: 102.0, note: "WE" },
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "Piek" },
+  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
   { date: "10/03", ttf: 57.0,  belpex: 112.0, note: "IEA" },
   { date: "11/03", ttf: 55.48, belpex: 74.63, note: "" },
   { date: "12/03", ttf: 56.72, belpex: 67.74, note: "" },
@@ -174,7 +175,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 24 MAART 2026 · 22:59
+          MARKTANALYSE — 25 MAART 2026 · 00:01
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -228,10 +229,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€53.25", "/MWh",  "-12.1% vs gisteren",   "#22c55e"],
-          ["Belpex Elektr. vandaag","€72.78", "/MWh", "-42.0% vs gisteren",   "#22c55e"],
-          ["België Gasopslag",          "~26%",   " cap.", "kritiek laag niveau",     "#ef4444"],
-          ["Brent Ruwe Olie",       "$101.55", "/vat",  "+1.9% vs gisteren",   "#ef4444"],
+          ["TTF Gas vandaag",       "€53.82", "/MWh",  "-12.1% vs gisteren",   ""],
+          ["Belpex Elektr. vandaag","€72.04", "/MWh", "-42.0% vs gisteren",   ""],
+          ["België Gasopslag",          ~23%",   " cap.", "kritiek laag niveau",     ""],
+          ["Brent Ruwe Olie",       "$104.49", "/vat",  "+1.9% vs gisteren",   ""],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -319,7 +320,7 @@ export default function EnergieRapport() {
                   const base  = ((r.ttf - 31.96) / 31.96 * 100).toFixed(1);
                   const shock = parseFloat(base) > 50;
                   const today = r.note.includes("Vandaag");
-                  const confirmed = ["27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03"].includes(r.date);
+                  const confirmed = ["27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03", "25/03"].includes(r.date);
                   return (
                     <tr key={i} style={{ borderBottom: "1px solid #1e293b", background: today ? "#0c4a6e22" : shock ? "#7f1d1d22" : "transparent" }}>
                       <td style={{ padding: "7px 11px", color: today ? "#0ea5e9" : "#e2e8f0", fontWeight: today ? 700 : 400, whiteSpace: "nowrap" }}>
@@ -347,7 +348,7 @@ export default function EnergieRapport() {
             </table>
           </div>
           <p style={{ fontSize: 11, color: "#475569", marginTop: 10, marginBottom: 0 }}>
-            ✓ = bevestigd officieel datapunt ("27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03") · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
+            ✓ = bevestigd officieel datapunt ("27/02", "09/03", "11/03", "20/03", "21/03", "23/03", "24/03", "25/03") · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
           </p>
         </div>
       </>)}
@@ -358,7 +359,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["EU-gemiddelde (24 mrt 2026)", "~23%",          "#ef4444"],
+              ["EU-gemiddelde (25 mrt 2026)", "~23%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -878,7 +879,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 24 maart 2026 · 22:59 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 25 maart 2026 · 00:01 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
