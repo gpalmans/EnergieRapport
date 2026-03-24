@@ -167,24 +167,31 @@ class ReportUpdater:
     
     def get_previous_values(self, content: str) -> tuple:
         """Extract previous day values from rawData"""
-        # Find the last "Vandaag" entry before the current one
-        lines = content.split('\n')
-        ttf_values = []
-        belpex_values = []
+        # Find all rawData entries
+        pattern = r'\{ date: "([^"]+)", ttf: ([\d.]+), belpex: ([\d.]+), note: "([^"]*)" \}'
+        entries = re.findall(pattern, content)
         
-        for line in lines:
-            if 'date:' in line and 'ttf:' in line and 'belpex:' in line:
-                # Extract TTF and Belpex values
-                ttf_match = re.search(r'ttf: ([\d.]+)', line)
-                belpex_match = re.search(r'belpex: ([\d.]+)', line)
-                
-                if ttf_match and belpex_match:
-                    ttf_values.append(float(ttf_match.group(1)))
-                    belpex_values.append(float(belpex_match.group(1)))
+        if not entries:
+            return 53.25, 72.78  # fallback values
         
-        # Return the previous values (second to last)
-        if len(ttf_values) >= 2:
-            return ttf_values[-2], belpex_values[-2]
+        # Sort entries by date to get chronological order
+        # Convert date format from DD/MM to comparable format
+        def date_key(date_str):
+            day, month = date_str.split('/')
+            return f"{month.zfill(2)}{day.zfill(2)}"
+        
+        entries.sort(key=lambda x: date_key(x[0]))
+        
+        # Find the current "Vandaag" entry and return the previous one
+        for i, (date, ttf, belpex, note) in enumerate(entries):
+            if note == "Vandaag" and i > 0:
+                prev_date, prev_ttf, prev_belpex, _ = entries[i-1]
+                return float(prev_ttf), float(prev_belpex)
+        
+        # If no "Vandaag" found, return the last entry's previous
+        if len(entries) >= 2:
+            return float(entries[-2][1]), float(entries[-2][2])
+        
         return 53.25, 72.78  # fallback values
     
     def calculate_change(self, current: float, previous: float) -> str:
