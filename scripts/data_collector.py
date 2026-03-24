@@ -55,7 +55,7 @@ class EnergyDataCollector:
         self.claude_client = None
         claude_model_env = os.getenv('CLAUDE_MODEL')
         logger.info(f"   DEBUG: CLAUDE_MODEL env var = '{claude_model_env}'")
-        self.claude_model = claude_model_env if claude_model_env else 'claude-haiku-4-5-20251001'
+        self.claude_model = claude_model_env if claude_model_env else 'claude-sonnet-4-6'
         logger.info(f"   DEBUG: Final claude_model = '{self.claude_model}'")
 
         if ANTHROPIC_AVAILABLE:
@@ -132,6 +132,11 @@ class EnergyDataCollector:
         Use Claude API to intelligently search and parse energy market data
         Returns: True if successful, False if skipped/failed
         """
+        # Debug logging at start of method
+        claude_model_env = os.getenv('CLAUDE_MODEL')
+        logger.info(f"   DEBUG COLLECT: CLAUDE_MODEL env var = '{claude_model_env}'")
+        logger.info(f"   DEBUG COLLECT: Current claude_model = '{self.claude_model}'")
+        
         if not self.claude_client:
             logger.warning("Claude API not available - using fallback for TTF, Storage, Brent")
             self._fallback_value('ttf')
