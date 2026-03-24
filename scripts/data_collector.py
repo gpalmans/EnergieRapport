@@ -161,7 +161,7 @@ class EnergyDataCollector:
 
         try:
             # Search for TTF gas price
-            ttf_query = f"TTF gas price EUR/MWh {datetime.now().strftime('%B %Y')}"
+            ttf_query = f"TTF gas price EUR/MWh {datetime.now().strftime('%d %B %Y')}"
             logger.info(f"   Searching: {ttf_query}")
             ttf_response = self.tavily_client.search(
                 query=ttf_query,
@@ -182,7 +182,7 @@ class EnergyDataCollector:
                 self._fallback_value('ttf')
 
             # Search for EU gas storage
-            storage_query = f"EU gas storage percentage {datetime.now().strftime('%B %Y')}"
+            storage_query = f"EU gas storage percentage {datetime.now().strftime('%d %B %Y')}"
             logger.info(f"   Searching: {storage_query}")
             storage_response = self.tavily_client.search(
                 query=storage_query,
@@ -203,7 +203,7 @@ class EnergyDataCollector:
                 self._fallback_value('eu_storage')
 
             # Search for Brent oil price
-            brent_query = f"Brent crude oil price USD/barrel {datetime.now().strftime('%B %Y')}"
+            brent_query = f"Brent crude oil price USD/barrel {datetime.now().strftime('%d %B %Y')}"
             logger.info(f"   Searching: {brent_query}")
             brent_response = self.tavily_client.search(
                 query=brent_query,
