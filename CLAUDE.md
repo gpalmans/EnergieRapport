@@ -342,7 +342,7 @@ Voor ELKE update, voer deze checklist uit:
 - [ ] TTF prijs consistent overal
 - [ ] Belpex prijs consistent overal  
 - [ ] Brent prijs consistent overal
-- [ ] EU gasopslag consistent overal
+- [ ] België gasopslag consistent overal
 - [ ] Header datum = huidige rapportdatum
 
 **Tekst & Bronnen:**
@@ -444,7 +444,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 
 ### Data Verzamelingsstrategie
 
-**EU Gasopslag Alternatieve Bronnen:**
+**België gasopslag Alternatieve Bronnen:**
 - Swiss Info: Europese storage facilities percentages
 - Chinese financial sources: GIE AGSI data vertalingen
 - Bruegel: European natural gas imports datasets
@@ -468,7 +468,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 - [ ] TTF prijs consistent overal
 - [ ] Belpex prijs consistent overal  
 - [ ] Brent prijs consistent overal
-- [ ] EU gasopslag consistent overal
+- [ ] België gasopslag consistent overal
 - [ ] Header datum = huidige rapportdatum
 
 ### Bronnen Strategie
@@ -481,7 +481,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 **Data Verificatie:**
 - Trading Economics: TTF en Brent (betrouwbaar)
 - dayaheadmarket.eu: Belpex average (nauwkeurig)
-- Swiss Info: EU gasopslag (actueel)
+- Swiss Info: België gasopslag (actueel)
 - GIE AGSI: Primaire bron (via secondary sources)
 
 ---
@@ -495,7 +495,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 - Geopolitiek sectie: $101.06/vat
 - **Oplossing**: Altijd alle voorkomens van dezelfde data synchroniseren
 
-**Probleem 2: EU Gasopslag Data "Niet Beschikbaar"**
+**Probleem 2: België gasopslag Data "Niet Beschikbaar"**
 - Header KPI: "N.v.t. - data niet beschikbaar"
 - Context sectie: 29.0% (18/03/2026)
 - **Oplossing**: Zoek actief naar alternatieve bronnen (Swiss Info, GIE AGSI via Chinese financial sources)
@@ -506,7 +506,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 
 ### Data Verzamelingsstrategie
 
-**EU Gasopslag Alternatieve Bronnen:**
+**België gasopslag Alternatieve Bronnen:**
 - Swiss Info: Europese storage facilities percentages
 - Chinese financial sources: GIE AGSI data vertalingen
 - Bruegel: European natural gas imports datasets
@@ -530,7 +530,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 - [ ] TTF prijs consistent overal
 - [ ] Belpex prijs consistent overal  
 - [ ] Brent prijs consistent overal
-- [ ] EU gasopslag consistent overal
+- [ ] België gasopslag consistent overal
 - [ ] Header datum = huidige rapportdatum
 
 ### Bronnen Strategie
@@ -543,7 +543,7 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 **Data Verificatie:**
 - Trading Economics: TTF en Brent (betrouwbaar)
 - dayaheadmarket.eu: Belpex average (nauwkeurig)
-- Swiss Info: EU gasopslag (actueel)
+- Swiss Info: België gasopslag (actueel)
 - GIE AGSI: Primaire bron (via secondary sources)
 
 ---

@@ -230,7 +230,7 @@ export default function EnergieRapport() {
         {[
           ["TTF Gas vandaag",       "€53.25", "/MWh",  "-12.1% vs gisteren",   "#22c55e"],
           ["Belpex Elektr. vandaag","€72.78", "/MWh", "-42.0% vs gisteren",   "#22c55e"],
-          ["EU Gasopslag",          "~26%",   " cap.", "kritiek laag niveau",     "#ef4444"],
+          ["België Gasopslag",          "~26%",   " cap.", "kritiek laag niveau",     "#ef4444"],
           ["Brent Ruwe Olie",       "$101.55", "/vat",  "+1.9% vs gisteren",   "#ef4444"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
@@ -769,7 +769,7 @@ export default function EnergieRapport() {
             <h4 style={{ margin: "0 0 12px", color: "#38bdf8", fontSize: 15, fontWeight: 700 }}>📋 PRAKTISCH ADVIES — Concrete Stappen</h4>
             
             <div style={{ marginBottom: 12 }}>
-              <strong style={{ color: "#7dd3fc" }}>1. Observatieperiode (4-6 weken):</strong> Wacht tot eind april 2026 om LNG-disruptie impact te beoordelen. Volg TTF dagelijks via Trading Economics. Monitor EU gasopslag via GIE AGSI+ (update elke dinsdag). Rabobank verwacht Q2 2026 TTF €61/MWh - wacht of dit zich materialiseert.
+              <strong style={{ color: "#7dd3fc" }}>1. Observatieperiode (4-6 weken):</strong> Wacht tot eind april 2026 om LNG-disruptie impact te beoordelen. Volg TTF dagelijks via Trading Economics. Monitor België gasopslag via GIE AGSI+ (update elke dinsdag). Rabobank verwacht Q2 2026 TTF €61/MWh - wacht of dit zich materialiseert.
             </div>
             <div style={{ marginBottom: 12 }}>
               <strong style={{ color: "#7dd3fc" }}>2. Trigger voor Variabel:</strong> Als TTF structureel onder €45/MWh stabiliseert gedurende 2+ weken EN EU opslag boven 35% eind mei, overweeg dan variabel met 12-18 maanden horizon. Dit biedt de beste kans op lagere gemiddelde kosten nu de LNG glut voorbij is.
@@ -810,13 +810,13 @@ export default function EnergieRapport() {
               cat: "🔥 Gasmarkt — TTF", color: "#0ea5e9",
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
-                { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële EU gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
+                { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële België gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
                 { n: "Trading Economics — TTF 24/03/2026",    d: "Bevestigd: TTF €52.85/MWh (-6.77% vs vorigen dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
                 { n: "OilPriceAPI — Live TTF Data (24/03/2026)", d: "Bevestigd: TTF €53.65/MWh live prijs",                          url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
                 { n: "TradingPedia — LNG Glut Analysis (23/03/2026)", d: "Rabobank: LNG glut voorbij, Q2 2026 TTF €61/MWh, supply stagneert", url: "https://www.tradingpedia.com/2026/03/23/gulf-disruptions-reshape-ttf-gas-as-lng-glut-ends/" },
                 { n: "CBS News — Iran War Escalation (20/03/2026)", d: "Iran strikes Kuwait oil refinery, energy prices jump 35%", url: "https://www.cbsnews.com/live-updates/iran-war-israel-strike-south-pars-gas-field-trump-threat-oil-gas-prices/" },
                 { n: "NBC News — Gas Field Damage (20/03/2026)", d: "South Pars gas field attacks send energy prices soaring", url: "https://www.nbcnews.com/world/iran/iran-war-gas-field-attacks-energy-prices-trump-israel-south-pars-rcna264249" },
-                { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over EU gasopslag en marktevolutie",            url: "https://europeangashub.com" },
+                { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over België gasopslag en marktevolutie",            url: "https://europeangashub.com" },
                 { n: "Gas to Power Journal — TTF analysis",    d: "TTF prices fall below €30/MWh as geopolitical risk premium fades",    url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
               ],
             },
@@ -870,7 +870,7 @@ export default function EnergieRapport() {
           ))}
 
           <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde datapunten (✓): TTF 24/03 = €53.25 (-12.1% vs gisteren, bronnen: Trading Economics + OilPriceAPI), Brent 24/03 = $101.55 (+1.9% vs gisteren, bronnen: CNBC + Trading Economics), Belpex 24/03 = €72.78 (-42.0% vs gisteren, bronnen: EU Energy Live + EnergyPrices.eu), EU gasopslag mrt 2026 = ~26% (Trading Economics projectie). Geopolitieke bronnen: Test-Aankoop (Mega tarieven), Eneco (TTF volatiliteit), FinancialContent (sector rotation), CNBC/IEA (consumentenadvies). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
+            <strong>Databenadering:</strong> Bevestigde datapunten (✓): TTF 24/03 = €53.25 (-12.1% vs gisteren, bronnen: Trading Economics + OilPriceAPI), Brent 24/03 = $101.55 (+1.9% vs gisteren, bronnen: CNBC + Trading Economics), Belpex 24/03 = €72.78 (-42.0% vs gisteren, bronnen: EU Energy Live + EnergyPrices.eu), België gasopslag mrt 2026 = ~26% (Trading Economics projectie). Geopolitieke bronnen: Test-Aankoop (Mega tarieven), Eneco (TTF volatiliteit), FinancialContent (sector rotation), CNBC/IEA (consumentenadvies). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
           </div>
         </div>
       )}

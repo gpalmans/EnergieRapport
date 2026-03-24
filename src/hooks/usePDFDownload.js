@@ -135,7 +135,7 @@ const preparePDFData = (reportData) => {
     keyFactors: [
       ['Hormuz Blokkade', 'Heropening vs. prolongatie \u2014 dagelijks monitoren', 'red'],
       ['Gasveld Herstel', 'South Pars/Ras Laffan reparatie 3-5 mnd', 'red'],
-      ['EU Gasopslag', 'Injectieseizoen mrt-okt, doel 90%', 'amber'],
+      ['België gasopslag', 'Injectieseizoen mrt-okt, doel 90%', 'amber'],
       ['IEA Reserves', 'Nog 800M vaten beschikbaar, 2e vrijgave onwaarschijnlijk', 'amber'],
       ['Diplomatie VS/Israel', 'Escalatie +10-15%, de-escalatie -20-30%', 'green'],
       ['VREG Tarieven', 'Consumentenprijzen +15-25% in mei-juni 2026', 'green'],

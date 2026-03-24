@@ -6,7 +6,7 @@ description: Voer de volledige kwaliteitschecklist uit, update UPDATE_LOG.md en 
 
 **Data volledigheid:**
 
-- [ ] TTF, Belpex, EU Gasopslag, Brent alle 4 ✓ via 2+ bronnen
+- [ ] TTF, Belpex, België gasopslag, Brent alle 4 ✓ via 2+ bronnen
 - [ ] Minimaal 3 datapunten in rawData met ✓
 - [ ] TTF + Belpex data loopt t/m de rapportdatum
 
@@ -37,7 +37,7 @@ description: Voer de volledige kwaliteitschecklist uit, update UPDATE_LOG.md en 
 - [ ] TTF consistent in KPI, rawData en geopolitieke tekst
 - [ ] Belpex consistent in KPI, rawData en bronnen
 - [ ] Brent consistent in KPI en geopolitieke sectie
-- [ ] EU gasopslag consistent in KPI en contextsectie
+- [ ] België gasopslag consistent in KPI en contextsectie
 
 **PDF-implementatie:**
 
@@ -64,7 +64,7 @@ description: Voer de volledige kwaliteitschecklist uit, update UPDATE_LOG.md en 
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €XX.XX/MWh (+/-X.X%) - [bron]
 - **Belpex**: €XXX.X/MWh (+/-X.X%) - [bron]
-- **EU Gasopslag**: ~XX% - [bron]
+- **België gasopslag**: ~XX% - [bron]
 - **Brent**: $XXX.XX/vat (+/-X.X%) - [bron]
 
 ### **Marktontwikkelingen & Geopolitiek**

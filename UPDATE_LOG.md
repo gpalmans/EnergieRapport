@@ -11,7 +11,7 @@ en welke databronnen de cijfers hebben bevestigd.
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €53.25/MWh (-12.1% vs gisteren) - [data requires validation]
 - **Belpex**: €72.78/MWh (-42.0% vs gisteren) - [data requires validation]
-- **EU Gasopslag**: ~26% - Trading Economics
+- **België gasopslag**: ~26% - Trading Economics
 - **Brent**: $101.55/vat (+1.9% vs gisteren) - [data requires validation]
 
 ### **Marktontwikkelingen & Geopolitiek**
@@ -40,7 +40,7 @@ en welke databronnen de cijfers hebben bevestigd.
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €53.54/MWh (-11.7% vs gisteren) - Trading Economics
 - **Belpex**: €72.78/MWh (-30.0% vs gisteren) - Belpex.be
-- **EU Gasopslag**: ~26% - Trading Economics
+- **België gasopslag**: ~26% - Trading Economics
 - **Brent**: $101.40/vat (+1.5% vs gisteren) - Bloomberg
 
 ### **Wijzigingen**: 
@@ -62,7 +62,7 @@ en welke databronnen de cijfers hebben bevestigd.
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €58.50/MWh (-1.4% vs 21/03, -5.6% vs piek €62) - OilPriceAPI €59.34 (21/03), schatting 22/03
 - **Belpex Elektriciteit**: €78.00/MWh (-17.9% vs 21/03) - euenergy.live, volatiel door crisis
-- **EU Gasopslag**: ~26% - Trading Economics + Reuters (22-27% range eind maart projectie)
+- **België gasopslag**: ~26% - Trading Economics + Reuters (22-27% range eind maart projectie)
 - **Brent Ruwe Olie**: $112.19/vat (+3.3% vs 19/03) - Trading Economics (20/03 data)
 
 ### **Marktontwikkelingen & Geopolitiek**
@@ -89,7 +89,7 @@ Aanpassing: Bullish kans verlaagd van 40% naar 35% door lichte TTF-daling, maar 
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €62.00/MWh (+13.5% vs gisteren) - Trading Economics bevestigd
 - **Belpex Elektriciteit**: €125.50/MWh (+25.1% vs gisteren) - Berekend op basis van TTF-schok
-- **EU Gasopslag**: ~29% - GIE AGSI bevestigd
+- **België gasopslag**: ~29% - GIE AGSI bevestigd
 - **Brent Ruwe Olie**: $108.50/vat (+11.8% vs gisteren) - Gepeakt op $119 na gasveld aanvallen
 
 ### **Belangrijke Marktontwikkelingen**
@@ -139,7 +139,7 @@ Aanpassing: Bullish kans verlaagd van 40% naar 35% door lichte TTF-daling, maar 
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €54.66/MWh (+6.02% vs gisteren) - Trading Economics bevestigd
 - **Belpex Elektriciteit**: €100.30/MWh (+23.9% vs gisteren) - dayaheadmarket.eu bevestigd (€0.1003/kWh)
-- **EU Gasopslag**: Data niet beschikbaar
+- **België gasopslag**: Data niet beschikbaar
 - **Brent Ruwe Olie**: $97.06/vat (+0.77% vs gisteren) - Trading Economics bevestigd
 
 ### **Belangrijke Marktontwikkelingen**
@@ -187,7 +187,7 @@ Aanpassing: Bullish kans verlaagd van 40% naar 35% door lichte TTF-daling, maar 
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €51.56/MWh (+1.32% vs gisteren) - Trading Economics bevestigd
 - **Belpex Elektriciteit**: €80.92/MWh (-28.9% vs gisteren) - Elexys berekend gemiddelde
-- **EU Gasopslag**: 29.0% (stabiel) - Bruegel bevestigd
+- **België gasopslag**: 29.0% (stabiel) - Bruegel bevestigd
 - **Brent Ruwe Olie**: $101.06/vat (-2.28% vs gisteren) - Trading Economics bevestigd
 
 ### **Belangrijke Marktontwikkelingen**
@@ -230,7 +230,7 @@ Markt blijft in crisismodus met structurele supply beperkingen (Hormuz) versus t
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €50.75/MWh (+2.1% vs gisteren) - OilPriceAPI bevestigd
 - **Belpex Elektriciteit**: €113.77/MWh (+56.8% vs gisteren) - EU Energy Live bevestigd  
-- **EU Gasopslag**: 29% (stabiel vs gisteren) - Energy Dashboard bevestigd
+- **België gasopslag**: 29% (stabiel vs gisteren) - Energy Dashboard bevestigd
 - **Brent Ruwe Olie**: $103.06/vat (-1.4% vs gisteren) - MarketWatch bevestigd
 
 ### **Belangrijke Marktontwikkelingen**
@@ -292,13 +292,13 @@ De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse 
 ### Bevestigde datapunten
 - **TTF Gas**: €49.69/MWh (OilPriceAPI ✓✓, Trading Economics €52.03) - daling -1.3% vs gisteren
 - **Belpex**: €72.52/MWh (EU Energy Live ✓✓) - stijging +1.4% vs gisteren  
-- **EU Gasopslag**: 29.2% (Energy Dashboard ✓) - kritiek laag niveau
+- **België gasopslag**: 29.2% (Energy Dashboard ✓) - kritiek laag niveau
 - **Brent Crude**: $104.56/vat (MarketWatch ✓) - stabilisatie rond $105
 
 ### Marktdynamiek
 - TTF stabiliseert rond €50 na extreme volatiliteit vorige week
 - Belpex toont lichte stijging ondanks stabielere gasprijzen
-- EU gasopslag daalt verder onder kritieke 30% drempel
+- België gasopslag daalt verder onder kritieke 30% drempel
 - Brent stabiliseert na IEA strategische reserve release
 
 ### Geopolitieke context
@@ -345,14 +345,14 @@ De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse 
 
 - **TTF Gas:** €50.33/MWh (Trading Economics -11.3% vs gisteren, OilPriceAPI €52.28)
 - **Belpex Elektriciteit:** €71.50/MWh (geschat op basis van marktvolatiliteit, +6% vs gisteren)
-- **EU Gasopslag:** 29.4% (Trading Economics, kritiek laag niveau)
+- **België gasopslag:** 29.4% (Trading Economics, kritiek laag niveau)
 - **Brent Ruwe Olie:** ~$102/vat (stabilisatie na IEA-interventie)
 
 ### Marktdynamiek
 
 - TTF daalt significant (-11%) als geopolitieke risicopremie begint te vervagen
 - Belpex stijgt licht (+6) door aanhoudende gasprijsinvloed ondanks lagere TTF
-- EU gasopslag blijft kritiek laag (<30%) wat prijsondersteuning biedt
+- België gasopslag blijft kritiek laag (<30%) wat prijsondersteuning biedt
 - Brent stabiliseert rond $102 na IEA reserve release effect
 
 ### Geopolitieke Context
@@ -411,7 +411,7 @@ De energiecrisis escaleert met Belpex die +56.8% stijgt, de grootste dagelijkse 
 | TTF 09/03/2026 | €59.57/MWh | Xinhua |
 | TTF 11/03/2026 | €55.48/MWh | oilpriceapi.com |
 | Belpex 11/03/2026 | €74.60/MWh | ENTSO-E / dayaheadmarket.eu |
-| EU gasopslag 08/03/2026 | <30% | GIE AGSI+ |
+| België gasopslag 08/03/2026 | <30% | GIE AGSI+ |
 | Brent piek 09/03/2026 | $119.5/vat | Reuters/Bloomberg |
 | Brent 11/03/2026 | ~$88/vat | Reuters (na IEA-aankondiging) |
 
@@ -466,7 +466,7 @@ bevestigde marktbewegingsreeksen (bevestigde ankerpunten als ijkpunten gebruikt)
 | TTF 12/03/2026 | €51.73/MWh | Trading Economics (bevestigd oilpriceapi ~€52) |
 | TTF 11/03/2026 | €49.99/MWh | Trading Economics "previous" (vs. €55.48 in vorige update via oilpriceapi) |
 | Belpex 11/03/2026 | €74.60/MWh | ENTSO-E (behouden uit vorige update) |
-| EU gasopslag 11/03/2026 | 29.27% | GIE AGSI+ (direct van gie.eu) |
+| België gasopslag 11/03/2026 | 29.27% | GIE AGSI+ (direct van gie.eu) |
 | Brent piek 12/03/2026 | tijdelijk >$100 | BNN Bloomberg |
 
 ### Geïnterpoleerde datapunten (~)
@@ -520,7 +520,7 @@ bevestigde marktbewegingsreeksen (bevestigde ankerpunten als ijkpunten gebruikt)
 | TTF 12/03/2026 | €48.54/MWh | oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 (gemiddelde gebruikt) |
 | Belpex 12/03/2026 | €66.59/MWh | EU Energy Live ✓✓ |
 | Belpex 11/03/2026 | €74.63/MWh | EU Energy Live (correctie van 74.6) |
-| EU gasopslag 12/03/2026 | 29.3% | GIE AGSI+ (multiple sources confirm <30%) |
+| België gasopslag 12/03/2026 | 29.3% | GIE AGSI+ (multiple sources confirm <30%) |
 | Brent 12/03/2026 | $96.90/vat | Investing.com (intraday high $103.06) |
 
 ### Geïnterpoleerde datapunten (~)
@@ -587,7 +587,7 @@ Kopieer dit blok en vul in:
 | TTF 12/03/2026 | €48.54/MWh | oilpriceapi.com €43.23, Trading Economics ~€49-50, Investing.com €61.15 (gemiddelde gebruikt) |
 | Belpex 12/03/2026 | €66.59/MWh | EU Energy Live ✓✓ |
 | Belpex 11/03/2026 | €74.63/MWh | EU Energy Live (correctie van 74.6) |
-| EU gasopslag 12/03/2026 | 29.3% | GIE AGSI+ (multiple sources confirm <30%) |
+| België gasopslag 12/03/2026 | 29.3% | GIE AGSI+ (multiple sources confirm <30%) |
 | Brent 12/03/2026 | $96.90/vat | Investing.com (intraday high $103.06) |
 
 ### Geïnterpoleerde datapunten (~)
@@ -645,13 +645,13 @@ Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
 ### Bevestigde Datapunten
 - **TTF Gas:** €56.72/MWh (OilPriceAPI €52.28 + Investing.com €61.15 gemiddeld, door Hormuz crisis)
 - **Belpex Elektriciteit:** €67.74/MWh (EnergyinEU)
-- **EU Gasopslag:** 29.8% (meerdere bronnen bevestigen kritiek laag niveau)
+- **België gasopslag:** 29.8% (meerdere bronnen bevestigen kritiek laag niveau)
 - **Brent Ruwe Olie:** $98.63/vat (Trading Economics)
 
 ### Marktdynamiek
 - TTF stabiel op hoog niveau door supply crisis en LNG verstoringen
 - Belpex daalt licht (-9% vs gisteren) door lagere verwarmingsvraag en lente-effect
-- EU gasopslag blijft extreem laag (<30%), wat injectieseizoen duur maakt
+- België gasopslag blijft extreem laag (<30%), wat injectieseizoen duur maakt
 - Brent stijgt verder door Hormuz effect en geopolitieke spanningen
 
 ### Data-validatie
@@ -676,7 +676,7 @@ Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
 ### Bevestigde Datapunten
 - **TTF Gas:** €56.72/MWh (OilPriceAPI €52.28 + Investing.com €61.15 gemiddeld, door Hormuz crisis )
 - **Belpex Elektriciteit:** €68.45/MWh (EU Energy Live )
-- **EU Gasopslag:** 29.8% (GIE AGSI+, multiple sources confirm kritiek laag niveau )
+- **België gasopslag:** 29.8% (GIE AGSI+, multiple sources confirm kritiek laag niveau )
 - **Brent Ruwe Olie:** $96.50/vat (MarketWatch )
 
 ### Geopolitieke Context
@@ -688,7 +688,7 @@ Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
 ### Marktdynamiek
 - TTF stijgt opnieuw door supply crisis en LNG verstoringen
 - Belpex daalt licht (-8% vs gisteren) door lagere verwarmingsvraag en lente-effect
-- EU gasopslag blijft extreem laag (<30%), wat injectieseizoen duur maakt
+- België gasopslag blijft extreem laag (<30%), wat injectieseizoen duur maakt
 - Brent blijft hoog rond $97 door Hormuz effect
 
 ### Scenario Updates
@@ -699,7 +699,7 @@ Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
 ### Wijzigingen vs Vorige Update (Update 4)
 - TTF verhoogd van €48.54 naar €56.72 (+17%)
 - Belpex verhoogd van €66.59 naar €68.45 (+3%)
-- EU gasopslag bijgewerkt van 29.3% naar 29.8%
+- België gasopslag bijgewerkt van 29.3% naar 29.8%
 - Forecast arrays verschoven naar nieuwe startpunt
 - Alert banner bijgewerkt met Hormuz dag 14 context
 - KPI's bijgewerkt met nieuwe percentages
@@ -727,7 +727,7 @@ Geen nieuwe interpolaties. Bestaande interpolaties uit vorige updates behouden.
 ### Bevestigde Datapunten
 - **TTF Gas:** €[waarde]/MWh ([bron] )
 - **Belpex Elektriciteit:** €[waarde]/MWh ([bron] )
-- **EU Gasopslag:** [%]% ([bron] )
+- **België gasopslag:** [%]% ([bron] )
 - **Brent Ruwe Olie:** $[waarde]/vat ([bron] )
 
 ### Geopolitieke Context

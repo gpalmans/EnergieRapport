@@ -97,7 +97,7 @@ const buildPage1 = (d) => {
   const kpis = [
     { l: 'TTF Gas', v: `\u20AC${d.kpis.ttf.toFixed(2)}`, u: '/MWh', ch: d.kpis.ttfChange, c: '#0284c7', bg: '#f0f9ff', icon: '\uD83D\uDD25' },
     { l: 'Belpex', v: `\u20AC${d.kpis.belpex}`, u: '/MWh', ch: d.kpis.belpexChange, c: '#7c3aed', bg: '#faf5ff', icon: '\u26A1' },
-    { l: 'EU Gasopslag', v: `${d.kpis.storage}%`, u: '', ch: null, c: '#d97706', bg: '#fffbeb', icon: '\uD83D\uDCE6' },
+    { l: 'België gasopslag', v: `${d.kpis.storage}%`, u: '', ch: null, c: '#d97706', bg: '#fffbeb', icon: '\uD83D\uDCE6' },
     { l: 'Brent Olie', v: `$${d.kpis.brent.toFixed(2)}`, u: '/vat', ch: null, c: '#475569', bg: '#f8fafc', icon: '\uD83D\uDEE2\uFE0F' },
   ];
 
@@ -249,7 +249,7 @@ const buildPage2 = (d) => {
     <!-- GAS STORAGE + IEA -->
     <div style="display:flex;gap:12px;margin-bottom:14px">
       <div style="flex:1;background:#fffbeb;border-radius:10px;padding:12px 16px;border-left:4px solid #d97706;box-shadow:0 1px 3px rgba(0,0,0,.06)">
-        <div style="font-size:10px;font-weight:800;color:#d97706;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">\uD83D\uDCE6 EU Gasopslag</div>
+        <div style="font-size:10px;font-weight:800;color:#d97706;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">\uD83D\uDCE6 België gasopslag</div>
         ${storageRows}
       </div>
       <div style="flex:1;background:#f0f9ff;border-radius:10px;padding:12px 16px;border-left:4px solid #0284c7;box-shadow:0 1px 3px rgba(0,0,0,.06)">

@@ -222,7 +222,7 @@ class DataExtractor:
             deltas['belpex_delta'] = ""
 
         # Extract storage note/label
-        storage_note_match = re.search(r'EU Gasopslag.*?sub:\s*"([^"]+)"', content, re.DOTALL)
+        storage_note_match = re.search(r'België gasopslag.*?sub:\s*"([^"]+)"', content, re.DOTALL)
         if storage_note_match:
             deltas['storage_note'] = storage_note_match.group(1)
         else:

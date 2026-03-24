@@ -1,5 +1,5 @@
 ---
-description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, EU Gasopslag, Brent). Blokkeert totdat alle 4 variabelen via 2+ onafhankelijke bronnen (±2%) bevestigd zijn. Voer dit als eerste stap uit vóór update-energie-rapport.
+description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, België gasopslag, Brent). Blokkeert totdat alle 4 variabelen via 2+ onafhankelijke bronnen (±2%) bevestigd zijn. Voer dit als eerste stap uit vóór update-energie-rapport.
 ---
 
 # Stap 1 — Context laden
@@ -30,9 +30,9 @@ description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, EU
 
 ---
 
-# Stap 4 — EU Gasopslag + Brent (BLOKKEEREND — zoek tot beide ✓)
+# Stap 4 — België gasopslag + Brent (BLOKKEEREND — zoek tot beide ✓)
 
-6. EU Gasopslag (%):
+6. België gasopslag (%):
    - `tavily_search: "EU gas storage level percentage [maand] [jaar]"`
    - Fallback: Swiss Info, Bruegel, Energy Dashboard, Caliber.az
 7. Brent Crude ($/vat):
@@ -57,7 +57,7 @@ description: Verzamel actuele marktdata voor het EnergieRapport (TTF, Belpex, EU
 
 - [ ] TTF (€/MWh) — bevestigd via 2+ bronnen: €___
 - [ ] Belpex (€/MWh) — bevestigd via 2+ bronnen: €___
-- [ ] EU Gasopslag (%) — bevestigd via 2+ bronnen: ___%
+- [ ] België gasopslag (%) — bevestigd via 2+ bronnen: ___%
 - [ ] Brent ($/vat) — bevestigd via 2+ bronnen: $___
 
 Pas na bevestiging van alle 4: voer update-energie-rapport uit.

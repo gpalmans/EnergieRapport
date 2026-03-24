@@ -134,8 +134,8 @@ Kopieer de volgende secties handmatig van JSX naar HTML:
 
 **Geopolitieke sectie** (regel ~564):
 - Hormuz Crisis + LNG Disruption badge
-- EU Gasopslag Niveau badge
-- EU Gasopslag Kritiek badge
+- België gasopslag Niveau badge
+- België gasopslag Kritiek badge
 - Europees Weekend-effect badge
 - Brent Olieprijzen badge
 

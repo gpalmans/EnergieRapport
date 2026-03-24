@@ -317,7 +317,7 @@ body{background:#0f172a;color:#e2e8f0;font-family:Georgia,serif;padding:24px 20p
     <div class="kpi-val">€{{ kpis.belpex|round(2) }}<span class="kpi-sub">/MWh</span></div>
   </div>
   <div class="kpi">
-    <div class="kpi-label">EU Gasopslag</div>
+    <div class="kpi-label">België Gasopslag</div>
     <div class="kpi-val">~{{ kpis.storage|round(0)|int }}%</div>
   </div>
   <div class="kpi">
