@@ -38,11 +38,6 @@ const rawData = [
   { date: "06/03", ttf: 57.0,  belpex: 114.0, note: "" },
   { date: "07/03", ttf: 55.0,  belpex: 102.0, note: "WE" },
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "Piek" },
-  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
-  { date: "24/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
-  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
-  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
-  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
   { date: "10/03", ttf: 57.0,  belpex: 112.0, note: "IEA" },
   { date: "11/03", ttf: 55.48, belpex: 74.63, note: "" },
   { date: "12/03", ttf: 56.72, belpex: 67.74, note: "" },
@@ -56,7 +51,8 @@ const rawData = [
   { date: "21/03", ttf: 59.34, belpex: 95.00,  note: "" },
   { date: "22/03", ttf: 58.50, belpex: 78.00, note: "" },
   { date: "23/03", ttf: 60.60, belpex: 104.00, note: "" },
-  { date: "24/03", ttf: 53.25, belpex: 72.78, note: "Vandaag" },
+  { date: "24/03", ttf: 53.25, belpex: 72.78, note: "" },
+  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -240,10 +236,10 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag",       "€53.82", "/MWh",  "-12.1% vs gisteren",   ""],
-          ["Belpex Elektr. vandaag","€72.04", "/MWh", "-42.0% vs gisteren",   ""],
-          ["België Gasopslag",          "~23%",   " cap.", "kritiek laag niveau",     ""],
-          ["Brent Ruwe Olie",       "$104.49", "/vat",  "+1.9% vs gisteren",   ""],
+          ["TTF Gas vandaag", "€53.82", "/MWh", "+58.3% vs gisteren", "#ef4444"],
+          ["Belpex Elektr. vandaag", "€72.04", "/MWh", "+33.4% vs gisteren", "#ef4444"],
+          ["België Gasopslag", "~23%", " cap.", "kritiek laag niveau", "#ef4444"],
+          ["Brent Ruwe Olie", "$104.49", "/vat", "+2.9% vs gisteren", "#ef4444"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>

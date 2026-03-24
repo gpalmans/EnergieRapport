@@ -72,52 +72,129 @@ class ReportUpdater:
         return (date_full, time_str, date_upper)
     
     def update_jsx_rawdata(self, content: str, market_data: Dict) -> str:
-        """Update rawData array in JSX"""
+        """Update rawData array in JSX - update existing entry or add new one"""
         date_str = self.format_date(market_data.get('timestamp'))
         
-        # Find the last entry in rawData and add new entry
-        pattern = r'(const rawData = \[[\s\S]*?)(\{ date: "[^"]+", ttf: [^,]+, belpex: [^,]+, note: "[^"]*" \})([\s\S]*?\];)'
+        # Check if date already exists in rawData
+        date_pattern = rf'\{{ date: "{re.escape(date_str)}", ttf: [\d.]+, belpex: [\d.]+, note: "[^"]*" \}}'
+        existing_entry = re.search(date_pattern, content)
         
-        new_entry = (
-            f'  {{ date: "{date_str}", '
-            f'ttf: {market_data["ttf"]:.2f}, '
-            f'belpex: {market_data["belpex"]:.2f}, note: "Vandaag" }}'
-        )
-        
-        # Add new entry at the end of array (before closing bracket)
-        def replacer(match):
-            return match.group(1) + match.group(2) + ',\n' + new_entry + match.group(3)
-        
-        updated = re.sub(pattern, replacer, content, count=1)
-        
-        if updated == content:
-            logger.warning("Could not update rawData - pattern not found")
+        if existing_entry:
+            # Update existing entry
+            updated_entry = (
+                f'{{ date: "{date_str}", '
+                f'ttf: {market_data["ttf"]:.2f}, '
+                f'belpex: {market_data["belpex"]:.2f}, note: "Vandaag" }}'
+            )
+            content = re.sub(date_pattern, updated_entry, content)
+            logger.info(f"Updated existing rawData entry for {date_str}")
         else:
-            logger.info(f"Added new rawData entry for {date_str}")
+            # Add new entry at the end of array (before closing bracket)
+            pattern = r'(const rawData = \[[\s\S]*?)(\{ date: "[^"]+", ttf: [^,]+, belpex: [^,]+, note: "[^"]*" \})([\s\S]*?\];)'
+            
+            new_entry = (
+                f'  {{ date: "{date_str}", '
+                f'ttf: {market_data["ttf"]:.2f}, '
+                f'belpex: {market_data["belpex"]:.2f}, note: "Vandaag" }}'
+            )
+            
+            def replacer(match):
+                return match.group(1) + match.group(2) + ',\n' + new_entry + match.group(3)
+            
+            updated = re.sub(pattern, replacer, content, count=1)
+            
+            if updated == content:
+                logger.warning("Could not update rawData - pattern not found")
+            else:
+                logger.info(f"Added new rawData entry for {date_str}")
+            
+            content = updated
         
-        return updated
+        return content
     
     def update_jsx_kpis(self, content: str, market_data: Dict) -> str:
-        """Update KPI waarden in JSX array"""
+        """Update KPI waarden in JSX array - preserve color codes"""
         
-        # Update TTF KPI - match the value after label
-        ttf_pattern = r'(\["TTF Gas vandaag",\s*")€[\d.]+(")'
-        content = re.sub(ttf_pattern, f'\\g<1>€{market_data["ttf"]:.2f}\\g<2>', content)
+        # Extract previous values from rawData to calculate changes
+        prev_ttf, prev_belpex = self.get_previous_values(content)
+        
+        # Calculate percentage changes
+        ttf_change = self.calculate_change(market_data["ttf"], prev_ttf)
+        belpex_change = self.calculate_change(market_data["belpex"], prev_belpex)
+        brent_change = self.calculate_change(market_data["brent"], 101.55)  # vs previous day
+        
+        # Determine color codes based on changes
+        try:
+            ttf_change_val = float(ttf_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            ttf_color = "#22c55e" if ttf_change_val < 0 else "#ef4444"
+        except:
+            ttf_color = "#ef4444"
+            
+        try:
+            belpex_change_val = float(belpex_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            belpex_color = "#22c55e" if belpex_change_val < 0 else "#ef4444"
+        except:
+            belpex_color = "#ef4444"
+            
+        try:
+            brent_change_val = float(brent_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            brent_color = "#22c55e" if brent_change_val < 0 else "#ef4444"
+        except:
+            brent_color = "#ef4444"
+        
+        # Update TTF KPI - simple pattern matching entire line
+        ttf_line_pattern = r'\["TTF Gas vandaag",\s*"€[\d.]+",\s*"/MWh",\s*"[^"]*",\s*"#[0-9a-f]+"\]'
+        ttf_replacement = f'["TTF Gas vandaag", "€{market_data["ttf"]:.2f}", "/MWh", "{ttf_change}", "{ttf_color}"]'
+        content = re.sub(ttf_line_pattern, ttf_replacement, content)
         
         # Update Belpex KPI
-        belpex_pattern = r'(\["Belpex Elektr\. vandaag",\s*")€[\d.]+(")'
-        content = re.sub(belpex_pattern, f'\\g<1>€{market_data["belpex"]:.2f}\\g<2>', content)
+        belpex_line_pattern = r'\["Belpex Elektr\. vandaag",\s*"€[\d.]+",\s*"/MWh",\s*"[^"]*",\s*"#[0-9a-f]+"\]'
+        belpex_replacement = f'["Belpex Elektr. vandaag", "€{market_data["belpex"]:.2f}", "/MWh", "{belpex_change}", "{belpex_color}"]'
+        content = re.sub(belpex_line_pattern, belpex_replacement, content)
         
         # Update Storage KPI
-        storage_pattern = r'(\["België Gasopslag",\s*")~[\d.]+%(")'
-        content = re.sub(storage_pattern, f'\\g<1>~{market_data["eu_storage"]:.0f}%\\g<2>', content)
+        storage_line_pattern = r'\["België Gasopslag",\s*"~[\d.]+%",\s*" cap\.",\s*"[^"]*",\s*"#[0-9a-f]+"\]'
+        storage_replacement = f'["België Gasopslag", "~{market_data["eu_storage"]:.0f}%", " cap.", "kritiek laag niveau", "#ef4444"]'
+        content = re.sub(storage_line_pattern, storage_replacement, content)
         
         # Update Brent KPI
-        brent_pattern = r'(\["Brent Ruwe Olie",\s*")\$[\d.]+(")'
-        content = re.sub(brent_pattern, f'\\g<1>${market_data["brent"]:.2f}\\g<2>', content)
+        brent_line_pattern = r'\["Brent Ruwe Olie",\s*"\$[\d.]+",\s*"/vat",\s*"[^"]*",\s*"#[0-9a-f]+"\]'
+        brent_replacement = f'["Brent Ruwe Olie", "${market_data["brent"]:.2f}", "/vat", "{brent_change}", "{brent_color}"]'
+        content = re.sub(brent_line_pattern, brent_replacement, content)
         
-        logger.info("Updated KPI values")
+        logger.info("Updated KPI values with colors and changes")
         return content
+    
+    def get_previous_values(self, content: str) -> tuple:
+        """Extract previous day values from rawData"""
+        # Find the last "Vandaag" entry before the current one
+        lines = content.split('\n')
+        ttf_values = []
+        belpex_values = []
+        
+        for line in lines:
+            if 'date:' in line and 'ttf:' in line and 'belpex:' in line:
+                # Extract TTF and Belpex values
+                ttf_match = re.search(r'ttf: ([\d.]+)', line)
+                belpex_match = re.search(r'belpex: ([\d.]+)', line)
+                
+                if ttf_match and belpex_match:
+                    ttf_values.append(float(ttf_match.group(1)))
+                    belpex_values.append(float(belpex_match.group(1)))
+        
+        # Return the previous values (second to last)
+        if len(ttf_values) >= 2:
+            return ttf_values[-2], belpex_values[-2]
+        return 53.25, 72.78  # fallback values
+    
+    def calculate_change(self, current: float, previous: float) -> str:
+        """Calculate percentage change and format as string"""
+        if previous == 0:
+            return "0.0% vs gisteren"
+        
+        change_pct = ((current - previous) / abs(previous)) * 100
+        direction = "+" if change_pct > 0 else ""
+        return f"{direction}{change_pct:.1f}% vs gisteren"
     
     def update_jsx_kpi_variables(self, content: str, market_data: Dict) -> str:
         """Update KPI variables in JSX for PDF and other applications"""
