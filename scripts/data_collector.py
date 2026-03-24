@@ -139,29 +139,31 @@ class EnergyDataCollector:
         logger.info("Collecting TTF, EU Storage, Brent via Claude API...")
 
         try:
-            prompt = f"""Use web search to find TODAY'S energy market prices for {datetime.now().strftime('%d %B %Y')}.
+            prompt = f"""Use web search to find the MOST RECENT energy market prices available.
 
-IMPORTANT: Search for CURRENT prices from {datetime.now().strftime('%d %B %Y')}.
+IMPORTANT: The current date is {datetime.now().strftime('%d %B %Y')}. Search for the LATEST available data, even if it's from a few days ago.
 
-Search for these exact queries with the specific date:
-1. "TTF gas price EUR/MWh {datetime.now().strftime('%d %B %Y')}"
-2. "EU gas storage percentage {datetime.now().strftime('%d %B %Y')}" 
-3. "Brent crude oil price USD/barrel {datetime.now().strftime('%d %B %Y')}"
+Search queries that will be used:
+1. "TTF gas price EUR/MWh latest {datetime.now().strftime('%B %Y')}"
+2. "EU gas storage percentage latest {datetime.now().strftime('%B %Y')}" 
+3. "Brent crude oil price USD/barrel latest {datetime.now().strftime('%B %Y')}"
+
+If today's data isn't available, search for the most recent dates in {datetime.now().strftime('%B %Y')}.
 
 Return ONLY valid JSON with this exact structure (no markdown, no explanation, no code blocks):
 {{"ttf_eur_mwh": <number>, "ttf_source": "<string>", "eu_storage_percent": <number>, "storage_source": "<string>", "brent_usd_barrel": <number>, "brent_source": "<string>"}}
 
 Example valid response:
-{{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics ({datetime.now().strftime('%d/%m/%Y')})", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+ ({datetime.now().strftime('%d/%m/%Y')})", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg ({datetime.now().strftime('%d/%m/%Y')})"}}
+{{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics (23/03/2026)", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+ (23/03/2026)", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg (23/03/2026)"}}
 
 CRITICAL RULES:
-- All prices must be from {datetime.now().strftime('%d %B %Y')}
+- Find the MOST RECENT available data in {datetime.now().strftime('%B %Y')}
 - TTF must be 15-300 €/MWh
 - Storage must be 0-100%
 - Brent must be 30-250 $/barrel
-- Sources should include the specific date
-- If you cannot find TODAY's data, search for the most recent available prices
-- Always provide numeric values, never null"""
+- Sources must include the specific date found
+- Always provide numeric values, never null
+- Prefer data from the last 7 days if possible"""
 
             message = self.claude_client.messages.create(
                 model=self.claude_model,
@@ -269,6 +271,24 @@ CRITICAL RULES:
             self.data['collection_status'][key] = 'fallback (source unavailable)'
             self.data['data_source'] = 'fallback'
             return prev_value
+
+        # If no previous data, use reasonable estimates for today
+        today_estimates = {
+            'ttf': 53.25,      # Based on recent market trends
+            'belpex': 72.78,    # Belpex is collected via API, but fallback needed
+            'eu_storage': 26.0,  # Typical low storage for this time of year
+            'brent': 101.55     # Recent oil prices
+        }
+        
+        if key in today_estimates:
+            estimate_value = today_estimates[key]
+            logger.warning(f"     Using today's estimate: {estimate_value}")
+            self.data[key] = estimate_value
+            self.data['sources'][key] = ['estimated (no live data available)']
+            self.data['validation'][key] = ''
+            self.data['collection_status'][key] = 'estimated'
+            self.data['data_source'] = 'estimated'
+            return estimate_value
 
         logger.error(f"     No fallback available for {key}")
         return None
