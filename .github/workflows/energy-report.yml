@@ -2,10 +2,10 @@ name: EnergieRapport Auto-Update
 
 on:
   schedule:
-    # Dagelijks om 19:30 UTC (20:30 CET)
-    - cron: '30 19 * * *'
-    # Wekelijks zondag om 19:30 UTC (20:30 CET)
-    - cron: '30 19 * * 0'
+    # Dagelijks dinsdag t/m zondag om 00:01 CET (23:01 UTC vorige dag)
+    - cron: '1 23 * * 2,3,4,5,6,0'
+    # Wekelijks maandag om 00:01 CET (23:01 UTC zondag)
+    - cron: '1 23 * * 1'
   workflow_dispatch:
     inputs:
       force_ai_analysis:
@@ -40,7 +40,7 @@ jobs:
       - name: Determine update mode
         id: mode
         run: |
-          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.schedule }}" == "0 19 * * 0" ]; then
+          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.schedule }}" == "1 23 * * 1" ]; then
             echo "mode=weekly" >> $GITHUB_OUTPUT
           elif [ "${{ inputs.force_ai_analysis }}" == "true" ]; then
             echo "mode=weekly" >> $GITHUB_OUTPUT
@@ -103,7 +103,7 @@ jobs:
         run: |
           echo "✅ EnergieRapport data update completed successfully!"
           echo "📊 Mode: ${{ steps.mode.outputs.mode }}"
-          echo "🔄 Next scheduled run: Daily at 20:30 CET"
+          echo "🔄 Next scheduled run: Daily at 00:01 CET"
       
       - name: Notify on failure
         if: failure()
