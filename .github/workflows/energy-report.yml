@@ -86,12 +86,6 @@ jobs:
         env:
           UPDATE_MODE: ${{ steps.mode.outputs.mode }}
       
-      - name: Skip HTML compilation (known bugs)
-        run: |
-          echo "⚠️  HTML compilation SKIPPED - compiler has known bugs"
-          echo "Manual JSX→HTML synchronization required"
-          echo "See docs/COMPILER_BUG_WARNING.md for details"
-      
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

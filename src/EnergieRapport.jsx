@@ -32,6 +32,8 @@ const rawData = [
   { date: "07/03", ttf: 55.0,  belpex: 102.0, note: "WE" },
   { date: "09/03", ttf: 59.57, belpex: 136.0, note: "Piek" },
   { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
+  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
+  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
   { date: "10/03", ttf: 57.0,  belpex: 112.0, note: "IEA" },
   { date: "11/03", ttf: 55.48, belpex: 74.63, note: "" },
   { date: "12/03", ttf: 56.72, belpex: 67.74, note: "" },
@@ -231,7 +233,7 @@ export default function EnergieRapport() {
         {[
           ["TTF Gas vandaag",       "€53.82", "/MWh",  "-12.1% vs gisteren",   ""],
           ["Belpex Elektr. vandaag","€72.04", "/MWh", "-42.0% vs gisteren",   ""],
-          ["België Gasopslag",          ~23%",   " cap.", "kritiek laag niveau",     ""],
+          ["België Gasopslag",          "~23%",   " cap.", "kritiek laag niveau",     ""],
           ["Brent Ruwe Olie",       "$104.49", "/vat",  "+1.9% vs gisteren",   ""],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>

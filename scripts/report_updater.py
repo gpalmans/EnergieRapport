@@ -100,21 +100,21 @@ class ReportUpdater:
     def update_jsx_kpis(self, content: str, market_data: Dict) -> str:
         """Update KPI waarden in JSX array"""
         
-        # Update TTF KPI in the KPI array
-        ttf_pattern = r'(\["TTF Gas vandaag",\s*")€[\d.]+(",\s*"/MWh",\s*"[^"]+",\s*")#[0-9a-f]+(")'
-        content = re.sub(ttf_pattern, f'\\g<1>€{market_data["ttf"]:.2f}\\g<2>\\g<3>', content)
+        # Update TTF KPI - match the value after label
+        ttf_pattern = r'(\["TTF Gas vandaag",\s*")€[\d.]+(")'
+        content = re.sub(ttf_pattern, f'\\g<1>€{market_data["ttf"]:.2f}\\g<2>', content)
         
-        # Update Belpex KPI in the KPI array  
-        belpex_pattern = r'(\["Belpex Elektr\. vandaag",\s*")€[\d.]+(",\s*"/MWh",\s*"[^"]+",\s*")#[0-9a-f]+(")'
-        content = re.sub(belpex_pattern, f'\\g<1>€{market_data["belpex"]:.2f}\\g<2>\\g<3>', content)
+        # Update Belpex KPI
+        belpex_pattern = r'(\["Belpex Elektr\. vandaag",\s*")€[\d.]+(")'
+        content = re.sub(belpex_pattern, f'\\g<1>€{market_data["belpex"]:.2f}\\g<2>', content)
         
-        # Update Storage KPI in the KPI array
-        storage_pattern = r'(\["België Gasopslag",\s*)"~[\d.]+%(",\s*" cap\.",\s*"[^"]+",\s*")#[0-9a-f]+(")'
-        content = re.sub(storage_pattern, f'\\g<1>~{market_data["eu_storage"]:.0f}%\\g<2>\\g<3>', content)
+        # Update Storage KPI
+        storage_pattern = r'(\["België Gasopslag",\s*")~[\d.]+%(")'
+        content = re.sub(storage_pattern, f'\\g<1>~{market_data["eu_storage"]:.0f}%\\g<2>', content)
         
-        # Update Brent KPI in the KPI array
-        brent_pattern = r'(\["Brent Ruwe Olie",\s*")\$[\d.]+(",\s*"/vat",\s*"[^"]+",\s*")#[0-9a-f]+(")'
-        content = re.sub(brent_pattern, f'\\g<1>${market_data["brent"]:.2f}\\g<2>\\g<3>', content)
+        # Update Brent KPI
+        brent_pattern = r'(\["Brent Ruwe Olie",\s*")\$[\d.]+(")'
+        content = re.sub(brent_pattern, f'\\g<1>${market_data["brent"]:.2f}\\g<2>', content)
         
         logger.info("Updated KPI values")
         return content
