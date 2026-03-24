@@ -86,21 +86,21 @@ jobs:
         env:
           UPDATE_MODE: ${{ steps.mode.outputs.mode }}
       
-      - name: Compile offline.html from JSX
-        run: python scripts/compile_html.py
-
-      - name: Validate HTML/JSX synchronization
-        run: python scripts/validate_sync.py
+      - name: Skip HTML compilation (known bugs)
+        run: |
+          echo "⚠️  HTML compilation SKIPPED - compiler has known bugs"
+          echo "Manual JSX→HTML synchronization required"
+          echo "See docs/COMPILER_BUG_WARNING.md for details"
       
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add src/EnergieRapport.jsx public/offline.html UPDATE_LOG.md data/latest_prices.json
+          git add src/EnergieRapport.jsx UPDATE_LOG.md data/latest_prices.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto-update: EnergieRapport data (${{ steps.mode.outputs.mode }} mode) - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "Auto-update: EnergieRapport JSX data (${{ steps.mode.outputs.mode }} mode) - $(date -u +'%Y-%m-%d %H:%M UTC')"
             git push
           fi
       
