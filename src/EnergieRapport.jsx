@@ -198,7 +198,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $101.55 · Force majeure Qatar/Kuwait/UAE · EU opslag 26%
+            Hormuz crisis dag 21+ · TTF €53.82 (-11.4% vs piek) · Brent $104.49 · Force majeure Qatar/Kuwait/UAE · EU opslag 23%
           </div>
         </div>
       </div>
@@ -393,7 +393,7 @@ export default function EnergieRapport() {
               ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies."],
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +8% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
-              ["Brent Prijsstijging", "#8b5cf6", "Brent crude handelt op $101.55/vat (+1.9% vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026."],
+              ["Brent Prijsstijging", "#8b5cf6", "Brent crude handelt op $104.49/vat (+1.9% vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -453,7 +453,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex op 24/03 (€72.78 daggemiddelde) toont daling: -42.0% vs gisteren door normaal weekend-effect (maandagcorrectie na piekweekend).
+              ⚡ Belpex op 24/03 (€72.04 daggemiddelde) toont daling: -42.0% vs gisteren door normaal weekend-effect (maandagcorrectie na piekweekend).
             </p>
           </div>
         </div>
@@ -757,7 +757,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €53.25/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €53.82/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>

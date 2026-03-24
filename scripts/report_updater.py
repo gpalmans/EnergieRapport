@@ -244,6 +244,51 @@ class ReportUpdater:
         logger.info(f"Updated dates to {date_full} {time_str}")
         return content
     
+    def update_critical_header(self, content: str, market_data: Dict) -> str:
+        """Update critical market situation header with current KPI values"""
+        
+        # Create new header line with current values
+        new_header = f'            Hormuz crisis dag 21+ · TTF €{market_data["ttf"]:.2f} (-11.4% vs piek) · Brent ${market_data["brent"]:.2f} · Force majeure Qatar/Kuwait/UAE · EU opslag {market_data["eu_storage"]:.0f}%'
+        
+        # Find the exact header line and replace it
+        lines = content.split('\n')
+        for i, line in enumerate(lines):
+            if 'Hormuz crisis dag 21+ · TTF €' in line and 'Brent $' in line and 'EU opslag' in line:
+                lines[i] = new_header
+                logger.info(f"Updated critical header: TTF €{market_data['ttf']:.2f}, Brent ${market_data['brent']:.2f}, Storage {market_data['eu_storage']:.0f}%")
+                break
+        
+        return '\n'.join(lines)
+    
+    def update_analysis_values(self, content: str, market_data: Dict) -> str:
+        """Update hardcoded values in analysis sections to sync with API data"""
+        
+        # Update TTF value in analysis section
+        ttf_analysis_pattern = r'(TTF daalde vandaag naar €)[\d.]+(/MWh)'
+        content = re.sub(ttf_analysis_pattern, f'\\g<1>{market_data["ttf"]:.2f}\\g<2>', content)
+        
+        # Update Brent value in analysis
+        brent_analysis_pattern = r'(Brent crude handelt op \$)[\d.]+(/vat)'
+        content = re.sub(brent_analysis_pattern, f'\\g<1>{market_data["brent"]:.2f}\\g<2>', content)
+        
+        # Update Belpex value in notification
+        belpex_notification_pattern = r'(Belpex op \d{2}/03 \()€[\d.]+( daggemiddelde\))'
+        content = re.sub(belpex_notification_pattern, f'\\g<1>€{market_data["belpex"]:.2f}\\g<2>', content)
+        
+        logger.info(f"Updated analysis values: TTF €{market_data['ttf']:.2f}, Brent ${market_data['brent']:.2f}, Belpex €{market_data['belpex']:.2f}")
+        return content
+    
+    def find_ttf_peak(self, content: str) -> float:
+        """Find TTF peak value in rawData"""
+        pattern = r'\{ date: "[^"]+", ttf: ([\d.]+), belpex: [\d.]+, note: "([^"]*)" \}'
+        entries = re.findall(pattern, content)
+        
+        if not entries:
+            return 56.0  # fallback peak
+        
+        ttf_values = [float(ttf) for ttf, note in entries if "Piek" in note]
+        return max(ttf_values) if ttf_values else 56.0
+    
     def enforce_gasopslag_consistency(self, content: str, market_data: Dict) -> str:
         """Enforce gasopslag consistency across all sections in JSX"""
         storage_value = f"~{market_data['eu_storage']:.0f}%"
@@ -316,6 +361,8 @@ class ReportUpdater:
         content = self.update_jsx_kpis(content, market_data)
         content = self.update_jsx_kpi_variables(content, market_data)
         content = self.update_jsx_dates(content, market_data)
+        content = self.update_critical_header(content, market_data)
+        content = self.update_analysis_values(content, market_data)
         
         # CONSISTENCY ENFORCEMENT
         content = self.enforce_gasopslag_consistency(content, market_data)
