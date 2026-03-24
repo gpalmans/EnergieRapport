@@ -55,6 +55,7 @@ jobs:
         env:
           DATA_MODE: ${{ steps.mode.outputs.mode }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: claude-sonnet-4-6
       
       - name: Detect crisis situation
         id: crisis
