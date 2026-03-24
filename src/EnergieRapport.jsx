@@ -198,7 +198,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €53.82 (-11.4% vs piek) · Brent $104.49 · Force majeure Qatar/Kuwait/UAE · EU opslag 23%
+            Hormuz crisis dag 21+ · TTF €53.82 (-11.4% vs piek) · Brent $104.49 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 23%
           </div>
         </div>
       </div>
@@ -371,7 +371,7 @@ export default function EnergieRapport() {
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
               ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["Nog te vullen (apr–okt)",    "~60 pct-punten", "#f97316"],
+              ["Nog te vullen (apr–okt)",    "~67 pct-punten", "#f97316"],
             ].map(([l, v, c]) => (
               <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
@@ -488,7 +488,7 @@ export default function EnergieRapport() {
             {
               t: "⟶ Basis (Prolonged crisis)", p: "55%", c: "#0ea5e9",
               ttf: "€40–58", belpex: "€70–85",
-              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","EU opslag onder druk"],
+              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","Belgische opslag onder druk"],
               note: "Meest waarschijnlijk scenario",
             },
             {
@@ -780,7 +780,7 @@ export default function EnergieRapport() {
               <strong style={{ color: "#7dd3fc" }}>1. Observatieperiode (4-6 weken):</strong> Wacht tot eind april 2026 om LNG-disruptie impact te beoordelen. Volg TTF dagelijks via Trading Economics. Monitor België gasopslag via GIE AGSI+ (update elke dinsdag). Rabobank verwacht Q2 2026 TTF €61/MWh - wacht of dit zich materialiseert.
             </div>
             <div style={{ marginBottom: 12 }}>
-              <strong style={{ color: "#7dd3fc" }}>2. Trigger voor Variabel:</strong> Als TTF structureel onder €45/MWh stabiliseert gedurende 2+ weken EN EU opslag boven 35% eind mei, overweeg dan variabel met 12-18 maanden horizon. Dit biedt de beste kans op lagere gemiddelde kosten nu de LNG glut voorbij is.
+              <strong style={{ color: "#7dd3fc" }}>2. Trigger voor Variabel:</strong> Als TTF structureel onder €45/MWh stabiliseert gedurende 2+ weken EN Belgische opslag boven 35% eind mei, overweeg dan variabel met 12-18 maanden horizon. Dit biedt de beste kans op lagere gemiddelde kosten nu de LNG glut voorbij is.
             </div>
             <div style={{ marginBottom: 12 }}>
               <strong style={{ color: "#7dd3fc" }}>3. Trigger voor Vast:</strong> Als TTF structureel boven €60/MWh blijft voor 4+ weken OF Hormuz langer dan 6 weken gesloten blijft, overweeg dan vast voor maximaal 12-18 maanden. Budgetzekerheid weegt zwaarder dan flexibiliteitsvoordeel bij structurele LNG-schaarste.

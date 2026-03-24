@@ -248,12 +248,12 @@ class ReportUpdater:
         """Update critical market situation header with current KPI values"""
         
         # Create new header line with current values
-        new_header = f'            Hormuz crisis dag 21+ · TTF €{market_data["ttf"]:.2f} (-11.4% vs piek) · Brent ${market_data["brent"]:.2f} · Force majeure Qatar/Kuwait/UAE · EU opslag {market_data["eu_storage"]:.0f}%'
+        new_header = f'            Hormuz crisis dag 21+ · TTF €{market_data["ttf"]:.2f} (-11.4% vs piek) · Brent ${market_data["brent"]:.2f} · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves {market_data["eu_storage"]:.0f}%'
         
         # Find the exact header line and replace it
         lines = content.split('\n')
         for i, line in enumerate(lines):
-            if 'Hormuz crisis dag 21+ · TTF €' in line and 'Brent $' in line and 'EU opslag' in line:
+            if 'Hormuz crisis dag 21+ · TTF €' in line and 'Brent $' in line and ('EU opslag' in line or 'Belgische gasreserves' in line):
                 lines[i] = new_header
                 logger.info(f"Updated critical header: TTF €{market_data['ttf']:.2f}, Brent ${market_data['brent']:.2f}, Storage {market_data['eu_storage']:.0f}%")
                 break
@@ -277,6 +277,36 @@ class ReportUpdater:
         
         logger.info(f"Updated analysis values: TTF €{market_data['ttf']:.2f}, Brent ${market_data['brent']:.2f}, Belpex €{market_data['belpex']:.2f}")
         return content
+    
+    def update_geopolitical_references(self, content: str, market_data: Dict) -> str:
+        """Update geopolitical references to use Belgian storage instead of EU storage"""
+        
+        # Update geopolitical analysis section
+        geopolitical_pattern = r'(EU opslag onder druk)'
+        content = re.sub(geopolitical_pattern, 'Belgische opslag onder druk', content)
+        
+        # Update advice section
+        advice_pattern = r'(EN EU opslag boven 35% eind mei)'
+        content = re.sub(advice_pattern, f'EN Belgische opslag boven 35% eind mei', content)
+        
+        logger.info("Updated geopolitical references to Belgian storage")
+        return content
+    
+    def update_storage_calculation(self, content: str, market_data: Dict) -> str:
+        """Update storage calculation: nog te vullen = 90% doel - huidig niveau"""
+        
+        # Calculate correct remaining percentage
+        remaining_pct = 90 - market_data["eu_storage"]
+        
+        # Update the "Nog te vullen" calculation with simpler pattern
+        lines = content.split('\n')
+        for i, line in enumerate(lines):
+            if '["Nog te vullen (apr–okt)"' in line and '~' in line and 'pct-punten' in line:
+                lines[i] = f'              ["Nog te vullen (apr–okt)",    "~{remaining_pct:.0f} pct-punten", "#f97316"],'
+                logger.info(f"Updated storage calculation: {remaining_pct:.0f}% remaining to fill (90% - {market_data['eu_storage']:.0f}% current)")
+                break
+        
+        return '\n'.join(lines)
     
     def find_ttf_peak(self, content: str) -> float:
         """Find TTF peak value in rawData"""
@@ -363,6 +393,8 @@ class ReportUpdater:
         content = self.update_jsx_dates(content, market_data)
         content = self.update_critical_header(content, market_data)
         content = self.update_analysis_values(content, market_data)
+        content = self.update_geopolitical_references(content, market_data)
+        content = self.update_storage_calculation(content, market_data)
         
         # CONSISTENCY ENFORCEMENT
         content = self.enforce_gasopslag_consistency(content, market_data)
