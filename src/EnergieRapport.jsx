@@ -237,7 +237,7 @@ export default function EnergieRapport() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
           ["TTF Gas vandaag", "€53.82", "/MWh", "+1.1% vs gisteren", "#ef4444"],
-          ["Belpex Elektr. vandaag", "€72.04", "/MWh", "-1.0% vs gisteren", "#ef4444"],
+          ["Belpex Elektr. vandaag", "€72.04", "/MWh", "-1.0% vs gisteren", "#22c55e"],
           ["België Gasopslag", "~23%", " cap.", "kritiek laag niveau", "#ef4444"],
           ["Brent Ruwe Olie", "$104.49", "/vat", "+2.9% vs gisteren", "#ef4444"],
         ].map(([label, val, sub, note, c], i) => (

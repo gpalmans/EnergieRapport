@@ -125,19 +125,23 @@ class ReportUpdater:
         
         # Determine color codes based on changes
         try:
-            ttf_change_val = float(ttf_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            # Extract just the number part (handle "+1.1%" or "-1.0%")
+            ttf_num = ttf_change.split('%')[0].strip()
+            ttf_change_val = float(ttf_num)
             ttf_color = "#22c55e" if ttf_change_val < 0 else "#ef4444"
         except:
             ttf_color = "#ef4444"
             
         try:
-            belpex_change_val = float(belpex_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            belpex_num = belpex_change.split('%')[0].strip()
+            belpex_change_val = float(belpex_num)
             belpex_color = "#22c55e" if belpex_change_val < 0 else "#ef4444"
         except:
             belpex_color = "#ef4444"
             
         try:
-            brent_change_val = float(brent_change.replace('%', '').replace('+', '').replace('-', '').strip())
+            brent_num = brent_change.split('%')[0].strip()
+            brent_change_val = float(brent_num)
             brent_color = "#22c55e" if brent_change_val < 0 else "#ef4444"
         except:
             brent_color = "#ef4444"
