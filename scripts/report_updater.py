@@ -1,6 +1,6 @@
 """
 Report Updater voor EnergieRapport
-Update JSX en HTML bestanden met nieuwe marktdata
+Update JSX bestand met nieuwe marktdata
 """
 
 import os
@@ -20,8 +20,6 @@ logger = logging.getLogger(__name__)
 class ReportUpdater:
     def __init__(self):
         self.jsx_path = 'src/EnergieRapport.jsx'
-        self.html_path = 'public/offline.html'
-        self.template_path = 'templates/energy_report_template.html'
         self.update_mode = os.getenv('UPDATE_MODE', 'daily')
     
     def load_market_data(self) -> Dict:
@@ -191,65 +189,6 @@ class ReportUpdater:
         
         return content
     
-    def update_html_marketdata(self, content: str, market_data: Dict) -> str:
-        """Update marketData array in HTML"""
-        date_str = self.format_date(market_data.get('timestamp'))
-        
-        # Vind marketData array
-        pattern = r'(const marketData = \[[\s\S]*?)(\{ date: "[^"]+", ttf: [^,]+, belpex: [^,]+, storage: [^,]+, brent: [^}]+ \})([\s\S]*?\];)'
-        
-        new_entry = (
-            f'{{ date: "{date_str}", '
-            f'ttf: {market_data["ttf"]:.2f}, '
-            f'belpex: {market_data["belpex"]:.2f}, '
-            f'storage: {market_data["eu_storage"]:.1f}, '
-            f'brent: {market_data["brent"]:.2f} }}'
-        )
-        
-        def replacer(match):
-            return match.group(1) + match.group(2) + ',\n        ' + new_entry + match.group(3)
-        
-        updated = re.sub(pattern, replacer, content, count=1)
-        
-        if updated == content:
-            logger.warning("Could not update HTML marketData - pattern not found")
-        else:
-            logger.info(f"Added new HTML marketData entry for {date_str}")
-        
-        return updated
-    
-    def update_html_dates(self, content: str, market_data: Dict) -> str:
-        """Update header en footer datums met tijd in HTML"""
-        date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
-        
-        # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30"
-        header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})?'
-        content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str}', content)
-        
-        # Update footer: "Opgesteld: 23 maart 2026 · 20:30 ·"
-        footer_pattern = r'(Opgesteld: )\d{1,2} \w+ \d{4}( · \d{2}:\d{2})?( ·)'
-        content = re.sub(footer_pattern, f'\\g<1>{date_full} · {time_str}\\g<3>', content)
-        
-        logger.info(f"Updated HTML dates to {date_full} {time_str}")
-        return content
-    
-    def update_html_kpis(self, content: str, market_data: Dict) -> str:
-        """Update KPI waarden in HTML"""
-        
-        # Update KPI values in HTML
-        kpi_updates = [
-            (r'(id="ttf-value"[^>]*>)[0-9.]+', f'\\g<1>{market_data["ttf"]:.2f}'),
-            (r'(id="belpex-value"[^>]*>)[0-9.]+', f'\\g<1>{market_data["belpex"]:.2f}'),
-            (r'(id="storage-value"[^>]*>)[0-9.]+', f'\\g<1>{market_data["eu_storage"]:.1f}'),
-            (r'(id="brent-value"[^>]*>)[0-9.]+', f'\\g<1>{market_data["brent"]:.2f}'),
-        ]
-        
-        for pattern, replacement in kpi_updates:
-            content = re.sub(pattern, replacement, content)
-        
-        logger.info("Updated HTML KPI values")
-        return content
-    
     def update_jsx_file(self, market_data: Dict):
         """Update JSX bestand"""
         logger.info(f"Updating {self.jsx_path}...")
@@ -272,80 +211,6 @@ class ReportUpdater:
         
         logger.info(f"Successfully updated {self.jsx_path}")
     
-    def enforce_html_gasopslag_consistency(self, content: str, market_data: Dict) -> str:
-        """Enforce gasopslag consistency in HTML"""
-        storage_value = f"~{market_data['eu_storage']:.0f}%"
-        date_str = self.format_date(market_data.get('timestamp'))
-        
-        # Parse date for full format
-        if market_data.get('timestamp'):
-            dt = datetime.fromisoformat(market_data['timestamp'].replace('Z', '+00:00'))
-        else:
-            dt = datetime.now()
-        month_short = {1:"jan",2:"feb",3:"mrt",4:"apr",5:"mei",6:"jun",
-                      7:"jul",8:"aug",9:"sep",10:"okt",11:"nov",12:"dec"}[dt.month]
-        date_label = f"{dt.day} {month_short} {dt.year}"
-        
-        # 1. Update JavaScript buildContext storageRows
-        pattern1 = r"(\['EU-gemiddelde \()[^)]+\)', '~\d+%'"
-        content = re.sub(pattern1, f"\\g<1>{date_label})', '{storage_value}'", content)
-        
-        # 2. Update geopolitical text in HTML
-        pattern2 = r'(Europese gasvoorraden staan op ~)\d+(% capaciteit )(op|eind) [^,]+( 2026)'
-        content = re.sub(pattern2, f'\\g<1>{market_data["eu_storage"]:.0f}\\g<2>op {date_label}\\g<4>', content)
-        
-        logger.info(f"Enforced HTML gasopslag consistency: {storage_value} ({date_label})")
-        return content
-    
-    def update_html_confirmed_dates(self, content: str, market_data: Dict) -> str:
-        """Update confirmed dates array in HTML JavaScript"""
-        date_str = self.format_date(market_data.get('timestamp'))
-        
-        # Update confirmed array in buildPriceTable function
-        pattern = r"(const confirmed = \[)([^\]]+)(\]\.includes\(r\.date\))"
-        
-        def add_date_if_missing(match):
-            dates_str = match.group(2)
-            dates = [d.strip().strip('"').strip("'") for d in dates_str.split(',')]
-            
-            if date_str not in dates:
-                dates.append(date_str)
-                dates = dates[-10:]  # Keep last 10
-                new_dates_str = ', '.join([f"'{d}'" for d in dates])
-                logger.info(f"Added {date_str} to HTML confirmed dates")
-                return f"{match.group(1)}{new_dates_str}{match.group(3)}"
-            return match.group(0)
-        
-        content = re.sub(pattern, add_date_if_missing, content)
-        
-        # Update footer text
-        footer_pattern = r'(✓ = bevestigd officieel datapunt \()([^)]+)(\) ·)'
-        content = re.sub(footer_pattern, add_date_if_missing, content)
-        
-        return content
-    
-    def update_html_file(self, market_data: Dict):
-        """Update HTML bestand"""
-        logger.info(f"Updating {self.html_path}...")
-        
-        with open(self.html_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        
-        # Voer updates uit
-        content = self.update_html_marketdata(content, market_data)
-        content = self.update_html_dates(content, market_data)
-        content = self.update_html_kpis(content, market_data)
-        
-        # CONSISTENCY ENFORCEMENT
-        content = self.enforce_html_gasopslag_consistency(content, market_data)
-        content = self.update_html_confirmed_dates(content, market_data)
-        
-        # Sla op
-        with open(self.html_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-        
-        logger.info(f"Successfully updated {self.html_path}")
-    
     def run_update(self):
         """Voer volledige update uit"""
         logger.info(f"Starting report update (mode: {self.update_mode})...")
@@ -355,11 +220,6 @@ class ReportUpdater:
 
         # Step 1: Update JSX file
         self.update_jsx_file(market_data)
-
-        # Step 2: Skip HTML compilation (compiler has bugs)
-        logger.info("⚠️  HTML compilation SKIPPED - compiler has known bugs")
-        logger.info("Manual JSX→HTML synchronization required")
-        logger.info("See docs/COMPILER_BUG_WARNING.md for details")
 
         if ai_analysis:
             logger.info("AI analysis available - consider manual integration")
@@ -375,7 +235,6 @@ def main():
         print("\n=== Report Update Voltooid ===")
         print(f"Mode: {updater.update_mode}")
         print(f"JSX: {updater.jsx_path}")
-        print(f"HTML: {updater.html_path}")
     
     except FileNotFoundError as e:
         logger.error(f"Required file not found: {e}")
