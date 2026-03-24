@@ -53,6 +53,8 @@ jobs:
           python scripts/data_collector.py
         env:
           DATA_MODE: ${{ steps.mode.outputs.mode }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
       
       - name: Detect crisis situation
         id: crisis
@@ -90,7 +92,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add src/EnergieRapport.jsx public/offline.html UPDATE_LOG.md
+          git add src/EnergieRapport.jsx public/offline.html UPDATE_LOG.md data/latest_prices.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

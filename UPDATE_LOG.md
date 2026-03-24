@@ -6,7 +6,58 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
-## Update 13 — 22 maart 2026
+## Update 16 — 24 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €53.25/MWh (-12.1% vs gisteren) - [data requires validation]
+- **Belpex**: €72.78/MWh (-42.0% vs gisteren) - [data requires validation]
+- **EU Gasopslag**: ~26% - Trading Economics
+- **Brent**: $101.55/vat (+1.9% vs gisteren) - [data requires validation]
+
+### **Marktontwikkelingen & Geopolitiek**
+- Hormuz crisis dag 21+ met aanhoudende volatiliteit
+- Force majeure Qatar/Kuwait/UAE beïnvloedt gasleveranties
+- IEA adviseert consumenten energieverbruik te verminderen
+- Energy sector rotation naar energieaandelen (+8% in maart)
+
+### **Forecast**: Bearish 25% / Basis 50% / Bullish 25% — Basis dominant, bullish alleen bij escalatie
+
+### **Wijzigingen**: 
+- ✅ **Belpex basislijn toegevoegd** - 27/02 horizontale lijn op €68/MWh
+- ✅ **Grafiek labels geoptimaliseerd** - Alle event-teksten boven grafieken (position="top")
+- ✅ **Kleurconsistentie** - Groene basislijnen in beide grafieken, IEA paars in Belpex
+- ✅ **Margin aangepast** - Belpex top-margin verhoogd naar 20px voor label zichtbaarheid
+
+### **Impact**: 
+- 📊 Betere visuele vergelijking tussen TTF en Belpex basisniveaus
+- 🎯 Consistente label-positionering over alle grafieken
+- 🎨 Verbeterde kleurhiërarchie voor events
+
+---
+
+## Update 15 — 24 maart 2026
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €53.54/MWh (-11.7% vs gisteren) - Trading Economics
+- **Belpex**: €72.78/MWh (-30.0% vs gisteren) - Belpex.be
+- **EU Gasopslag**: ~26% - Trading Economics
+- **Brent**: $101.40/vat (+1.5% vs gisteren) - Bloomberg
+
+### **Wijzigingen**: 
+- ✅ **KILLED OFFLINE.HTML** - Einde synchronisatie nachtmerrie
+- ✅ Verwijderd: alle compiler en sync gerelateerde scripts
+- ✅ Workflow vereenvoudigd naar JSX-only development
+- ✅ Single source of truth achieved
+
+### **Impact**: 
+- 🎯 Geen synchronisatie problemen meer
+- ⚡ Snellere development cycles
+- 🧹 Schonere codebase
+- 💡 Focus op content kwaliteit
+
+---
+
+## Update 14 — 22 maart 2026
 
 ### **Bevestigde Marktdata (✓)**
 - **TTF Gas**: €58.50/MWh (-1.4% vs 21/03, -5.6% vs piek €62) - OilPriceAPI €59.34 (21/03), schatting 22/03

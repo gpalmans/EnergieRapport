@@ -22,52 +22,31 @@ Een interactief energierapport voor Vlaamse residentiële klanten, gepubliceerd 
 Cloudflare Pages. Het vergelijkt TTF-gasprijzen en Belpex-elektriciteitsprijzen,
 geeft geopolitieke context, en biedt een vast/variabel tariefadvies.
 
-**Twee deliverables per update:**
-- `src/EnergieRapport.jsx` — interactieve React/Recharts versie (hoofdrapport)
-- `public/offline.html` — volledig standalone HTML zonder externe dependencies
+### Primaire deliverable per update:
 
-Beide bestanden moeten bij elke update gesynchroniseerd worden met identieke data.
+- `src/EnergieRapport.jsx` — interactieve React/Recharts versie (hoofdrapport)
+
+### Afgeleide output die altijd mee gecontroleerd moet worden:
+
+- PDF-uitvoer via `src/hooks/usePDFDownload.js` en `src/utils/pdfGenerator.js`
+- Wijzigingen in JSX-teksten, KPI's, forecast ranges of contextblokken moeten dus ook in de PDF-data/mapping correct doorkomen.
 
 ---
 
-## Synchronisatie Architectuur — Single Source of Truth
+## Operationele waarheid — JSX + PDF-consistentie
 
-**NIEUW:** Dit project gebruikt nu een deterministische synchronisatie-architectuur:
+### Actuele realiteit:
 
-### Hoe het werkt
-
-1. **JSX als authoritative bron** — EnergieRapport.jsx is de enige bron van waarheid
-2. **HTML als derived artifact** — offline.html wordt automatisch gegenereerd uit JSX
-3. **Structurele validatie** — Validatie checkt data-integriteit, niet text-patterns
-
-### Automatische workflow
-
-```
-JSX Update
-    ↓
-Compiler (extract data from JSX)
-    ↓
-HTML Compile (generate offline.html)
-    ↓
-Validator (verify perfect sync)
-    ↓
-✓ Deploy or ✗ Reject
-```
+1. **`src/EnergieRapport.jsx` is de primaire bron van waarheid** voor de rapportinhoud.
+2. **PDF-output is afgeleid maar moet inhoudelijk identiek blijven** voor KPI's, ranges, tekstblokken en tabelwaarden.
+3. **Offline HTML / compiler-flow is geen standaard updatepad meer** en mag niet opnieuw als verplichte synchronisatiestap worden ingevoerd.
 
 ### Wat dit betekent voor je
 
-- **JSX updaten is genoeg** — HTML wordt automatisch gegenereerd
-- **Geen handmatige HTML updates meer** — Die gebeurt via de compiler
-- **Garantie perfect in-sync** — Validator controleert vóór deployment
-- **Sneller & betrouwbaarder** — Geen sync-drift mogelijk
-
-### GitHub Actions Integration
-
-De GitHub Actions workflow voert nu automatisch uit:
-1. Update JSX met marktdata
-2. Compileer offline.html uit JSX (`scripts/compile_html.py`)
-3. Valideer synchronisatie (`scripts/validate_sync.py`)
-4. Push alleen als validatie passed
+- **Werk primair in `src/EnergieRapport.jsx`**
+- **Controleer altijd de PDF-pariteit** als cijfers, forecast ranges, KPI-teksten of contextblokken aangepast zijn
+- **Controleer expliciet** `src/hooks/usePDFDownload.js` en `src/utils/pdfGenerator.js` wanneer dezelfde data of teksten daar gespiegeld worden
+- **Gebruik geen oude compile/sync scripts als standaardaanpak**
 
 ---
 
@@ -282,37 +261,13 @@ De kansen mogen verschuiven maar moeten optellen tot 100%.
 
 Forecastperiode = rapportdatum + 6 à 8 weken, in 5-6 datapunten.
 
+- Kalibreer de ranges op **actuele spotprijs + plausibele normalisatie/escalatie**, niet op oude defaults.
+- Basis blijft standaard dominant, tenzij harde marktdata of concrete escalatie dat tegenspreken.
+- Bullish is geen standaard tweede basisscenario; gebruik het als scenario met duidelijke trigger en realistische tail-risk bandbreedte.
+
 ---
 
 ## Stap 3 — JSX bijwerken (`src/EnergieRapport.jsx`)
-
-### Automatische HTML-Synchronisatie (NEW)
-
-Na het updaten van de JSX, wordt de `offline.html` **automatisch gegenereerd** en **100% gesynchroniseerd**:
-
-```bash
-python scripts/report_updater.py
-```
-
-Dit script:
-1. ✅ Update JSX met nieuwe marktdata
-2. ✅ Generate HTML uit JSX (single source of truth)
-3. ✅ Valideer perfecte synchronisatie
-4. ✅ Commit changes (als validatie passed)
-
-**Geen handmatige HTML-edits meer nodig.** De HTML wordt volledig gegenereerd uit JSX via deterministische compilation.
-
-Voor lokale testing of handmatige stappen:
-
-```bash
-# Only compile HTML (without updating JSX)
-python scripts/jsx_to_html_compiler.py src/EnergieRapport.jsx templates/energy_report_template.html public/offline.html
-
-# Verify synchronization
-python scripts/sync_validator.py
-```
-
-Voor volledig overzicht van architectuur, zie [docs/SYNCHRONIZATION_ARCHITECTURE.md](docs/SYNCHRONIZATION_ARCHITECTURE.md).
 
 ### Wat aanpassen:
 1. `rawData` array — nieuwe dagprijzen toevoegen, oudste verwijderen (houd ~30 handelsdagen)
@@ -323,6 +278,11 @@ Voor volledig overzicht van architectuur, zie [docs/SYNCHRONIZATION_ARCHITECTURE
 6. **Alle secties up-to-date houden — Analyse, Geopolitiek, Forecast, Bronnen**
 7. **Geopolitieke sectie (tab "context") — feiten bijwerken met NL/EN mix**
 8. **Bronnen tab — gebruikte bronnen met publicatiedatums, NL voorrang**
+9. **Sleutelfactoren — uniforme layout per factor**:
+    - Verwachte impact: `TTF [min-max%] · Belpex [min-max%]`
+    - Waarom dit de prijs beweegt
+    - Wat te monitoren
+10. **PDF-pariteit** — check of dezelfde inhoud ook in `usePDFDownload.js` en `pdfGenerator.js` juist wordt weergegeven
 
 ### 📅 BEST PRACTICES — Data Consistentie
 
@@ -340,6 +300,12 @@ Voor volledig overzicht van architectuur, zie [docs/SYNCHRONIZATION_ARCHITECTURE
 - Geen dubbele 'vandaag' labels of verwarrende markeringen
 - Status badges consistent: Hormuz Shock, Piekprijs, IEA, Vandaag, Weekend
 
+**Geopolitieke en forecast inhoud:**
+
+- Geopolitieke items krijgen 2-3 zinnen: feit, effect, verwachte evolutie
+- Sleutelfactoren altijd sorteren van meest impactvol naar minst impactvol
+- Forecast ranges moeten realistisch blijven t.o.v. actuele TTF en headline risk
+
 ### Wat NIET aanpassen zonder expliciete opdracht:
 - Algehele structuur (5 tabs, KPI grid, sectie-indeling)
 - Visueel thema (kleuren, donkere achtergrond #0f172a)
@@ -349,71 +315,55 @@ Voor volledig overzicht van architectuur, zie [docs/SYNCHRONIZATION_ARCHITECTURE
 
 ---
 
-## Stap 4 — Offline HTML syncen (`public/offline.html`)
+## Stap 4 — PDF-consistentie controleren
 
-**KRITISCH: HTML en JSX moeten 100% in-sync zijn. Dit is een veelvoorkomend probleem.**
+**KRITISCH: PDF en JSX moeten inhoudelijk 100% overeenkomen op alle kernwaarden.**
 
-De offline.html is een zelfstandige Canvas-implementatie zonder externe libs.
-Na het updaten van de JSX, pas identiek aan:
+Controleer na elke inhoudelijke update minstens dit:
 
-1. `marketData` JavaScript array (= zelfde waarden als JSX `rawData`)
-2. `forecastBase/Bull/Bear` arrays
-3. KPI-blokken in de HTML
-4. Alert-banner tekst
-5. **Header datum — identiek aan JSX versie**
-6. **Bronvermeldingen — identiek aan JSX, met NL/EN mix en datums**
-7. **Prijstabel — identieke 'vandaag' labeling als JSX**
-8. **KERNBOODSCHAP sectie — ALTIJD syncen (dit is een veelvoorkomend missend element)**
-9. **Alle tabs en secties — Analyse, Geopolitiek, Forecast, Advies, Bronnen**
+1. KPI-waarden en KPI-percentages identiek
+2. Belpex decimalen blijven correct in PDF-prijstabellen
+3. Forecast ranges en kansen identiek
+4. Geopolitieke sectie en sleutelfactoren tekstueel identiek
+5. Brent-, TTF-, Belpex- en opslagwaarden overal consistent
 
-### HTML/JSX Synchronisatie Checklist (VERPLICHT)
+### JSX/PDF Consistentie Checklist (VERPLICHT)
 
 Voor ELKE update, voer deze checklist uit:
 
 **Structuur & Inhoud:**
-- [ ] Kernboodschap sectie aanwezig in offline.html (check: "Weloverwogen keuzen duren langer")
-- [ ] Alle 5 tabs aanwezig: Analyse, Geopolitiek, Forecast, Advies, Bronnen
-- [ ] KPI-grid identiek (TTF, Belpex, EU Opslag, Brent)
-- [ ] Alert banner tekst identiek
-- [ ] Header datum identiek (MARKTANALYSE — DD MAAND YYYY · HH:MM)
-- [ ] Footer datum identiek (Opgesteld: DD maand YYYY · HH:MM)
+
+- [ ] KPI-grid waarden identiek tussen scherm en PDF
+- [ ] Header datum/tijd en rapportcontext logisch doorgegeven aan PDF
+- [ ] Kernboodschap, praktisch advies, geopolitiek en sleutelfactoren volledig meegenomen
 
 **Data Waarden:**
-- [ ] TTF prijs identiek in beide bestanden
-- [ ] Belpex prijs identiek in beide bestanden
-- [ ] Brent prijs identiek in beide bestanden
-- [ ] EU Gasopslag % identiek in beide bestanden
-- [ ] Alle percentages en wijzigingen (vs gisteren) identiek
+
+- [ ] TTF prijs consistent overal
+- [ ] Belpex prijs consistent overal  
+- [ ] Brent prijs consistent overal
+- [ ] EU gasopslag consistent overal
+- [ ] Header datum = huidige rapportdatum
 
 **Tekst & Bronnen:**
+
 - [ ] Geopolitieke sectie tekst identiek
-- [ ] Kernboodschap tekst identiek
+- [ ] Sleutelfactoren structuur identiek (`impact / waarom / monitor`)
 - [ ] Praktisch advies stappen identiek
-- [ ] Bronvermeldingen identiek (inclusief publicatiedatums)
-- [ ] Alle links/URLs identiek
+- [ ] Bronvermeldingen inhoudelijk correct en up-to-date
 
 **Technisch:**
-- [ ] Geen kapotte apostrofs in offline.html JavaScript
-- [ ] Forecast arrays identiek
-- [ ] rawData/marketData arrays identiek
-- [ ] Geen dubbele 'vandaag' labels
 
-### KRITISCH — apostrof-regel:
-Controleer altijd op apostrofs in JavaScript strings in de offline HTML.
-De offline.html wordt gegenereerd via een Python f-string. Een apostrof zoals
-`Lloyd's` moet geschreven worden als `Lloyd\\'s` in de Python broncode zodat
-de JavaScript output `Lloyd\'s` bevat. Een kapotte apostrof crasht de volledige
-`<script>` block en maakt het hele bestand onbruikbaar.
-
-Test na het aanpassen: open offline.html lokaal in Chrome en controleer de
-browser console op SyntaxError meldingen voor je commit.
+- [ ] `usePDFDownload.js` gebruikt actuele waarden voor KPI's, forecast en tekstblokken
+- [ ] `pdfGenerator.js` rondt Belpex niet onbedoeld af
+- [ ] Geen dubbele of verouderde datumlabels
 
 ---
 
 ## Stap 5 — GitHub push
 
 ```bash
-git add src/EnergieRapport.jsx public/offline.html UPDATE_LOG.md
+git add src/EnergieRapport.jsx UPDATE_LOG.md
 git commit -m "update [DD-MM-YYYY]: TTF €XX.XX, Belpex €XX.X — [één zin context]"
 git push origin main
 ```
@@ -434,14 +384,14 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 
 ### Synchronisatie
 
-- [ ] KPI's in JSX en offline.html zijn identiek
-- [ ] Header datum klopt in beide bestanden
-- [ ] Bronvermeldingen zijn identiek in beide bestanden
-- [ ] **SLECHTS 1x 'vandaag' label** in beide versies
+- [ ] KPI's in JSX en PDF zijn identiek
+- [ ] Header datum en rapportcontext kloppen in beide representaties
+- [ ] Bronvermeldingen zijn inhoudelijk consistent
+- [ ] **SLECHTS 1x 'vandaag' label** in de brondata
 
 ### Technische Validatie
 
-- [ ] Geen kapotte apostrofs in offline.html JavaScript
+- [ ] Geen onbedoelde afronding van Belpex of KPI-percentages in PDF-output
 - [ ] Alle bron URLs zijn geldig en testbaar
 - [ ] **Geen verouderde bronnen** (ouder dan 4 weken, tenzij unieke historische context)
 - [ ] **NL/EN mix correct** (~70% NL, ~30% EN, NL voorrang bij duplicate info)
@@ -450,66 +400,6 @@ Controleer de build status op <https://dash.cloudflare.com> na de push.
 
 - [ ] UPDATE_LOG.md bijgewerkt met deze sessie
 - [ ] Commit message is beschrijvend
-- [ ] Publicatiedatums staan in alle bronvermeldingen
-
----
-
-## Vaste databronnen (referentie)
-
-| Bron | Wat | URL |
-|------|-----|-----|
-| ENTSO-E | Belpex dagprijzen | <https://transparency.entsoe.eu> |
-| dayaheadmarket.eu | Belpex dagprijzen | <https://www.dayaheadmarket.eu/belgium> |
-| EU-Energy | Belpex dagprijzen | <https://euenergy.live/electricity-prices/belgium/antwerpen> |
-| Elia | Belgische day-ahead ref | <https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price> |
-| GIE AGSI+ | EU gasopslag % | <https://agsi.gie.eu> |
-| ICE TTF | TTF futures/spot | <https://www.ice.com/products/27996665> |
-| IEA | Beleidswijzigingen | <https://www.iea.org> |
-| VREG | Belgische tariefwijzigingen | <https://www.vreg.be> |
-| CREG | Belgische marktmonitor | <https://www.creg.be> |
-
----
-
-## Hoe een update-sessie starten
-
-Open Claude Code in de projectmap en typ:
-
-```
-Lees CLAUDE.md en UPDATE_LOG.md.
-Voer een volledige update uit voor vandaag.
-
-**Data verzameling:"
-Gebruik Tavily om actuele TTF, Belpex, EU gasopslag en Brent data op te halen.
-Valideer datapunten met minstens 2 bronnen (✓).
-
-**Context analyse:"
-Gebruik Tavily om actuele nieuwsberichten te zoeken (max 4 weken oud).
-- NL-talige bronnen krijgen voorrang
-- EN-talig alleen voor unieke informatie
-- Publicatiedatums altijd vermelden
-- URLs valideren op geldigheid
-
-**Implementatie:"
-- Update alle secties (Analyse, Geopolitiek, Forecast, Bronnen)
-- Zorg voor 1x 'vandaag' label in prijstabel
-- Sync JSX en offline.html identiek
-- Header datum up-to-date
-
-**Kritische Validatie (zie Lessons Learned):"
-- [ ] Forecast grafiek Y-as past bij scenario maxima (bv. 20-90 voor €85 bullisch)
-- [ ] Advies sectie argumenten passen bij huidige geopolitieke situatie
-- [ ] Tijdslijnen realistisch gegeven fysieke herstelperiodes (gasvelden 3-5 mnd)
-- [ ] Prijsdoelen reflecteren actuele marktrealiteit (€50-60 range)
-- [ ] Onderscheid korte vs. middellange termijn duidelijk
-
-**Validatie & push:"
-- Gebruik uitgebreide checklist uit Lessons Learned sectie
-- Controleer alle URLs en datums
-- Vul UPDATE_LOG.md in (incl. sectie verbeteringen)
-- Push naar GitHub.
-```
-
-Claude Code voert dan autonoom alle stappen uit.
 
 ---
 
@@ -541,7 +431,7 @@ Claude Code voert dan autonoom alle stappen uit.
 - Bullisch scenario stijgt tot €85/MWh
 - Grafiek had maximum van €80/MWh
 - Lijnen vielen buiten zichtbaar bereik
-- **Oplossing**: Y-axis domain aangepast van [20, 80] naar [20, 90] in beide JSX en offline.html
+- **Oplossing**: Y-axis domain aanpassen in JSX zodat alle scenario's zichtbaar blijven met voldoende marge
 
 ### Data Consistentie Validatie
 
@@ -551,6 +441,48 @@ Claude Code voert dan autonoom alle stappen uit.
 - [ ] Tijdslijnen zijn realistisch gegeven fysieke herstelperiodes
 - [ ] Prijsdoelen reflecteren actuele marktrealiteit
 - [ ] Onderscheid tussen korte en middellange termijn duidelijk
+
+### Data Verzamelingsstrategie
+
+**EU Gasopslag Alternatieve Bronnen:**
+- Swiss Info: Europese storage facilities percentages
+- Chinese financial sources: GIE AGSI data vertalingen
+- Bruegel: European natural gas imports datasets
+- Caliber.az: Europe gas storage level mentions
+
+**Belpex Data Validatie:**
+- dayaheadmarket.eu: Average Price (€/kWh → omrekenen naar €/MWh)
+- euenergy.live: Real-time prijzen (check op actualiteit)
+- Elia.be: Day-ahead reference price (scraping nodig)
+
+### Consistentie Validatie Checklist
+
+**Voor Commit:**
+- [ ] Alle KPI's identiek in JSX en PDF
+- [ ] Geopolitiek sectie data matches KPI's
+- [ ] Geen verouderde datumreferenties in tekst
+- [ ] Alle bron URLs zijn geldig en up-to-date
+- [ ] Publicatiedatums relevant (max 4 weken oud)
+
+**Data Cross-Check:**
+- [ ] TTF prijs consistent overal
+- [ ] Belpex prijs consistent overal  
+- [ ] Brent prijs consistent overal
+- [ ] EU gasopslag consistent overal
+- [ ] Header datum = huidige rapportdatum
+
+### Bronnen Strategie
+
+**NL/EN Mix Realisatie:**
+- 73% NL, 27% EN is haalbaar en effectief
+- NL bronnen krijgen voorrang bij duplicate info
+- EN bronnen voor unieke internationale context
+
+**Data Verificatie:**
+- Trading Economics: TTF en Brent (betrouwbaar)
+- dayaheadmarket.eu: Belpex average (nauwkeurig)
+- Swiss Info: EU gasopslag (actueel)
+- GIE AGSI: Primaire bron (via secondary sources)
 
 ---
 
@@ -588,10 +520,10 @@ Claude Code voert dan autonoom alle stappen uit.
 ### Consistentie Validatie Checklist
 
 **Voor Commit:**
-- [ ] Alle KPI's identiek in JSX en offline.html
+- [ ] Alle KPI's identiek in JSX en PDF
 - [ ] Geopolitiek sectie data matches KPI's
 - [ ] Geen verouderde datumreferenties in tekst
-- [ ] Alle bron URLs geldig en up-to-date
+- [ ] Alle bron URLs zijn geldig en up-to-date
 - [ ] Publicatiedatums relevant (max 4 weken oud)
 
 **Data Cross-Check:**

@@ -96,7 +96,7 @@ const svgChart = (points, w, h, color, label, trendlines = {}) => {
 const buildPage1 = (d) => {
   const kpis = [
     { l: 'TTF Gas', v: `\u20AC${d.kpis.ttf.toFixed(2)}`, u: '/MWh', ch: d.kpis.ttfChange, c: '#0284c7', bg: '#f0f9ff', icon: '\uD83D\uDD25' },
-    { l: 'Belpex', v: `\u20AC${d.kpis.belpex.toFixed(2)}`, u: '/MWh', ch: d.kpis.belpexChange, c: '#7c3aed', bg: '#faf5ff', icon: '\u26A1' },
+    { l: 'Belpex', v: `\u20AC${d.kpis.belpex}`, u: '/MWh', ch: d.kpis.belpexChange, c: '#7c3aed', bg: '#faf5ff', icon: '\u26A1' },
     { l: 'EU Gasopslag', v: `${d.kpis.storage}%`, u: '', ch: null, c: '#d97706', bg: '#fffbeb', icon: '\uD83D\uDCE6' },
     { l: 'Brent Olie', v: `$${d.kpis.brent.toFixed(2)}`, u: '/vat', ch: null, c: '#475569', bg: '#f8fafc', icon: '\uD83D\uDEE2\uFE0F' },
   ];
@@ -124,7 +124,7 @@ const buildPage1 = (d) => {
       <td style="padding:5px 8px;font-size:10px;color:#1e293b;${r.confirmed ? 'font-weight:700' : ''}">${r.date}${conf}</td>
       <td style="padding:5px 8px;font-size:10px;color:#1e293b;font-weight:600">\u20AC${r.ttf.toFixed(2)}</td>
       <td style="padding:5px 8px;font-size:10px">${ttfChStr}</td>
-      <td style="padding:5px 8px;font-size:10px;color:#1e293b">\u20AC${r.belpex.toFixed(0)}</td>
+      <td style="padding:5px 8px;font-size:10px;color:#1e293b">\u20AC${r.belpex.toFixed(2)}</td>
       <td style="padding:5px 8px;font-size:10px">${bxChStr}</td>
       <td style="padding:5px 8px">${statusBadge}</td>
     </tr>`;

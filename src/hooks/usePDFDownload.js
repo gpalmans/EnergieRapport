@@ -47,10 +47,10 @@ const preparePDFData = (reportData) => {
     kpis: {
       ttf: latest.ttf, ttfChange,
       belpex: latest.belpex, belpexChange,
-      storage: 26, brent: 113.00,
+      storage: 26, brent: 101.55,
     },
 
-    alert: `Hormuz crisis dag 21+ \u00B7 TTF \u20AC${latest.ttf.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) \u00B7 Brent $113 \u00B7 Force majeure Qatar/Kuwait/UAE \u00B7 EU opslag 26%`,
+    alert: `Hormuz crisis dag 21+ \u00B7 TTF \u20AC${latest.ttf.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) \u00B7 Brent $101.55 \u00B7 Force majeure Qatar/Kuwait/UAE \u00B7 EU opslag 26%`,
 
     chartData: {
       ttf: marketData.map(d => ({ date: d.date, value: d.ttf })),
@@ -86,10 +86,11 @@ const preparePDFData = (reportData) => {
     }),
 
     crisisItems: [
-      { title: 'Straat van Hormuz Blokkade', color: 'red', text: 'Volledig gesloten sinds 2 maart 2026. 21 aanvallen op koopvaardijschepen. Tankerverkeer -70%. 20% wereldwijde olie/gas afgesneden. Geen tekenen van de\u00EBscalatie; analisten verwachten 4-6 weken aanhoudend.' },
-      { title: 'Force Majeure Golfstaten', color: 'amber', text: 'Qatar, Koeweit, UAE en Bahrein: force majeure op export. QatarEnergy stopte LNG-productie. Golfstaten -10M vaten/dag (-60%). Alternatieve routes Rode Zee beperkt.' },
-      { title: 'Gasveld Aanvallen', color: 'red', text: 'Aanvallen op South Pars (Iran) en Ras Laffan (Qatar) vernietigen 17% Qatar LNG-export. Reparatie 3-5 maanden. TTF structureel \u20AC50-65 tot Q3 2026.' },
-      { title: 'EU Gasopslag Kritiek', color: 'amber', text: 'Voorraden ~26% capaciteit (vs 52% vorig jaar). Duitsland 30%, Nederland 23.5%. Zomerinjectie moet 90% bereiken v\u00F3\u00F3r winter. Agressieve LNG-import vereist.' },
+      { title: 'Mega Tariefstijging België', color: 'red', text: 'Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het \'gevaarlijk precedent\' voor consumenten.' },
+      { title: 'Hormuz Crisis Volatiliteit', color: 'amber', text: 'Onrust Midden-Oosten veroorzaakt grote schommelingen in TTF-prijzen. Gasunie adviseert strategische noodvoorraad aan te leggen. Termijnprijzen elektriciteit volgen sterke stijging gasprijzen.' },
+      { title: 'Energy Sector Rotation', color: 'yellow', text: 'Energy Select Sector SPDR stijgt +8% in maart door geopolitieke spanningen. Great rotation naar energie sectoren terwijl yield-sensitive sectoren dalen.' },
+      { title: 'IEA Consumentenadvies', color: 'blue', text: 'IEA adviseert consumenten energieverbruik te verminderen: werk thuis, rij langzamer, gebruik geen gas kokers. Doel is prijzen stabiliseren tijdens conflict.' },
+      { title: 'Brent Prijsstijging', color: 'purple', text: 'Brent handelt op $101.55/vat (+1.9% vs gisteren) na optimisme over Iran de-escalatie. Stijging volgt op scherpe daling van -11% op maandag.' },
     ],
 
     gasStorage: [
@@ -109,9 +110,9 @@ const preparePDFData = (reportData) => {
     ],
 
     forecasts: [
-      { name: 'Bearish', prob: '15%', color: 'green', ttf: '\u20AC28\u201338', belpex: '\u20AC50\u201370', trigger: 'Gasvelden herstellen 2-3 wk, Hormuz deels open, diplomatieke de-escalatie' },
-      { name: 'Basis', prob: '45%', color: 'blue', ttf: '\u20AC38\u201355', belpex: '\u20AC72\u201395', trigger: 'Gasvelden 3-5 mnd buiten werking, Hormuz beperkt open, Qatar LNG -17%' },
-      { name: 'Bullish', prob: '40%', color: 'red', ttf: '\u20AC55\u201385', belpex: '\u20AC95\u2013145', trigger: 'Nieuwe aanvallen infra, Hormuz dicht tot zomer, Qatar LNG langdurig stil' },
+      { name: 'Bearish', prob: '20%', color: 'green', ttf: '\u20AC30\u201340', belpex: '\u20AC50\u201365', trigger: 'Gasvelden herstellen 2-3 wk, Hormuz deels open, diplomatieke de-escalatie' },
+      { name: 'Basis', prob: '55%', color: 'blue', ttf: '\u20AC40\u201358', belpex: '\u20AC70\u201385', trigger: 'Gasvelden 3-5 mnd buiten werking, Hormuz beperkt open, Qatar LNG -17%' },
+      { name: 'Bullish', prob: '25%', color: 'red', ttf: '\u20AC58\u201375', belpex: '\u20AC85\u2013110', trigger: 'Nieuwe aanvallen infra, Hormuz dicht tot zomer, Qatar LNG langdurig stil' },
     ],
 
     adviceMatrix: [
