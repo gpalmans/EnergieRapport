@@ -5,381 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vlaamse Energieprijzen: Analyse &amp; Forecast — {{ month_year }}</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f172a; color: #e2e8f0; font-family: Georgia, serif; padding: 24px 20px; min-height: 100vh; line-height: 1.6; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    h1, h2, h3, h4, h5 { font-family: Georgia, serif; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { color: #06b6d4; }
+    .container { max-width: 1000px; margin: 0 auto; }
 
-    body {
-      background: #0f172a;
-      color: #e2e8f0;
-      font-family: Georgia, serif;
-      padding: 24px 20px;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
+    /* LOGO */
+    .logo-block { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .logo-block img { max-height: 70px; max-width: 260px; object-fit: contain; }
+    .logo-divider { border-top: 1px solid #334155; padding-top: 12px; width: 100%; text-align: center; }
+    .logo-copyright { font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
+    .logo-legal { font-size: 11px; color: #64748b; line-height: 1.7; }
 
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
+    /* HEADER */
+    .header { text-align: center; margin-bottom: 28px; }
+    .header-date { color: #0ea5e9; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; font-family: monospace; }
+    .header-title { font-size: 26px; font-weight: 700; margin: 0 0 8px; color: #f8fafc; }
+    .header-subtitle { color: #64748b; font-size: 13px; margin: 0; }
 
-    ::-webkit-scrollbar-track {
-      background: #1e293b;
-    }
+    /* ALERT */
+    .alert-block { background: #7c131322; border: 1px solid #ef4444; border-radius: 10px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .alert-icon { font-size: 22px; flex-shrink: 0; }
+    .alert-title { font-weight: 700; color: #fca5a5; margin-bottom: 2px; }
+    .alert-text { font-size: 13px; color: #fca5a5; }
 
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
-    }
-
-    h1, h2, h3, h4, h5 {
-      font-family: Georgia, serif;
-      margin-top: 24px;
-      margin-bottom: 12px;
-    }
-
-    h1 { font-size: 26px; font-weight: 700; }
-    h2 { font-size: 20px; font-weight: 600; color: #0ea5e9; }
-    h3 { font-size: 16px; font-weight: 600; color: #94a3b8; }
-    h4 { font-size: 14px; font-weight: 600; }
-
-    p {
-      margin-bottom: 16px;
-      color: #cbd5e1;
-    }
-
-    a {
-      color: #0ea5e9;
-      text-decoration: none;
-      border-bottom: 1px solid #0ea5e9;
-    }
-
-    a:hover {
-      color: #06b6d4;
-      border-bottom-color: #06b6d4;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    /* HEADER & KPI STYLES */
-    .header {
-      text-align: center;
-      margin-bottom: 28px;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 20px;
-    }
-
-    .header-date {
-      color: #0ea5e9;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      font-family: monospace;
-    }
-
-    .header-title {
-      font-size: 26px;
-      font-weight: 700;
-      margin: 0 0 8px;
-      color: #f8fafc;
-    }
-
-    .header-subtitle {
-      color: #64748b;
-      font-size: 13px;
-      margin: 0;
-    }
-
-    /* ALERT BANNER */
-    .alert-banner {
-      background: linear-gradient(135deg, #7f1d1d 0%, #5a0a0a 100%);
-      border-left: 4px solid #fca5a5;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
-      display: none;
-    }
-
-    .alert-banner.active {
-      display: block;
-    }
-
-    .alert-banner h4 {
-      color: #fca5a5;
-      margin-top: 0;
-      margin-bottom: 8px;
-    }
-
-    .alert-banner p {
-      color: #fecaca;
-      margin: 0;
-    }
+    /* PRICE DISCLAIMER */
+    .disclaimer-block { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 16px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 10px; }
+    .disclaimer-title { font-size: 13px; font-weight: 600; color: #f8fafc; margin-bottom: 4px; }
+    .disclaimer-text { font-size: 12px; color: #94a3b8; line-height: 1.5; }
 
     /* KPI GRID */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .kpi { background: #1e293b; border: 1px solid #ef444444; border-radius: 10px; padding: 13px 15px; }
+    .kpi-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; }
+    .kpi-val { font-size: 22px; font-weight: 700; color: #ef4444; }
+    .kpi-sub { font-size: 11px; color: #64748b; }
+    .kpi-note { font-size: 11px; color: #ef4444; margin-top: 3px; }
 
-    .kpi {
-      background: #1e293b;
-      border-radius: 10px;
-      padding: 16px;
-      border: 1px solid #334155;
-      text-align: center;
-    }
+    /* TABS */
+    .tab-bar { display: flex; gap: 4px; margin-bottom: 20px; background: #1e293b; padding: 6px; border-radius: 10px; overflow-x: auto; }
+    .tab-btn { padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; border: none; white-space: nowrap; transition: all 0.2s; background: transparent; color: #94a3b8; font-family: Georgia, serif; }
+    .tab-btn:hover { color: #cbd5e1; }
+    .tab-btn.active { background: #0ea5e9; color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
-    .kpi-label {
-      font-size: 10px;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-    }
+    /* SECTIONS */
+    .section { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+    .section-blue { background: #1e293b; border: 1px solid #0ea5e944; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+    .section-kernboodschap { background: #172554; border: 3px solid #3b82f6; border-radius: 14px; padding: 24px 28px; margin-bottom: 20px; }
+    .section-panic { background: #451a03; border: 2px solid #f97316; border-radius: 12px; padding: 20px 24px; margin-bottom: 22px; }
+    .section-law { background: #0c2a1a; border: 2px solid #22c55e; border-radius: 12px; padding: 20px 24px; margin-bottom: 22px; }
+    .section-nuance { background: #1e1b4b; border: 1px solid #818cf8; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; font-size: 13px; color: #c7d2fe; line-height: 1.75; }
+    .section-warning { background: #7c131322; border: 1px solid #ef4444; border-radius: 10px; padding: 13px 17px; margin-bottom: 16px; font-size: 13px; color: #fca5a5; line-height: 1.7; }
 
-    .kpi-val {
-      font-size: 24px;
-      font-weight: 700;
-      color: #ef4444;
-      margin-bottom: 4px;
-    }
+    /* GRIDS */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .two-col-args { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 
-    .kpi-sub {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-left: 4px;
-    }
+    /* CARDS */
+    .card-dark { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 11px 15px; display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .card-inner { background: #0f172a; border-radius: 8px; padding: 14px 16px; }
+    .card-blue-inner { background: #172554; border-radius: 8px; padding: 12px 14px; }
+    .card-green-inner { background: #0c2a1a; border: 1px solid #22c55e55; border-radius: 10px; padding: 14px 18px; }
+    .card-practical { background: #0c4a6e; border: 2px solid #0ea5e9; border-radius: 10px; padding: 16px 20px; font-size: 14px; color: #e0f2fe; }
+    .card-never { background: #7c2d12; border: 1px solid #f97316; border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
 
-    .kpi-delta {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 8px;
-      font-style: italic;
-    }
+    /* SCENARIO CARDS */
+    .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .scenario-card-green { background: #1e293b; border: 1px solid #22c55e44; border-radius: 12px; padding: 16px 18px; }
+    .scenario-card-blue { background: #1e293b; border: 1px solid #0ea5e944; border-radius: 12px; padding: 16px 18px; }
+    .scenario-card-red { background: #1e293b; border: 1px solid #ef444444; border-radius: 12px; padding: 16px 18px; }
+    .scenario-note { margin-top: 10px; padding: 7px 10px; background: #0f172a; border-radius: 6px; font-size: 11px; color: #64748b; }
 
-    /* TAB STYLES */
-    .tab-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
-      border-bottom: 2px solid #334155;
-      padding-bottom: 16px;
-    }
+    /* KEY FACTORS */
+    .key-factor { background: #0f172a; border-radius: 8px; padding: 13px 15px; border: 1px solid #1e293b; margin-bottom: 12px; }
+    .key-factor-title { color: #60a5fa; font-weight: 700; margin-bottom: 6px; font-size: 13px; }
+    .key-factor-text { font-size: 12px; color: #94a3b8; line-height: 1.6; }
 
-    .tab-btn {
-      background: #1e293b;
-      color: #94a3b8;
-      border: 1px solid #334155;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-family: inherit;
-      transition: all 0.3s ease;
-    }
+    /* DECISION MATRIX */
+    .matrix-header th { padding: 9px 11px; text-align: left; color: #64748b; font-size: 11px; border-bottom: 2px solid #334155; }
+    .matrix-row td { padding: 9px 11px; border-bottom: 1px solid #1e293b; font-size: 12.5px; }
 
-    .tab-btn:hover {
-      background: #334155;
-      color: #cbd5e1;
-    }
-
-    .tab-btn.active {
-      background: #0ea5e9;
-      color: #ffffff;
-      border-color: #0ea5e9;
-    }
-
-    .tab-panel {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* PRICE TABLE */
-    .price-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      background: #1e293b;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .price-table th {
-      background: #334155;
-      padding: 12px;
-      text-align: left;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #94a3b8;
-      font-weight: 600;
-    }
-
-    .price-table td {
-      padding: 12px;
-      border-bottom: 1px solid #334155;
-      font-size: 13px;
-    }
-
-    .price-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .price-table tr.today {
-      background: rgba(15, 185, 229, 0.1);
-    }
-
-    .price-table tr.today td {
-      color: #0fb9e5;
-      font-weight: 600;
-    }
-
-    .price-table tr.shock {
-      background: rgba(244, 63, 94, 0.1);
-    }
-
-    .price-table tr.shock td {
-      color: #ff6b7a;
-    }
+    /* TABLES */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 12; }
+    .data-table th { padding: 8px 11px; text-align: left; color: #64748b; font-weight: 600; font-size: 11px; white-space: nowrap; border-bottom: 2px solid #334155; }
+    .data-table td { padding: 7px 11px; border-bottom: 1px solid #1e293b; }
+    .row-today td { background: #0c4a6e22; }
+    .row-shock td { background: #7f1d1d22; }
+    .td-date-today { color: #0ea5e9; font-weight: 700; white-space: nowrap; }
+    .td-date { color: #e2e8f0; white-space: nowrap; }
+    .td-ttf-shock { color: #ef4444; font-weight: 600; }
+    .td-ttf { color: #f97316; font-weight: 600; }
+    .td-belpex { color: #a78bfa; font-weight: 600; }
+    .td-base-pos { color: #ef4444; font-weight: 600; }
+    .td-base-neg { color: #22c55e; font-weight: 600; }
 
     /* BADGES */
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-    }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-red { background: #ef444422; color: #ef4444; border: 1px solid #ef444444; }
+    .badge-orange { background: #f9731622; color: #f97316; border: 1px solid #f9731644; }
+    .badge-green { background: #22c55e22; color: #22c55e; border: 1px solid #22c55e44; }
+    .badge-blue { background: #0ea5e922; color: #0ea5e9; border: 1px solid #0ea5e944; }
+    .badge-purple { background: #a78bfa22; color: #a78bfa; border: 1px solid #a78bfa44; }
+    .badge-slate { background: #47556922; color: #475569; border: 1px solid #47556944; }
+    .badge-dash { color: #334155; }
 
-    .badge-vandaag {
-      background: #0ea5e9;
-      color: #ffffff;
-    }
+    /* DOD CELLS */
+    .dod-up { color: #ef4444; font-weight: 700; }
+    .dod-dn { color: #22c55e; font-weight: 700; }
+    .dod-neutral { color: #94a3b8; }
 
-    .badge-hormuz,
-    .badge-piek,
-    .badge-iea {
-      background: #ef4444;
-      color: #ffffff;
-    }
+    /* STORAGE TABLE */
+    .storage-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #1e293b; font-size: 13px; }
+    .storage-label { color: #94a3b8; }
+    .storage-block-note { margin-top: 14px; padding: 10px 14px; background: #7c131322; border-radius: 8px; font-size: 12px; color: #fca5a5; line-height: 1.6; }
 
-    .badge-we {
-      background: #8b5cf6;
-      color: #ffffff;
-    }
+    /* IEA TABLE */
+    .iea-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #1e3a5f; font-size: 12px; }
+    .iea-key { color: #94a3b8; }
+    .iea-val { color: #60a5fa; font-weight: 600; }
+    .iea-bg { background: #172554; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+    .iea-source { font-size: 11px; color: #475569; margin: 0; }
 
-    /* CHARTS */
-    canvas {
-      display: block;
-      margin: 24px 0;
-      width: 100% !important;
-      height: auto !important;
-      max-width: 100%;
-    }
+    /* BE MIX */
+    .be-mix-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #1e3a5f; font-size: 12px; }
+    .be-mix-bg { background: #172554; border-radius: 8px; padding: 12px 14px; }
+    .be-mix-note { font-size: 12px; color: #f97316; margin-top: 10px; margin-bottom: 0; }
 
-    /* CARDS & SECTIONS */
-    .section-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 24px;
-    }
+    /* BRONNEN */
+    .bron-cat { margin-bottom: 24px; }
+    .bron-cat-title { margin: 0 0 10px; font-size: 14px; padding-bottom: 8px; font-weight: 700; }
+    .bron-item { background: #0f172a; border-radius: 8px; padding: 11px 15px; display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+    .bron-name { color: #e2e8f0; font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+    .bron-desc { color: #64748b; font-size: 12px; }
+    .bron-link { font-size: 12px; font-weight: 600; text-decoration: none; padding: 5px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .bron-data-note { background: #172554; border: 1px solid #3b82f644; border-radius: 10px; padding: 13px 17px; font-size: 12px; color: #93c5fd; line-height: 1.7; }
 
-    .section-card h3 {
-      margin-top: 0;
-    }
+    /* CANVAS */
+    canvas { display: block; margin: 0; background: #0f172a; }
 
-    .three-column {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin: 24px 0;
-    }
+    /* ARGUMENT CARDS */
+    .arg-card { background: #0f172a; border-radius: 10px; padding: 14px 16px; }
+    .arg-icon { font-size: 18px; margin-bottom: 6px; }
+    .arg-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+    .arg-body { font-size: 12px; color: #64748b; line-height: 1.7; }
 
-    .card {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 16px;
-    }
-
-    .card h4 {
-      margin-top: 0;
-      color: #0ea5e9;
-    }
-
-    .card p {
-      font-size: 13px;
-      margin-bottom: 0;
-    }
+    /* VAST/VARIABEL CARDS */
+    .vast-card { background: #1e293b; border: 1px solid #22c55e44; border-radius: 12px; padding: 14px 18px; }
+    .var-card { background: #1e293b; border: 1px solid #ef444444; border-radius: 12px; padding: 14px 18px; }
 
     /* FOOTER */
-    .footer {
-      text-align: center;
-      padding-top: 40px;
-      margin-top: 40px;
-      border-top: 1px solid #334155;
-      color: #64748b;
-      font-size: 11px;
-    }
+    .footer { text-align: center; margin-top: 22px; padding: 13px 0; border-top: 1px solid #1e293b; font-size: 11px; color: #334155; }
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .three-column {
-        grid-template-columns: 1fr;
-      }
-
-      .tab-bar {
-        flex-direction: column;
-      }
-
-      .tab-btn {
-        width: 100%;
-      }
-
-      body {
-        padding: 12px;
-      }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col, .three-col, .two-col-args, .scenario-grid { grid-template-columns: 1fr; }
+      .tab-bar { flex-wrap: wrap; }
+      body { padding: 12px; }
     }
-
     @media (max-width: 500px) {
-      .kpi-grid {
-        grid-template-columns: 1fr;
-      }
-
-      h1 { font-size: 20px; }
-      h2 { font-size: 16px; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .header-title { font-size: 20px; }
     }
   </style>
 </head>
 <body>
-
 <div class="container">
+
+  <!-- LOGO + COPYRIGHT -->
+  <div class="logo-block">
+    <img src="/fulllogo_transparent_nobuffer.png" alt="PWR.IT CommV" onerror="this.style.display='none'" />
+    <div class="logo-divider">
+      <div class="logo-copyright">© PWR.IT CommV — Alle rechten voorbehouden</div>
+      <div class="logo-legal">
+        Het gebruik, kopiëren en verspreiden van deze pagina en de analyses hierop is uitsluitend toegestaan
+        mits <strong style="color:#94a3b8">uitdrukkelijke schriftelijke toestemming van PWR.IT CommV</strong>.
+        Zonder toestemming is elke reproductie of verspreiding verboden.
+      </div>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <div class="header">
@@ -389,450 +201,391 @@
   </div>
 
   <!-- ALERT BANNER -->
-  <div class="alert-banner" id="alert-banner">
-    <h4>{{ alert_banner_title }}</h4>
-    <p>{{ alert_banner_text }}</p>
+  <div class="alert-block" id="alert-block">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <div class="alert-title">{{ alert_banner_title }}</div>
+      <div class="alert-text">{{ alert_banner_text }}</div>
+    </div>
   </div>
 
-  <!-- KPI GRID -->
+  <!-- PRICE VOLATILITY DISCLAIMER -->
+  <div class="disclaimer-block">
+    <span style="font-size:16px;color:#f59e0b;flex-shrink:0">ℹ️</span>
+    <div>
+      <div class="disclaimer-title">Prijzen zijn momentopnames</div>
+      <div class="disclaimer-text">
+        De getoonde "vandaag" dagprijzen zijn specifieke momentopnames.
+        Actuele marktprijzen fluctueren continu gedurende de handelsdag.
+        Voor real-time prijzen: raadpleeg EPEX SPOT (elektriciteit) en ICE Endex (gas).
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi">
       <div class="kpi-label">TTF Gas vandaag</div>
       <div class="kpi-val">€{{ kpis_ttf }}<span class="kpi-sub">/MWh</span></div>
-      <div class="kpi-delta">{{ kpis_ttf_delta }}</div>
+      <div class="kpi-note">{{ kpis_ttf_delta }}</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Belpex Elektr. vandaag</div>
       <div class="kpi-val">€{{ kpis_belpex }}<span class="kpi-sub">/MWh</span></div>
-      <div class="kpi-delta">{{ kpis_belpex_delta }}</div>
+      <div class="kpi-note">{{ kpis_belpex_delta }}</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">EU Gasopslag</div>
-      <div class="kpi-val">~{{ kpis_storage }}%</div>
-      <div class="kpi-delta">{{ kpis_storage_note }}</div>
+      <div class="kpi-val">~{{ kpis_storage }}<span class="kpi-sub">%</span></div>
+      <div class="kpi-note">{{ kpis_storage_note }}</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Brent Crude</div>
+      <div class="kpi-label">Brent Ruwe Olie</div>
       <div class="kpi-val">${{ kpis_brent }}<span class="kpi-sub">/vat</span></div>
-      <div class="kpi-delta">{{ kpis_brent_delta }}</div>
+      <div class="kpi-note">{{ kpis_brent_delta }}</div>
     </div>
   </div>
 
-  <!-- TAB NAVIGATION -->
+  <!-- TAB BAR -->
   <div class="tab-bar">
-    <button class="tab-btn active" data-tab="analyse" onclick="showTab('analyse')">📊 Analyse &amp; Data</button>
-    <button class="tab-btn" data-tab="context" onclick="showTab('context')">🌍 Geopolitiek</button>
-    <button class="tab-btn" data-tab="forecast" onclick="showTab('forecast')">📈 Forecast</button>
-    <button class="tab-btn" data-tab="advies" onclick="showTab('advies')">💡 Advies</button>
-    <button class="tab-btn" data-tab="bronnen" onclick="showTab('bronnen')">📚 Bronnen</button>
+    <button class="tab-btn active" onclick="showTab('analyse')">📊 Analyse &amp; Data</button>
+    <button class="tab-btn" onclick="showTab('context')">🌍 Geopolitiek</button>
+    <button class="tab-btn" onclick="showTab('forecast')">🔭 Forecast</button>
+    <button class="tab-btn" onclick="showTab('advies')">🏠 Vaste vs. Variabel</button>
+    <button class="tab-btn" onclick="showTab('bronnen')">📚 Bronnen</button>
   </div>
 
-  <!-- TAB: ANALYSE & DATA -->
+  <!-- TAB: ANALYSE -->
   <div class="tab-panel active" id="tab-analyse">
-    <h2>Analyse &amp; Data</h2>
 
-    <h3>TTF (Aardgas)</h3>
-    <canvas id="ttf-chart" width="800" height="220" style="width: 100%; height: 220px;"></canvas>
+    <div class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0;color:#f8fafc;font-size:16px">TTF Aardgas — Dagelijkse Spotprijzen (€/MWh)</h3>
+        <span class="badge badge-blue">Reuters · Bloomberg · ENTSOG</span>
+      </div>
+      <canvas id="ttf-chart" width="900" height="220"></canvas>
+    </div>
 
-    <h3>Belpex (Elektriciteit)</h3>
-    <canvas id="belpex-chart" width="800" height="220" style="width: 100%; height: 220px;"></canvas>
+    <div class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0;color:#f8fafc;font-size:16px">Belpex Elektriciteit — Daggemiddelde Day-Ahead (€/MWh)</h3>
+        <span class="badge badge-purple">ENTSO-E · EPEX SPOT</span>
+      </div>
+      <canvas id="belpex-chart" width="900" height="220"></canvas>
+    </div>
 
-    <h3>Prijsgeschiedenis (afgelopen 30 dagen)</h3>
-    <table class="price-table">
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>TTF (€/MWh)</th>
-          <th>Δ TTF</th>
-          <th>Belpex (€/MWh)</th>
-          <th>Δ Belpex</th>
-          <th>Notitie</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ price_table_rows }}
-      </tbody>
-    </table>
+    <div class="section">
+      <h3 style="margin:0 0 14px;color:#f8fafc;font-size:16px">Dagelijkse Prijstabel — Afgelopen 30 Dagen</h3>
+      <div style="overflow-x:auto">
+        <table class="data-table" style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="border-bottom:2px solid #334155">
+              <th>Datum</th>
+              <th>TTF €/MWh</th>
+              <th>Δ TTF dag/dag</th>
+              <th>Belpex €/MWh</th>
+              <th>Δ Belpex dag/dag</th>
+              <th>Δ TTF vs. 27/02</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+{{ price_table_rows }}
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:11px;color:#475569;margin-top:10px;margin-bottom:0">
+        ✓ = bevestigd officieel datapunt (27/02, 09/03, 11/03, 20/03, 21/03, 23/03) · Δ dag/dag = procentuele wijziging t.o.v. vorige handelsdag (▲ stijging, ▼ daling) · Tussenliggende waarden: interpolaties op basis van bevestigde marktreeksen
+      </p>
+    </div>
+
   </div>
 
-  <!-- TAB: CONTEXT (GEOPOLITIEK) -->
+  <!-- TAB: CONTEXT -->
   <div class="tab-panel" id="tab-context">
-    <h2>Geopolitieke Context</h2>
-    <p>Deze sectie bevat actuele informatie over geopolitieke factoren die energieprijzen beïnvloeden.</p>
-    <!-- Content from JSX geopolitieke section will be inserted here -->
+    {{ section_context }}
   </div>
 
   <!-- TAB: FORECAST -->
   <div class="tab-panel" id="tab-forecast">
-    <h2>Forecast Scenario's</h2>
-    <p>Drie mogelijke vervolgscenario's voor de komende 6-8 weken, op basis van actuele marktontwikkelingen.</p>
-
-    <canvas id="forecast-chart" width="800" height="250" style="width: 100%; height: 250px;"></canvas>
-
-    <h3>Scenario's</h3>
-    <div class="three-column">
-      <div class="card">
-        <h4>📈 Bullish (€70-85)</h4>
-        <p>Escalaatie in Midden-Oosten, aanvoerstoornissen Qatar/Kuwait, LNG-contracten stijgen.</p>
-      </div>
-      <div class="card">
-        <h4>📊 Basis (€55-70)</h4>
-        <p>Normalisatie door lente, geleidelijke LNG-aanvoer, storing afgelopen.</p>
-      </div>
-      <div class="card">
-        <h4>📉 Bearish (€40-55)</h4>
-        <p>Snelle de-escalatie, normale LNG-supply, temperaturen normaal.</p>
-      </div>
-    </div>
-
-    <h3>Sleutelfactoren</h3>
-    <ul>
-      <li>Geopolitieke spanning in Midden-Oosten (Hormuz, Qatar)</li>
-      <li>LNG-leveringen naar Europa</li>
-      <li>Europese gasopslag niveaus</li>
-      <li>Weersverwachtingen (temperatuur)</li>
-      <li>EU-beleid en energiesteun</li>
-    </ul>
+    {{ section_forecast }}
   </div>
+
 
   <!-- TAB: ADVIES -->
   <div class="tab-panel" id="tab-advies">
-    <h2>Tariefadvies: Vast vs. Variabel</h2>
-
-    <div class="section-card">
-      <h3>Analyse van Huidige Marktsituatie</h3>
-      <p>De energiemarkt bevindt zich in een kritieke fase. TTF-gasprijzen schommelen rond €60/MWh, aangedreven door geopolitieke spanningen en beperkingen in LNG-aanvoer.</p>
-    </div>
-
-    <div class="section-card">
-      <h3>Vast Tarief</h3>
-      <h4>✅ Voordelen:</h4>
-      <ul>
-        <li>Zekerheid: vaste maandelijkse kosten</li>
-        <li>Bescherming tegen prijsschommelingen</li>
-        <li>Makkelijk budgetteren</li>
-      </ul>
-      <h4>❌ Nadelen:</h4>
-      <ul>
-        <li>Hoger startpunt (verwacht €55-60 basis)</li>
-        <li>Minder voordeel bij prijsdaling</li>
-      </ul>
-    </div>
-
-    <div class="section-card">
-      <h3>Variabel Tarief</h3>
-      <h4>✅ Voordelen:</h4>
-      <ul>
-        <li>Potentieel lagere kosten bij normalisatie</li>
-        <li>Voordeel bij marktstabilisatie</li>
-      </ul>
-      <h4>❌ Nadelen:</h4>
-      <ul>
-        <li>Risico op verdere stijging</li>
-        <li>Onzekere maandelijkse facturen</li>
-        <li>Blootstelling aan marktvolatiliteit</li>
-      </ul>
-    </div>
-
-    <h3>KERNBOODSCHAP</h3>
-    <div class="section-card">
-      <p><strong>Weloverwogen keuzen duren langer, maar leveren duurzaam voordeel.</strong></p>
-      <p>Bij verhoogde marktvolatiliteit en onzekerheid is een <strong>vast tarief met 6-12 maanden zekerheid</strong> momenteel het meest prudente advies. Dit biedt bescherming tegen verder opgaande prijzen, terwijl u op een stabiel niveau vastgezet bent.</p>
-      <p>Voor wie bereid is risico te dragen en op korte termijn kan meewegen met marktbewegingen, kan variabel interessant zijn, maar alleen als u minimaal 3 maanden cashflow-buffer hebt.</p>
-    </div>
-
-    <h3>Praktisch Advies</h3>
-    <ol>
-      <li>📋 <strong>Verzamel je huiskamer-gebruikswerkelijkheden.</strong> Controleer je jaarlijkse gasgebruik (m³) en elektriciteitsgebruik (kWh).</li>
-      <li>🔍 <strong>Vergelijk aanbiedingen van minstens 3 leveranciers.</strong> Let niet alleen op prijs, maar ook op servicekwaliteit en flexibiliteit.</li>
-      <li>⏰ <strong>Timing is geld.</strong> Doen dit nu, voor het volgende seizoen (winter 2026-2027).</li>
-      <li>💾 <strong>Lees de voorwaarden zorgvuldig.</strong> Let op durationsbeperkingen, opzegtermijnen en verborgen kosten.</li>
-      <li>📞 <strong>Onderneem actie.</strong> Neem contact op met leveranciers en vraag om offerte in writing.</li>
-    </ol>
+    {{ section_advies }}
   </div>
 
   <!-- TAB: BRONNEN -->
   <div class="tab-panel" id="tab-bronnen">
-    <h2>Bronnen &amp; Referenties</h2>
-
-    <h3>Marktdata &amp; Energieprijzen</h3>
-    <ul>
-      <li><a href="https://www.oilpriceapi.com">OilPrice API</a> — TTF-gasprijzen real-time</li>
-      <li><a href="https://www.investing.com">Investing.com</a> — TTF futures en historische data</li>
-      <li><a href="https://euenergy.live">EU Energy</a> — Belpex/EPEX spotprijzen</li>
-      <li><a href="https://www.elia.be">Elia.be</a> — Belgische day-ahead referentieprijzen</li>
-    </ul>
-
-    <h3>Gasopslag &amp; Aanbod</h3>
-    <ul>
-      <li><a href="https://agsi.gie.eu">GIE AGSI+</a> — Europese gasopslagstanden</li>
-      <li><a href="https://www.ice.com">ICE</a> — TTF futures en contractdata</li>
-    </ul>
-
-    <h3>Geopolitiek &amp; Marktanalyse</h3>
-    <ul>
-      <li><a href="https://www.iea.org">IEA (International Energy Agency)</a> — Beleid en prognoses</li>
-      <li><a href="https://www.reuters.com">Reuters</a> — Internationaal energienieuws</li>
-    </ul>
-
-    <h3>België-specifiek</h3>
-    <ul>
-      <li><a href="https://www.vreg.be">VREG</a> — Vlaamse regulatieautoriteit</li>
-      <li><a href="https://www.creg.be">CREG</a> — Belgische marktmonitor</li>
-      <li><a href="https://www.mijnenergie.be">Mijn Energie</a> — Consumenten advies</li>
-    </ul>
+    {{ section_bronnen }}
   </div>
 
 </div>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <p>Opgesteld: {{ report_date }} · {{ report_time }}</p>
-  <p>Dit rapport is een statische kopie gegenereerd op {{ report_date }}. Voor actuele gegevens, bezoek de interactieve versie.</p>
-</footer>
+<div class="footer">
+  GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br/>
+  Opgesteld: {{ report_date }} · {{ report_time }} · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+</div>
 
-<!-- DATA ARRAYS FOR CHARTS -->
+<!-- DATA -->
 <script>
 const marketData = {{ market_data_json }};
 const forecastBase = {{ forecast_base_json }};
 const forecastBull = {{ forecast_bull_json }};
 const forecastBear = {{ forecast_bear_json }};
 const trendlines = {{ chart_trendlines_json }};
+const TTF_BASE = 31.96; // 27/02 baseline
 </script>
 
-<!-- CHART RENDERING -->
+<!-- CHARTS -->
 <script>
-function drawLineChart(canvasId, dataSeries, options = {}) {
+function drawChart(canvasId, data, field, opts) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
-
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth || 900;
+  const H = opts.height || 220;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
   const ctx = canvas.getContext('2d');
-  const width = canvas.width;
-  const height = canvas.height;
+  ctx.scale(dpr, dpr);
 
-  // Layout constants
-  const padding = { top: 20, right: 30, bottom: 40, left: 50 };
-  const chartWidth = width - padding.left - padding.right;
-  const chartHeight = height - padding.top - padding.bottom;
+  const pad = { top: 16, right: 24, bottom: 30, left: 48 };
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
 
-  // Default options
-  const opts = {
-    yDomain: options.yDomain || [30, 120],
-    yLabel: options.yLabel || 'Price (€/MWh)',
-    xLabel: options.xLabel || 'Date',
-    refLineY: options.refLineY || null,
-    refLineX: options.refLineX || null,
-    ...options
-  };
-
-  // Clear canvas
+  // Background
   ctx.fillStyle = '#0f172a';
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, W, H);
 
-  // Draw grid
-  ctx.strokeStyle = '#334155';
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i <= 5; i++) {
-    const y = padding.top + (i / 5) * chartHeight;
-    ctx.beginPath();
-    ctx.moveTo(padding.left, y);
-    ctx.lineTo(width - padding.right, y);
-    ctx.stroke();
-  }
-
-  // Draw axes
-  ctx.strokeStyle = '#64748b';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(padding.left, padding.top);
-  ctx.lineTo(padding.left, height - padding.bottom);
-  ctx.lineTo(width - padding.right, height - padding.bottom);
-  ctx.stroke();
-
-  // Y-axis labels
-  ctx.fillStyle = '#94a3b8';
-  ctx.font = '11px monospace';
-  ctx.textAlign = 'right';
-  for (let i = 0; i <= 5; i++) {
-    const value = opts.yDomain[0] + (i / 5) * (opts.yDomain[1] - opts.yDomain[0]);
-    const y = padding.top + (1 - i / 5) * chartHeight;
-    ctx.fillText(value.toFixed(0), padding.left - 8, y + 4);
-  }
-
-  // Draw data series
-  const colors = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444'];
-  dataSeries.forEach((series, idx) => {
-    ctx.strokeStyle = colors[idx % colors.length];
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-
-    let firstPoint = true;
-    series.data.forEach((point, i) => {
-      const x = padding.left + (i / (series.data.length - 1)) * chartWidth;
-      const normValue = (point - opts.yDomain[0]) / (opts.yDomain[1] - opts.yDomain[0]);
-      const y = padding.top + (1 - normValue) * chartHeight;
-
-      if (firstPoint) {
-        ctx.moveTo(x, y);
-        firstPoint = false;
-      } else {
-        ctx.lineTo(x, y);
-      }
-    });
-    ctx.stroke();
-  });
-
-  // Legend (simplified)
-  ctx.fillStyle = '#e2e8f0';
-  ctx.font = '12px Georgia, serif';
-  ctx.textAlign = 'left';
-  dataSeries.forEach((series, idx) => {
-    ctx.fillStyle = colors[idx % colors.length];
-    ctx.fillRect(width - 150, 20 + idx * 20, 10, 10);
-    ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(series.label || `Series ${idx + 1}`, width - 135, 28 + idx * 20);
-  });
-}
-
-function drawForecastChart() {
-  const canvas = document.getElementById('forecast-chart');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  const width = canvas.width;
-  const height = canvas.height;
-
-  // Simple forecast rendering (similar to above but with 3 scenarios)
-  const padding = { top: 20, right: 30, bottom: 40, left: 50 };
-  const chartWidth = width - padding.left - padding.right;
-  const chartHeight = height - padding.top - padding.bottom;
-
-  // Clear
-  ctx.fillStyle = '#0f172a';
-  ctx.fillRect(0, 0, width, height);
+  const yMin = opts.yMin, yMax = opts.yMax;
+  const n = data.length;
+  const xOf = (i) => pad.left + (i / (n - 1)) * cw;
+  const yOf = (v) => pad.top + (1 - (v - yMin) / (yMax - yMin)) * ch;
 
   // Grid
-  ctx.strokeStyle = '#334155';
-  ctx.lineWidth = 0.5;
   for (let i = 0; i <= 5; i++) {
-    const y = padding.top + (i / 5) * chartHeight;
-    ctx.beginPath();
-    ctx.moveTo(padding.left, y);
-    ctx.lineTo(width - padding.right, y);
-    ctx.stroke();
+    const v = yMin + (i / 5) * (yMax - yMin);
+    const y = yOf(v);
+    ctx.strokeStyle = '#1e3a5f';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#64748b';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('€' + v.toFixed(0), pad.left - 4, y + 3);
   }
 
-  // Axes
-  ctx.strokeStyle = '#64748b';
-  ctx.lineWidth = 1.5;
+  // Axis
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(padding.left, padding.top);
-  ctx.lineTo(padding.left, height - padding.bottom);
-  ctx.lineTo(width - padding.right, height - padding.bottom);
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, pad.top + ch);
+  ctx.lineTo(pad.left + cw, pad.top + ch);
   ctx.stroke();
 
-  // Draw forecast scenarios
-  const yDomain = [20, 90];
-  const scenarios = [
-    { data: forecastBase, label: 'Basis', color: '#0ea5e9' },
-    { data: forecastBull, label: 'Bullish', color: '#ef4444' },
-    { data: forecastBear, label: 'Bearish', color: '#10b981' }
-  ];
+  // X labels (every 5th)
+  ctx.fillStyle = '#64748b';
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  data.forEach((d, i) => {
+    if (i % 5 === 0 || i === n - 1) {
+      ctx.fillText(d.date, xOf(i), pad.top + ch + 16);
+    }
+  });
 
-  scenarios.forEach((scenario) => {
-    ctx.strokeStyle = scenario.color;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-
-    let firstPoint = true;
-    scenario.data.forEach((point, i) => {
-      const x = padding.left + (i / (scenario.data.length - 1)) * chartWidth;
-      const normValue = (point.ttf - yDomain[0]) / (yDomain[1] - yDomain[0]);
-      const y = padding.top + (1 - normValue) * chartHeight;
-
-      if (firstPoint) {
-        ctx.moveTo(x, y);
-        firstPoint = false;
-      } else {
-        ctx.lineTo(x, y);
+  // Reference lines
+  if (opts.refY) {
+    opts.refY.forEach(r => {
+      const y = yOf(r.v);
+      ctx.strokeStyle = r.color;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+      ctx.setLineDash([]);
+      if (r.label) {
+        ctx.fillStyle = r.color;
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText(r.label, pad.left + cw, y - 3);
       }
     });
+  }
+  if (opts.refX) {
+    opts.refX.forEach(r => {
+      const idx = data.findIndex(d => d.date === r.date);
+      if (idx < 0) return;
+      const x = xOf(idx);
+      ctx.strokeStyle = r.color;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
+      ctx.setLineDash([]);
+      if (r.label) {
+        ctx.fillStyle = r.color;
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(r.label, x, pad.top + 10);
+      }
+    });
+  }
+
+  // Trendlines
+  if (opts.trendMedium) {
+    const td = trendlines[field + '_medium'];
+    if (td && td.length) {
+      ctx.strokeStyle = '#22d3ee';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([8, 4]);
+      ctx.beginPath();
+      td.forEach((p, i) => { i === 0 ? ctx.moveTo(xOf(i), yOf(p.value)) : ctx.lineTo(xOf(i), yOf(p.value)); });
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Main line
+  ctx.strokeStyle = opts.color;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  data.forEach((d, i) => {
+    const x = xOf(i), y = yOf(d[field]);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Today dot
+  const todayIdx = data.findIndex(d => d.note === 'Vandaag');
+  if (todayIdx >= 0) {
+    ctx.fillStyle = opts.color;
+    ctx.beginPath();
+    ctx.arc(xOf(todayIdx), yOf(data[todayIdx][field]), 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawForecast() {
+  const canvas = document.getElementById('forecast-chart');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth || 900;
+  const H = 250;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { top: 16, right: 24, bottom: 30, left: 48 };
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
+  const yMin = 20, yMax = 90;
+
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  for (let i = 0; i <= 5; i++) {
+    const v = yMin + (i / 5) * (yMax - yMin);
+    const y = pad.top + (1 - (v - yMin) / (yMax - yMin)) * ch;
+    ctx.strokeStyle = '#1e3a5f'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#64748b'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillText('€' + v.toFixed(0), pad.left - 4, y + 3);
+  }
+
+  const scenarios = [
+    { data: forecastBull, color: '#ef4444', name: '⬆ Bullish', dash: [6, 3] },
+    { data: forecastBase, color: '#0ea5e9', name: '⟶ Basis', dash: [] },
+    { data: forecastBear, color: '#22c55e', name: '⬇ Bearish', dash: [6, 3] },
+  ];
+
+  scenarios.forEach(s => {
+    const n = s.data.length;
+    const xOf = (i) => pad.left + (i / (n - 1)) * cw;
+    const yOf = (v) => pad.top + (1 - (v - yMin) / (yMax - yMin)) * ch;
+    ctx.strokeStyle = s.color; ctx.lineWidth = 2; ctx.setLineDash(s.dash);
+    ctx.beginPath();
+    s.data.forEach((d, i) => {
+      const x = xOf(i), y = yOf(d.ttf);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
     ctx.stroke();
+    ctx.setLineDash([]);
+    // Dots
+    s.data.forEach((d, i) => {
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(xOf(i), yOf(d.ttf), 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
+
+  // X labels
+  const allDates = forecastBase.map(d => d.date);
+  const n = allDates.length;
+  ctx.fillStyle = '#64748b'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+  allDates.forEach((d, i) => {
+    ctx.fillText(d, pad.left + (i / (n - 1)) * cw, pad.top + ch + 16);
   });
 
   // Legend
-  ctx.fillStyle = '#e2e8f0';
-  ctx.font = '12px Georgia, serif';
-  ctx.textAlign = 'left';
-  scenarios.forEach((scenario, idx) => {
-    ctx.fillStyle = scenario.color;
-    ctx.fillRect(width - 150, 20 + idx * 20, 10, 10);
-    ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(scenario.label, width - 135, 28 + idx * 20);
+  scenarios.forEach((s, i) => {
+    ctx.fillStyle = s.color; ctx.fillRect(W - 140, 18 + i * 18, 10, 10);
+    ctx.fillStyle = '#94a3b8'; ctx.font = '11px Georgia, serif'; ctx.textAlign = 'left';
+    ctx.fillText(s.name, W - 126, 27 + i * 18);
   });
 }
 
-// Initialize charts on page load
-document.addEventListener('DOMContentLoaded', function() {
-  // TTF Chart
-  drawLineChart('ttf-chart', [
-    { data: marketData.map(p => p.ttf), label: 'TTF' }
-  ], { yDomain: [25, 70], yLabel: 'TTF (€/MWh)' });
-
-  // Belpex Chart
-  drawLineChart('belpex-chart', [
-    { data: marketData.map(p => p.belpex), label: 'Belpex' }
-  ], { yDomain: [40, 150], yLabel: 'Belpex (€/MWh)' });
-
-  // Forecast Chart
-  drawForecastChart();
-
-  // Show alert banner if text is present
-  const banner = document.getElementById('alert-banner');
-  const bannerText = banner ? banner.querySelector('p').textContent : '';
-  if (bannerText && bannerText.trim()) {
-    banner.classList.add('active');
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  drawChart('ttf-chart', marketData, 'ttf', {
+    yMin: 25, yMax: 70, height: 220, color: '#0ea5e9', trendMedium: true,
+    refY: [{ v: 31.96, color: '#22c55e', label: '27/02 basis' }],
+    refX: [{ date: '02/03', color: '#ef4444', label: 'Hormuz' }]
+  });
+  drawChart('belpex-chart', marketData, 'belpex', {
+    yMin: 40, yMax: 150, height: 220, color: '#a78bfa', trendMedium: true,
+    refX: [
+      { date: '02/03', color: '#ef4444', label: '' },
+      { date: '10/03', color: '#22c55e', label: 'IEA' }
+    ]
+  });
+  drawForecast();
 });
 </script>
 
 <!-- TAB SWITCHING -->
 <script>
-function showTab(tabName) {
-  // Hide all panels
-  document.querySelectorAll('.tab-panel').forEach(panel => {
-    panel.classList.remove('active');
-  });
-
-  // Deactivate all buttons
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-
-  // Show selected panel
-  const panel = document.getElementById('tab-' + tabName);
-  if (panel) {
-    panel.classList.add('active');
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('tab-' + name);
+  if (panel) panel.classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const labels = ['analyse','context','forecast','advies','bronnen'];
+  const idx = labels.indexOf(name);
+  if (btns[idx]) btns[idx].classList.add('active');
+  // Redraw charts
+  if (name === 'analyse') {
+    setTimeout(() => {
+      drawChart('ttf-chart', marketData, 'ttf', { yMin: 25, yMax: 70, height: 220, color: '#0ea5e9', trendMedium: true, refY: [{ v: 31.96, color: '#22c55e', label: '27/02 basis' }], refX: [{ date: '02/03', color: '#ef4444', label: 'Hormuz' }] });
+      drawChart('belpex-chart', marketData, 'belpex', { yMin: 40, yMax: 150, height: 220, color: '#a78bfa', trendMedium: true, refX: [{ date: '02/03', color: '#ef4444', label: '' }, { date: '10/03', color: '#22c55e', label: 'IEA' }] });
+    }, 50);
   }
-
-  // Activate selected button
-  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
-  if (btn) {
-    btn.classList.add('active');
+  if (name === 'forecast') {
+    setTimeout(() => drawForecast(), 50);
   }
-
-  // Redraw charts if visible
-  setTimeout(() => {
-    if (tabName === 'analyse') {
-      window.dispatchEvent(new Event('resize'));
-    }
-  }, 100);
 }
-
-// Initialize first tab
-document.addEventListener('DOMContentLoaded', function() {
-  showTab('analyse');
-});
 </script>
 
 </body>

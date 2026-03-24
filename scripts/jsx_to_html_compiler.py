@@ -8,14 +8,16 @@ from pathlib import Path
 from dataclasses import asdict
 from statistics import linear_regression
 from scripts.shared_data_extractor import DataExtractor, EnergyReportData
+from scripts.jsx_section_extractor import JsxSectionExtractor
 
 
 class JsxToHtmlCompiler:
     """Compile JSX to standalone HTML"""
 
     def __init__(self):
-        """Initialize compiler with data extractor"""
+        """Initialize compiler with data extractor and section extractor"""
         self.extractor = DataExtractor()
+        self.section_extractor = JsxSectionExtractor()
 
     def _generate_price_table_rows(self, price_history) -> str:
         """
@@ -149,6 +151,10 @@ class JsxToHtmlCompiler:
             self.extractor.validate(data)
             print(f"   ✓ Extracted: {len(data.price_history)} price points, {len(data.forecast_base)} forecast scenarios")
 
+            # 1b. Load raw JSX content for section extraction
+            with open(jsx_path, 'r', encoding='utf-8') as f:
+                jsx_content_str = f.read()
+
             # 2. Load HTML template
             print(f"📄 Loading template: {template_path}")
             with open(template_path, 'r', encoding='utf-8') as f:
@@ -221,6 +227,25 @@ class JsxToHtmlCompiler:
             # Price table and trendlines
             html_output = html_output.replace('{{ price_table_rows }}', price_table_rows)
             html_output = html_output.replace('{{ chart_trendlines_json }}', chart_trendlines_json)
+
+            # Dynamic tab sections extracted from JSX prose
+            print("🔤 Rendering dynamic tab sections from JSX...")
+            html_output = html_output.replace(
+                '{{ section_context }}',
+                self.section_extractor.render_context_section(jsx_content_str)
+            )
+            html_output = html_output.replace(
+                '{{ section_forecast }}',
+                self.section_extractor.render_forecast_section(jsx_content_str)
+            )
+            html_output = html_output.replace(
+                '{{ section_advies }}',
+                self.section_extractor.render_advies_section(jsx_content_str)
+            )
+            html_output = html_output.replace(
+                '{{ section_bronnen }}',
+                self.section_extractor.render_bronnen_section(jsx_content_str)
+            )
 
             # 5. Write output
             print(f"💾 Writing compiled HTML: {output_path}")
