@@ -413,7 +413,8 @@ def render_advies_section(jsx_content: str) -> str:
     matrix_marker = section.find('"Gezin, krappe begroting"')
     matrix_rows_html = ""
     if matrix_marker != -1:
-        arr_start = section.rfind("[", 0, matrix_marker)
+        inner_start = section.rfind("[", 0, matrix_marker)
+        arr_start = section.rfind("[", 0, inner_start)
         arr_end = _find_array_end(section, arr_start)
         matrix_raw = section[arr_start:arr_end + 1]
         matrix_rows = _parse_matrix_rows(matrix_raw)
