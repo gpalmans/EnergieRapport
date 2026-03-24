@@ -56,6 +56,7 @@ jobs:
           DATA_MODE: ${{ steps.mode.outputs.mode }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_MODEL: claude-sonnet-4-6
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
       
       - name: Detect crisis situation
         id: crisis

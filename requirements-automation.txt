@@ -2,6 +2,7 @@
 
 # AI Analysis & Web Search
 anthropic>=0.20.0
+tavily-python>=0.3.0
 
 # Web Scraping & Data Collection
 requests>=2.31.0

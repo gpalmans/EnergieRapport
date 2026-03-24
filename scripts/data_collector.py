@@ -1,7 +1,7 @@
 """
 Data Collector voor EnergieRapport - HYBRID APPROACH
 - Belpex: REST API (energy-charts.info) - betrouwbaar & gratis
-- TTF, Storage, Brent: Claude API - intelligent web search & parsing
+- TTF, Storage, Brent: Tavily API - dedicated web search for AI agents
 """
 
 import os
@@ -10,6 +10,7 @@ import requests
 from datetime import datetime
 from typing import Dict, Optional
 import logging
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -20,6 +21,13 @@ try:
 except ImportError:
     ANTHROPIC_AVAILABLE = False
     logger.warning("anthropic library not installed - Claude API calls will be skipped")
+
+try:
+    from tavily import TavilyClient
+    TAVILY_AVAILABLE = True
+except ImportError:
+    TAVILY_AVAILABLE = False
+    logger.warning("tavily-python library not installed - Tavily search will be skipped")
 
 
 class EnergyDataCollector:
@@ -51,12 +59,10 @@ class EnergyDataCollector:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         })
 
-        # Claude API client
+        # Claude API client (for AI analysis, not web search)
         self.claude_client = None
         claude_model_env = os.getenv('CLAUDE_MODEL')
-        logger.info(f"   DEBUG: CLAUDE_MODEL env var = '{claude_model_env}'")
         self.claude_model = claude_model_env if claude_model_env else 'claude-sonnet-4-6'
-        logger.info(f"   DEBUG: Final claude_model = '{self.claude_model}'")
 
         if ANTHROPIC_AVAILABLE:
             api_key = os.getenv('ANTHROPIC_API_KEY')
@@ -67,6 +73,18 @@ class EnergyDataCollector:
                 logger.warning("ANTHROPIC_API_KEY not set - Claude API disabled")
         else:
             logger.warning("Anthropic SDK not installed - Claude API disabled")
+
+        # Tavily API client (for web search)
+        self.tavily_client = None
+        if TAVILY_AVAILABLE:
+            tavily_api_key = os.getenv('TAVILY_API_KEY')
+            if tavily_api_key:
+                self.tavily_client = TavilyClient(api_key=tavily_api_key)
+                logger.info("Tavily API available for web search")
+            else:
+                logger.warning("TAVILY_API_KEY not set - Tavily search disabled")
+        else:
+            logger.warning("Tavily SDK not installed - Tavily search disabled")
 
         self.previous_data = self._load_previous_data()
 
@@ -125,154 +143,138 @@ class EnergyDataCollector:
             logger.warning(f"   Error: {e}")
             return self._fallback_value('belpex')
 
-    # ============ TTF, STORAGE, BRENT: Claude API (intelligent parsing) ============
+    # ============ TTF, STORAGE, BRENT: Tavily API (web search) ============
 
-    def collect_via_claude(self) -> bool:
+    def collect_via_tavily(self) -> bool:
         """
-        Use Claude API to intelligently search and parse energy market data
+        Use Tavily API to search for energy market prices
         Returns: True if successful, False if skipped/failed
         """
-        # Debug logging at start of method
-        claude_model_env = os.getenv('CLAUDE_MODEL')
-        logger.info(f"   DEBUG COLLECT: CLAUDE_MODEL env var = '{claude_model_env}'")
-        logger.info(f"   DEBUG COLLECT: Current claude_model = '{self.claude_model}'")
-        
-        if not self.claude_client:
-            logger.warning("Claude API not available - using fallback for TTF, Storage, Brent")
+        if not self.tavily_client:
+            logger.warning("Tavily API not available - using fallback for TTF, Storage, Brent")
             self._fallback_value('ttf')
             self._fallback_value('eu_storage')
             self._fallback_value('brent')
             return False
 
-        logger.info("Collecting TTF, EU Storage, Brent via Claude API...")
+        logger.info("Collecting TTF, EU Storage, Brent via Tavily API...")
 
         try:
-            prompt = f"""Use web search to find the MOST RECENT energy market prices available.
-
-IMPORTANT: The current date is {datetime.now().strftime('%d %B %Y')}. Search for the LATEST available data, even if it's from a few days ago.
-
-Search queries that will be used:
-1. "TTF gas price EUR/MWh latest {datetime.now().strftime('%B %Y')}"
-2. "EU gas storage percentage latest {datetime.now().strftime('%B %Y')}" 
-3. "Brent crude oil price USD/barrel latest {datetime.now().strftime('%B %Y')}"
-
-If today's data isn't available, search for the most recent dates in {datetime.now().strftime('%B %Y')}.
-
-Return ONLY valid JSON with this exact structure (no markdown, no explanation, no code blocks):
-{{"ttf_eur_mwh": <number>, "ttf_source": "<string>", "eu_storage_percent": <number>, "storage_source": "<string>", "brent_usd_barrel": <number>, "brent_source": "<string>"}}
-
-Example valid response:
-{{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics (23/03/2026)", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+ (23/03/2026)", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg (23/03/2026)"}}
-
-CRITICAL RULES:
-- Find the MOST RECENT available data in {datetime.now().strftime('%B %Y')}
-- TTF must be 15-300 €/MWh
-- Storage must be 0-100%
-- Brent must be 30-250 $/barrel
-- Sources must include the specific date found
-- Always provide numeric values, never null
-- Prefer data from the last 7 days if possible"""
-
-            message = self.claude_client.messages.create(
-                model=self.claude_model,
-                max_tokens=512,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ]
+            # Search for TTF gas price
+            ttf_query = f"TTF gas price EUR/MWh {datetime.now().strftime('%B %Y')}"
+            logger.info(f"   Searching: {ttf_query}")
+            ttf_response = self.tavily_client.search(
+                query=ttf_query,
+                search_depth="basic",
+                max_results=5
             )
-
-            response_text = message.content[0].text.strip()
-            logger.info(f"   Claude response length: {len(response_text)} chars")
-            logger.info(f"   Claude response preview: {response_text[:200]}...")
             
-            # Log the search queries being used
-            logger.info(f"   Search queries used:")
-            logger.info(f"   1. TTF: 'TTF gas price EUR/MWh latest {datetime.now().strftime('%B %Y')}'")
-            logger.info(f"   2. Storage: 'EU gas storage percentage latest {datetime.now().strftime('%B %Y')}'")
-            logger.info(f"   3. Brent: 'Brent crude oil price USD/barrel latest {datetime.now().strftime('%B %Y')}'")
-
-            # Parse JSON response - try multiple extraction methods
-            import re
-            
-            # Method 1: Direct JSON parse
-            try:
-                result = json.loads(response_text)
-                logger.info(f"   Method 1 (direct parse) successful")
-            except json.JSONDecodeError as e:
-                logger.info(f"   Method 1 failed: {e}")
-                # Method 2: Extract from markdown code block
-                code_block_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', response_text, re.DOTALL)
-                if code_block_match:
-                    try:
-                        result = json.loads(code_block_match.group(1).strip())
-                        logger.info(f"   Method 2 (markdown block) successful")
-                    except json.JSONDecodeError as e:
-                        logger.info(f"   Method 2 failed: {e}")
-                        # Method 3: Find JSON object in text
-                        json_match = re.search(r'\{[^{}]*\}', response_text, re.DOTALL)
-                        if json_match:
-                            try:
-                                result = json.loads(json_match.group())
-                                logger.info(f"   Method 3 (regex) successful")
-                            except json.JSONDecodeError as e:
-                                logger.info(f"   Method 3 failed: {e}")
-                                raise ValueError("No JSON found in response")
-                        else:
-                            raise ValueError("No JSON found in response")
-            
-            logger.info(f"   Successfully parsed JSON: {list(result.keys())}")
-            logger.info(f"   Parsed values: TTF={result.get('ttf_eur_mwh')}, Storage={result.get('eu_storage_percent')}, Brent={result.get('brent_usd_barrel')}")
-
-            # Validate and store TTF
-            if result.get('ttf_eur_mwh') and 15 < float(result['ttf_eur_mwh']) < 300:
-                ttf = round(float(result['ttf_eur_mwh']), 2)
-                self.data['ttf'] = ttf
-                self.data['sources']['ttf'] = [result.get('ttf_source', 'Claude search')]
+            # Extract TTF price from search results
+            ttf_price = self._extract_price_from_tavily(ttf_response, 'ttf')
+            if ttf_price:
+                self.data['ttf'] = ttf_price['value']
+                self.data['sources']['ttf'] = [ttf_price['source']]
                 self.data['validation']['ttf'] = ''
-                self.data['collection_status']['ttf'] = 'Live (Claude API)'
-                logger.info(f"   TTF: €{ttf:.2f}/MWh ({result.get('ttf_source', 'unknown')})")
+                self.data['collection_status']['ttf'] = 'Live (Tavily API)'
+                logger.info(f"   TTF: €{ttf_price['value']:.2f}/MWh ({ttf_price['source']})")
             else:
-                logger.warning(f"   TTF value invalid: {result.get('ttf_eur_mwh')}")
+                logger.warning("   Could not extract TTF price from search results")
                 self._fallback_value('ttf')
 
-            # Validate and store EU Storage
-            if result.get('eu_storage_percent') and 0 < float(result['eu_storage_percent']) <= 100:
-                storage = round(float(result['eu_storage_percent']), 1)
-                self.data['eu_storage'] = storage
-                self.data['sources']['eu_storage'] = [result.get('storage_source', 'Claude search')]
+            # Search for EU gas storage
+            storage_query = f"EU gas storage percentage {datetime.now().strftime('%B %Y')}"
+            logger.info(f"   Searching: {storage_query}")
+            storage_response = self.tavily_client.search(
+                query=storage_query,
+                search_depth="basic",
+                max_results=5
+            )
+            
+            # Extract storage percentage from search results
+            storage_data = self._extract_price_from_tavily(storage_response, 'storage')
+            if storage_data:
+                self.data['eu_storage'] = storage_data['value']
+                self.data['sources']['eu_storage'] = [storage_data['source']]
                 self.data['validation']['eu_storage'] = ''
-                self.data['collection_status']['eu_storage'] = 'Live (Claude API)'
-                logger.info(f"   Storage: {storage:.1f}% ({result.get('storage_source', 'unknown')})")
+                self.data['collection_status']['eu_storage'] = 'Live (Tavily API)'
+                logger.info(f"   Storage: {storage_data['value']:.1f}% ({storage_data['source']})")
             else:
-                logger.warning(f"   Storage value invalid: {result.get('eu_storage_percent')}")
+                logger.warning("   Could not extract storage percentage from search results")
                 self._fallback_value('eu_storage')
 
-            # Validate and store Brent
-            if result.get('brent_usd_barrel') and 30 < float(result['brent_usd_barrel']) < 250:
-                brent = round(float(result['brent_usd_barrel']), 2)
-                self.data['brent'] = brent
-                self.data['sources']['brent'] = [result.get('brent_source', 'Claude search')]
+            # Search for Brent oil price
+            brent_query = f"Brent crude oil price USD/barrel {datetime.now().strftime('%B %Y')}"
+            logger.info(f"   Searching: {brent_query}")
+            brent_response = self.tavily_client.search(
+                query=brent_query,
+                search_depth="basic",
+                max_results=5
+            )
+            
+            # Extract Brent price from search results
+            brent_data = self._extract_price_from_tavily(brent_response, 'brent')
+            if brent_data:
+                self.data['brent'] = brent_data['value']
+                self.data['sources']['brent'] = [brent_data['source']]
                 self.data['validation']['brent'] = ''
-                self.data['collection_status']['brent'] = 'Live (Claude API)'
-                logger.info(f"   Brent: ${brent:.2f}/barrel ({result.get('brent_source', 'unknown')})")
+                self.data['collection_status']['brent'] = 'Live (Tavily API)'
+                logger.info(f"   Brent: ${brent_data['value']:.2f}/barrel ({brent_data['source']})")
             else:
-                logger.warning(f"   Brent value invalid: {result.get('brent_usd_barrel')}")
+                logger.warning("   Could not extract Brent price from search results")
                 self._fallback_value('brent')
 
             return True
 
-        except json.JSONDecodeError:
-            logger.warning("   Failed to parse Claude's JSON response")
-            self._fallback_value('ttf')
-            self._fallback_value('eu_storage')
-            self._fallback_value('brent')
-            return False
         except Exception as e:
-            logger.warning(f"   Claude API error: {e}")
+            logger.warning(f"   Tavily API error: {e}")
             self._fallback_value('ttf')
             self._fallback_value('eu_storage')
             self._fallback_value('brent')
             return False
+
+    def _extract_price_from_tavily(self, response: Dict, data_type: str) -> Optional[Dict]:
+        """
+        Extract price/value from Tavily search results
+        Returns: {'value': float, 'source': str} or None
+        """
+        try:
+            # Tavily returns results in 'results' key
+            results = response.get('results', [])
+            
+            for result in results:
+                content = result.get('content', '')
+                url = result.get('url', '')
+                
+                # Extract price based on data type
+                if data_type == 'ttf':
+                    # Look for TTF price pattern (e.g., "53.25 EUR/MWh" or "€53.25")
+                    price_match = re.search(r'(\d+\.?\d*)\s*(?:EUR|€)/MWh', content)
+                    if price_match:
+                        value = float(price_match.group(1))
+                        if 15 < value < 300:  # Valid TTF range
+                            return {'value': value, 'source': url}
+                
+                elif data_type == 'storage':
+                    # Look for storage percentage (e.g., "26%" or "26.0%")
+                    storage_match = re.search(r'(\d+\.?\d*)\s*%', content)
+                    if storage_match:
+                        value = float(storage_match.group(1))
+                        if 0 < value <= 100:  # Valid storage range
+                            return {'value': value, 'source': url}
+                
+                elif data_type == 'brent':
+                    # Look for Brent price (e.g., "$101.55" or "101.55 USD")
+                    brent_match = re.search(r'\$?(\d+\.?\d*)\s*(?:USD|dollars?)/barrel', content, re.IGNORECASE)
+                    if brent_match:
+                        value = float(brent_match.group(1))
+                        if 30 < value < 250:  # Valid Brent range
+                            return {'value': value, 'source': url}
+            
+            return None
+
+        except Exception as e:
+            logger.warning(f"   Error extracting {data_type} from Tavily: {e}")
+            return None
 
     def _fallback_value(self, key: str) -> Optional[float]:
         """Use previous day's value as fallback"""
@@ -316,8 +318,8 @@ CRITICAL RULES:
         # Collect Belpex via REST API
         self.collect_belpex_price()
 
-        # Collect TTF, Storage, Brent via Claude API
-        self.collect_via_claude()
+        # Collect TTF, Storage, Brent via Tavily API
+        self.collect_via_tavily()
 
         # Verify all required data
         missing = [k for k, v in self.data.items()
