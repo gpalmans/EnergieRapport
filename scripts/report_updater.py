@@ -119,6 +119,28 @@ class ReportUpdater:
         logger.info("Updated KPI values")
         return content
     
+    def update_jsx_kpi_variables(self, content: str, market_data: Dict) -> str:
+        """Update KPI variables in JSX for PDF and other applications"""
+        
+        # Update currentTTF variable
+        ttf_var_pattern = r'(const currentTTF = )[\d.]+(;)'
+        content = re.sub(ttf_var_pattern, f'\\g<1>{market_data["ttf"]:.2f}\\g<2>', content)
+        
+        # Update currentBelpex variable
+        belpex_var_pattern = r'(const currentBelpex = )[\d.]+(;)'
+        content = re.sub(belpex_var_pattern, f'\\g<1>{market_data["belpex"]:.2f}\\g<2>', content)
+        
+        # Update currentStorage variable
+        storage_var_pattern = r'(const currentStorage = )[\d.]+(;)'
+        content = re.sub(storage_var_pattern, f'\\g<1>{market_data["eu_storage"]:.1f}\\g<2>', content)
+        
+        # Update currentBrent variable
+        brent_var_pattern = r'(const currentBrent = )[\d.]+(;)'
+        content = re.sub(brent_var_pattern, f'\\g<1>{market_data["brent"]:.2f}\\g<2>', content)
+        
+        logger.info("Updated KPI variables")
+        return content
+    
     def update_jsx_dates(self, content: str, market_data: Dict) -> str:
         """Update header en footer datums met tijd"""
         date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
@@ -149,7 +171,7 @@ class ReportUpdater:
         date_label = f"{dt.day} {month_short} {dt.year}"
         
         # 1. Update Europese Gasvoorraden section label and value
-        pattern1 = r'(\["EU-gemiddelde \()[^)]+\)", "~\d+%"'
+        pattern1 = r'(\["BE-gemiddelde \()[^)]+\)", "~\d+%"'
         content = re.sub(pattern1, f'\\g<1>{date_label})", "{storage_value}"', content)
         
         # 2. Update Geopolitieke section text
@@ -197,6 +219,7 @@ class ReportUpdater:
         # Voer updates uit
         content = self.update_jsx_rawdata(content, market_data)
         content = self.update_jsx_kpis(content, market_data)
+        content = self.update_jsx_kpi_variables(content, market_data)
         content = self.update_jsx_dates(content, market_data)
         
         # CONSISTENCY ENFORCEMENT

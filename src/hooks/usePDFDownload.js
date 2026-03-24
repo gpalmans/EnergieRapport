@@ -31,11 +31,16 @@ const preparePDFData = (reportData) => {
   const latest = marketData[marketData.length - 1];
   const previous = marketData[marketData.length - 2];
 
+  const currentTTF = latest?.ttf || 53.82;
+  const currentBelpex = latest?.belpex || 72.04;
+  const currentStorage = latest?.storage || 22.9;
+  const currentBrent = latest?.brent || 104.49;
+
   const ttfChange = previous ? ((latest.ttf - previous.ttf) / Math.abs(previous.ttf)) * 100 : null;
   const belpexChange = previous ? ((latest.belpex - previous.belpex) / Math.abs(previous.belpex)) * 100 : null;
   const ttfVsBase = ((latest.ttf - 31.96) / 31.96) * 100;
 
-  const dateStr = `${currentDate} \u00B7 ${currentTime}`;
+  const dateStr = `${currentDate} · ${currentTime}`;
   const dateSlug = currentDate.replace(/ /g, '_');
 
   const confirmedDates = ['27/02', '09/03', '11/03', '20/03', '21/03', '23/03'];
@@ -45,12 +50,13 @@ const preparePDFData = (reportData) => {
     dateSlug,
 
     kpis: {
-      ttf: latest.ttf, ttfChange,
-      belpex: latest.belpex, belpexChange,
-      storage: 26, brent: 101.55,
+      ttf: currentTTF, ttfChange,
+      belpex: currentBelpex, belpexChange,
+      storage: Math.round(currentStorage), 
+      brent: currentBrent,
     },
 
-    alert: `Hormuz crisis dag 21+ \u00B7 TTF \u20AC${latest.ttf.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) \u00B7 Brent $101.55 \u00B7 Force majeure Qatar/Kuwait/UAE \u00B7 EU opslag 26%`,
+    alert: `Hormuz crisis dag 21+ · TTF €${currentTTF.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) · Brent $${currentBrent.toFixed(2)} · Force majeure Qatar/Kuwait/UAE · EU opslag ${Math.round(currentStorage)}%`,
 
     chartData: {
       ttf: marketData.map(d => ({ date: d.date, value: d.ttf })),
@@ -90,15 +96,15 @@ const preparePDFData = (reportData) => {
       { title: 'Hormuz Crisis Volatiliteit', color: 'amber', text: 'Onrust Midden-Oosten veroorzaakt grote schommelingen in TTF-prijzen. Gasunie adviseert strategische noodvoorraad aan te leggen. Termijnprijzen elektriciteit volgen sterke stijging gasprijzen.' },
       { title: 'Energy Sector Rotation', color: 'yellow', text: 'Energy Select Sector SPDR stijgt +8% in maart door geopolitieke spanningen. Great rotation naar energie sectoren terwijl yield-sensitive sectoren dalen.' },
       { title: 'IEA Consumentenadvies', color: 'blue', text: 'IEA adviseert consumenten energieverbruik te verminderen: werk thuis, rij langzamer, gebruik geen gas kokers. Doel is prijzen stabiliseren tijdens conflict.' },
-      { title: 'Brent Prijsstijging', color: 'purple', text: 'Brent handelt op $101.55/vat (+1.9% vs gisteren) na optimisme over Iran de-escalatie. Stijging volgt op scherpe daling van -11% op maandag.' },
+      { title: 'Brent Prijsstijging', color: 'purple', text: `Brent handelt op $${currentBrent.toFixed(2)}/vat (+${((currentBrent - 101.55) / 101.55 * 100).toFixed(1)}% vs gisteren) na optimisme over Iran de-escalatie. Stijging volgt op scherpe daling van -11% op maandag.` },
     ],
 
     gasStorage: [
-      ['EU-gemiddelde (23 mrt)', '~26%', 'red'],
+      [`BE-gemiddelde (${currentDate.split(' ')[0]} mrt)`, `~${Math.round(currentStorage)}%`, 'red'],
       ['Einde 2025', '~61%', 'amber'],
       ['Einde 2024', '~72%', 'green'],
       ['EU-doel (1 nov)', '90%', 'blue'],
-      ['Nog te vullen', '~60 ppt', 'amber'],
+      ['Nog te vullen', `${90 - Math.round(currentStorage)} ppt`, 'amber'],
     ],
 
     ieaReserves: [
