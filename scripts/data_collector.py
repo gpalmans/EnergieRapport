@@ -139,25 +139,26 @@ class EnergyDataCollector:
         logger.info("Collecting TTF, EU Storage, Brent via Claude API...")
 
         try:
-            prompt = """
-            Find TODAY's energy market prices. Search the web for current values.
+            prompt = """Use web search to find TODAY's energy market prices.
 
-            Return ONLY valid JSON (no markdown, no explanation):
-            {
-                "ttf_eur_mwh": <float: Dutch TTF gas €/MWh, typical range 20-150>,
-                "ttf_source": "<source used>",
-                "eu_storage_percent": <float: EU gas storage %, typical range 10-90>,
-                "storage_source": "<source used>",
-                "brent_usd_barrel": <float: Brent crude oil $/barrel, typical range 50-150>,
-                "brent_source": "<source used>"
-            }
+Search for:
+1. "TTF gas price EUR/MWh today"
+2. "EU gas storage percentage today"
+3. "Brent crude oil price USD/barrel today"
 
-            IMPORTANT:
-            - All prices must be realistic (TTF 20-150, Storage 10-90%, Brent 50-150)
-            - If you can't find a value, use null
-            - Use most recent available prices
-            - Quote sources (e.g., "Trading Economics", "GIE AGSI+", "Investing.com")
-            """
+Return ONLY valid JSON with this exact structure (no markdown, no explanation, no code blocks):
+{"ttf_eur_mwh": <number>, "ttf_source": "<string>", "eu_storage_percent": <number>, "storage_source": "<string>", "brent_usd_barrel": <number>, "brent_source": "<string>"}
+
+Example valid response:
+{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg"}
+
+Rules:
+- TTF must be 15-300 €/MWh
+- Storage must be 0-100%
+- Brent must be 30-250 $/barrel
+- If you cannot find a value, use null
+- Use most recent available prices
+- Quote the source name"""
 
             message = self.claude_client.messages.create(
                 model=self.claude_model,
@@ -167,19 +168,30 @@ class EnergyDataCollector:
                 ]
             )
 
-            response_text = message.content[0].text
+            response_text = message.content[0].text.strip()
+            logger.info(f"   Claude response length: {len(response_text)} chars")
 
-            # Parse JSON response
+            # Parse JSON response - try multiple extraction methods
             import re
-            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
-            if not json_match:
-                logger.warning("   Claude response doesn't contain valid JSON")
-                self._fallback_value('ttf')
-                self._fallback_value('eu_storage')
-                self._fallback_value('brent')
-                return False
-
-            result = json.loads(json_match.group())
+            
+            # Method 1: Direct JSON parse
+            try:
+                result = json.loads(response_text)
+            except json.JSONDecodeError:
+                # Method 2: Extract from markdown code block
+                code_block_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', response_text, re.DOTALL)
+                if code_block_match:
+                    try:
+                        result = json.loads(code_block_match.group(1).strip())
+                    except json.JSONDecodeError:
+                        # Method 3: Find JSON object in text
+                        json_match = re.search(r'\{[^{}]*\}', response_text, re.DOTALL)
+                        if json_match:
+                            result = json.loads(json_match.group())
+                        else:
+                            raise ValueError("No JSON found in response")
+            
+            logger.info(f"   Successfully parsed JSON: {list(result.keys())}")
 
             # Validate and store TTF
             if result.get('ttf_eur_mwh') and 15 < float(result['ttf_eur_mwh']) < 300:
