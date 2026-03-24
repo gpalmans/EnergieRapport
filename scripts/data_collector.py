@@ -310,9 +310,9 @@ class EnergyDataCollector:
 
     def _collect_storage_via_gie_api(self) -> bool:
         """Collect EU gas storage via GIE AGSI+ API"""
-        api_key = os.getenv('ASGI_GIE_API_KEY')
+        api_key = os.getenv('AGSI_GIE_API_KEY')
         if not api_key:
-            logger.warning("ASGI_GIE_API_KEY not set - using fallback for storage")
+            logger.warning("AGSI_GIE_API_KEY not set - using fallback for storage")
             self._fallback_value('eu_storage')
             return False
 
