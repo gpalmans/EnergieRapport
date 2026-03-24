@@ -139,26 +139,29 @@ class EnergyDataCollector:
         logger.info("Collecting TTF, EU Storage, Brent via Claude API...")
 
         try:
-            prompt = """Use web search to find TODAY's energy market prices.
+            prompt = f"""Use web search to find TODAY'S energy market prices for {datetime.now().strftime('%d %B %Y')}.
 
-Search for:
-1. "TTF gas price EUR/MWh today"
-2. "EU gas storage percentage today"
-3. "Brent crude oil price USD/barrel today"
+IMPORTANT: Search for CURRENT prices from {datetime.now().strftime('%d %B %Y')}.
+
+Search for these exact queries with the specific date:
+1. "TTF gas price EUR/MWh {datetime.now().strftime('%d %B %Y')}"
+2. "EU gas storage percentage {datetime.now().strftime('%d %B %Y')}" 
+3. "Brent crude oil price USD/barrel {datetime.now().strftime('%d %B %Y')}"
 
 Return ONLY valid JSON with this exact structure (no markdown, no explanation, no code blocks):
-{"ttf_eur_mwh": <number>, "ttf_source": "<string>", "eu_storage_percent": <number>, "storage_source": "<string>", "brent_usd_barrel": <number>, "brent_source": "<string>"}
+{{"ttf_eur_mwh": <number>, "ttf_source": "<string>", "eu_storage_percent": <number>, "storage_source": "<string>", "brent_usd_barrel": <number>, "brent_source": "<string>"}}
 
 Example valid response:
-{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg"}
+{{"ttf_eur_mwh": 53.25, "ttf_source": "Trading Economics ({datetime.now().strftime('%d/%m/%Y')})", "eu_storage_percent": 26.0, "storage_source": "GIE AGSI+ ({datetime.now().strftime('%d/%m/%Y')})", "brent_usd_barrel": 101.55, "brent_source": "Bloomberg ({datetime.now().strftime('%d/%m/%Y')})"}}
 
-Rules:
+CRITICAL RULES:
+- All prices must be from {datetime.now().strftime('%d %B %Y')}
 - TTF must be 15-300 €/MWh
 - Storage must be 0-100%
 - Brent must be 30-250 $/barrel
-- If you cannot find a value, use null
-- Use most recent available prices
-- Quote the source name"""
+- Sources should include the specific date
+- If you cannot find TODAY's data, search for the most recent available prices
+- Always provide numeric values, never null"""
 
             message = self.claude_client.messages.create(
                 model=self.claude_model,
@@ -170,6 +173,7 @@ Rules:
 
             response_text = message.content[0].text.strip()
             logger.info(f"   Claude response length: {len(response_text)} chars")
+            logger.info(f"   Claude response preview: {response_text[:200]}...")
 
             # Parse JSON response - try multiple extraction methods
             import re
@@ -177,21 +181,31 @@ Rules:
             # Method 1: Direct JSON parse
             try:
                 result = json.loads(response_text)
-            except json.JSONDecodeError:
+                logger.info(f"   Method 1 (direct parse) successful")
+            except json.JSONDecodeError as e:
+                logger.info(f"   Method 1 failed: {e}")
                 # Method 2: Extract from markdown code block
                 code_block_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', response_text, re.DOTALL)
                 if code_block_match:
                     try:
                         result = json.loads(code_block_match.group(1).strip())
-                    except json.JSONDecodeError:
+                        logger.info(f"   Method 2 (markdown block) successful")
+                    except json.JSONDecodeError as e:
+                        logger.info(f"   Method 2 failed: {e}")
                         # Method 3: Find JSON object in text
                         json_match = re.search(r'\{[^{}]*\}', response_text, re.DOTALL)
                         if json_match:
-                            result = json.loads(json_match.group())
+                            try:
+                                result = json.loads(json_match.group())
+                                logger.info(f"   Method 3 (regex) successful")
+                            except json.JSONDecodeError as e:
+                                logger.info(f"   Method 3 failed: {e}")
+                                raise ValueError("No JSON found in response")
                         else:
                             raise ValueError("No JSON found in response")
             
             logger.info(f"   Successfully parsed JSON: {list(result.keys())}")
+            logger.info(f"   Parsed values: TTF={result.get('ttf_eur_mwh')}, Storage={result.get('eu_storage_percent')}, Brent={result.get('brent_usd_barrel')}")
 
             # Validate and store TTF
             if result.get('ttf_eur_mwh') and 15 < float(result['ttf_eur_mwh']) < 300:
