@@ -7,7 +7,7 @@ Data Collector voor EnergieRapport - HYBRID APPROACH
 import os
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Optional
 import logging
 import re
@@ -143,66 +143,259 @@ class EnergyDataCollector:
             logger.warning(f"   Error: {e}")
             return self._fallback_value('belpex')
 
-    # ============ TTF, STORAGE, BRENT: Tavily API (web search) ============
+    # ============ TTF, BRENT: OilPriceAPI (direct) ============
+# ============ EU STORAGE: GIE AGSI+ API (direct) ============
 
-    def collect_via_tavily(self) -> bool:
+    def collect_via_oilpriceapi(self) -> bool:
         """
-        Use Tavily API to search for energy market prices
+        Use OilPriceAPI for TTF/Brent and GIE AGSI+ API for EU Storage
         Returns: True if successful, False if skipped/failed
         """
-        if not self.tavily_client:
-            logger.warning("Tavily API not available - using fallback for TTF, Storage, Brent")
+        logger.info("Collecting TTF, EU Storage, Brent via direct APIs...")
+
+        try:
+            # Collect TTF via OilPriceAPI
+            ttf_success = self._collect_ttf_via_oilpriceapi()
+            
+            # Collect EU Storage via GIE AGSI+ API
+            storage_success = self._collect_storage_via_gie_api()
+            
+            # Collect Brent via OilPriceAPI
+            brent_success = self._collect_brent_via_oilpriceapi()
+
+            return ttf_success or storage_success or brent_success
+
+        except Exception as e:
+            logger.warning(f"   Direct API collection error: {e}")
             self._fallback_value('ttf')
             self._fallback_value('eu_storage')
             self._fallback_value('brent')
             return False
 
-        logger.info("Collecting TTF, EU Storage, Brent via Tavily API...")
+    def _collect_ttf_via_oilpriceapi(self) -> bool:
+        """Collect TTF gas price via OilPriceAPI"""
+        api_key = os.getenv('OIL_PRICE_API_KEY')
+        if not api_key:
+            logger.warning("OIL_PRICE_API_KEY not set - using fallback for TTF")
+            self._fallback_value('ttf')
+            return False
 
         try:
-            # Search for TTF gas price
-            ttf_query = f"TTF gas price EUR/MWh {datetime.now().strftime('%d %B %Y')}"
-            logger.info(f"   Searching: {ttf_query}")
-            ttf_response = self.tavily_client.search(
-                query=ttf_query,
-                search_depth="basic",
-                max_results=5
-            )
+            # Request specific TTF commodity
+            url = "https://api.oilpriceapi.com/v1/prices/latest"
+            headers = {
+                'Authorization': f'Token {api_key}',
+                'Content-Type': 'application/json'
+            }
+            params = {
+                'by_code': 'DUTCH_TTF_EUR'
+            }
             
-            # Extract TTF price from search results
-            ttf_price = self._extract_price_from_tavily(ttf_response, 'ttf')
-            if ttf_price:
-                self.data['ttf'] = ttf_price['value']
-                self.data['sources']['ttf'] = [ttf_price['source']]
-                self.data['validation']['ttf'] = ''
-                self.data['collection_status']['ttf'] = 'Live (Tavily API)'
-                logger.info(f"   TTF: €{ttf_price['value']:.2f}/MWh ({ttf_price['source']})")
-            else:
-                logger.warning("   Could not extract TTF price from search results")
+            logger.info(f"   Requesting TTF price from OilPriceAPI...")
+            logger.info(f"   URL: {url}?by_code=DUTCH_TTF_EUR")
+            response = self.session.get(url, headers=headers, params=params, timeout=30)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            # Check for API error
+            if data.get('status') != 'success':
+                logger.warning(f"   OilPriceAPI error: {data.get('message', 'Unknown error')}")
                 self._fallback_value('ttf')
-
-            # Search for EU gas storage
-            storage_query = f"EU gas storage percentage {datetime.now().strftime('%d %B %Y')}"
-            logger.info(f"   Searching: {storage_query}")
-            storage_response = self.tavily_client.search(
-                query=storage_query,
-                search_depth="basic",
-                max_results=5
-            )
+                return False
             
-            # Extract storage percentage from search results
-            storage_data = self._extract_price_from_tavily(storage_response, 'storage')
-            if storage_data:
-                self.data['eu_storage'] = storage_data['value']
-                self.data['sources']['eu_storage'] = [storage_data['source']]
-                self.data['validation']['eu_storage'] = ''
-                self.data['collection_status']['eu_storage'] = 'Live (Tavily API)'
-                logger.info(f"   Storage: {storage_data['value']:.1f}% ({storage_data['source']})")
+            # Extract price data
+            if data and 'data' in data:
+                price_data = data['data']
+                
+                if isinstance(price_data, dict):
+                    code = price_data.get('code', '').upper()
+                    price = price_data.get('price', 0)
+                    currency = price_data.get('currency', '')
+                    
+                    logger.info(f"   Found TTF price: {price} {currency}")
+                    
+                    # Validate and store TTF
+                    if 15 < price < 300:
+                        self.data['ttf'] = round(price, 2)
+                        self.data['sources']['ttf'] = ['OilPriceAPI (Dutch TTF)']
+                        self.data['validation']['ttf'] = ''
+                        self.data['collection_status']['ttf'] = 'Live (OilPriceAPI)'
+                        logger.info(f"   TTF: €{price:.2f}/MWh (OilPriceAPI)")
+                        return True
+                    else:
+                        logger.warning(f"   TTF value invalid: {price}")
             else:
-                logger.warning("   Could not extract storage percentage from search results")
-                self._fallback_value('eu_storage')
+                logger.warning("   No data returned from OilPriceAPI")
+            
+            self._fallback_value('ttf')
+            return False
 
-            # Search for Brent oil price
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"   OilPriceAPI request error: {e}")
+            self._fallback_value('ttf')
+            return False
+        except Exception as e:
+            logger.warning(f"   OilPriceAPI error: {e}")
+            self._fallback_value('ttf')
+            return False
+
+    def _collect_brent_via_oilpriceapi(self) -> bool:
+        """Collect Brent oil price via OilPriceAPI"""
+        api_key = os.getenv('OIL_PRICE_API_KEY')
+        if not api_key:
+            logger.warning("OIL_PRICE_API_KEY not set - using fallback for Brent")
+            self._fallback_value('brent')
+            return False
+
+        try:
+            # Request specific Brent commodity
+            url = "https://api.oilpriceapi.com/v1/prices/latest"
+            headers = {
+                'Authorization': f'Token {api_key}',
+                'Content-Type': 'application/json'
+            }
+            params = {
+                'by_code': 'BRENT_CRUDE_USD'
+            }
+            
+            logger.info(f"   Requesting Brent price from OilPriceAPI...")
+            logger.info(f"   URL: {url}?by_code=BRENT_CRUDE_USD")
+            response = self.session.get(url, headers=headers, params=params, timeout=30)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            # Check for API error
+            if data.get('status') != 'success':
+                logger.warning(f"   OilPriceAPI error: {data.get('message', 'Unknown error')}")
+                self._fallback_value('brent')
+                return False
+            
+            # Extract price data
+            if data and 'data' in data:
+                price_data = data['data']
+                
+                if isinstance(price_data, dict):
+                    code = price_data.get('code', '').upper()
+                    price = price_data.get('price', 0)
+                    currency = price_data.get('currency', '')
+                    
+                    logger.info(f"   Found Brent price: {price} {currency}")
+                    
+                    # Validate and store Brent
+                    if 30 < price < 250:
+                        self.data['brent'] = round(price, 2)
+                        self.data['sources']['brent'] = ['OilPriceAPI']
+                        self.data['validation']['brent'] = ''
+                        self.data['collection_status']['brent'] = 'Live (OilPriceAPI)'
+                        logger.info(f"   Brent: ${price:.2f}/barrel (OilPriceAPI)")
+                        return True
+                    else:
+                        logger.warning(f"   Brent value invalid: {price}")
+            else:
+                logger.warning("   No data returned from OilPriceAPI")
+            
+            self._fallback_value('brent')
+            return False
+
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"   OilPriceAPI request error: {e}")
+            self._fallback_value('brent')
+            return False
+        except Exception as e:
+            logger.warning(f"   OilPriceAPI error: {e}")
+            self._fallback_value('brent')
+            return False
+
+    def _collect_storage_via_gie_api(self) -> bool:
+        """Collect EU gas storage via GIE AGSI+ API"""
+        api_key = os.getenv('ASGI_GIE_API_KEY')
+        if not api_key:
+            logger.warning("ASGI_GIE_API_KEY not set - using fallback for storage")
+            self._fallback_value('eu_storage')
+            return False
+
+        try:
+            # GIE AGSI+ API - use yesterday's date (data is 1 day delayed)
+            yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+            url = f"https://agsi.gie.eu/api?country=BE&from={yesterday}&to={yesterday}"
+            
+            headers = {
+                'x-key': api_key,
+                'Content-Type': 'application/json'
+            }
+            
+            logger.info(f"   Requesting Belgium gas storage from GIE API...")
+            logger.info(f"   URL: {url}")
+            response = self.session.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            # Check for API error
+            if data.get('dataset') == 'ERROR':
+                logger.warning(f"   GIE API error: {data.get('message', 'Unknown error')}")
+                self._fallback_value('eu_storage')
+                return False
+            
+            # Extract storage data
+            if data and 'data' in data and len(data['data']) > 0:
+                latest_data = data['data'][-1]  # Get most recent entry
+                
+                # Try to use the 'full' field first (direct percentage)
+                if 'full' in latest_data:
+                    storage_percentage = float(latest_data['full'])
+                    logger.info(f"   Using direct 'full' field: {storage_percentage}%")
+                else:
+                    # Fallback: calculate from gasInStorage and workingGasVolume
+                    gas_in_storage = float(latest_data.get('gasInStorage', 0))
+                    working_gas_volume = float(latest_data.get('workingGasVolume', 0))
+                    
+                    logger.info(f"   Raw data: gasInStorage={gas_in_storage} TWh, workingGasVolume={working_gas_volume} TWh")
+                    
+                    if working_gas_volume > 0:
+                        storage_percentage = (gas_in_storage / working_gas_volume) * 100
+                        logger.info(f"   Calculated storage percentage: {storage_percentage:.1f}%")
+                    else:
+                        logger.warning("   Working gas volume is 0")
+                        self._fallback_value('eu_storage')
+                        return False
+                
+                # Validate range
+                if 0 <= storage_percentage <= 100:
+                    self.data['eu_storage'] = round(storage_percentage, 1)
+                    self.data['sources']['eu_storage'] = ['GIE AGSI+ API (Belgium)']
+                    self.data['validation']['eu_storage'] = ''
+                    self.data['collection_status']['eu_storage'] = 'Live (GIE API)'
+                    logger.info(f"   Storage: {storage_percentage:.1f}% (GIE AGSI+ API)")
+                    return True
+                else:
+                    logger.warning(f"   Invalid storage percentage: {storage_percentage}")
+            else:
+                logger.warning("   No data returned from GIE API")
+                logger.info(f"   Response keys: {list(data.keys()) if data else 'No data'}")
+            
+            self._fallback_value('eu_storage')
+            return False
+
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"   GIE API request error: {e}")
+            self._fallback_value('eu_storage')
+            return False
+        except Exception as e:
+            logger.warning(f"   GIE API error: {e}")
+            self._fallback_value('eu_storage')
+            return False
+
+    def _collect_brent_via_tavily(self) -> bool:
+        """Collect Brent oil price via Tavily API"""
+        if not self.tavily_client:
+            logger.warning("Tavily API not available - using fallback for Brent")
+            self._fallback_value('brent')
+            return False
+
+        try:
             brent_query = f"Brent crude oil price USD/barrel {datetime.now().strftime('%d %B %Y')}"
             logger.info(f"   Searching: {brent_query}")
             brent_response = self.tavily_client.search(
@@ -211,7 +404,6 @@ class EnergyDataCollector:
                 max_results=5
             )
             
-            # Extract Brent price from search results
             brent_data = self._extract_price_from_tavily(brent_response, 'brent')
             if brent_data:
                 self.data['brent'] = brent_data['value']
@@ -219,16 +411,14 @@ class EnergyDataCollector:
                 self.data['validation']['brent'] = ''
                 self.data['collection_status']['brent'] = 'Live (Tavily API)'
                 logger.info(f"   Brent: ${brent_data['value']:.2f}/barrel ({brent_data['source']})")
+                return True
             else:
                 logger.warning("   Could not extract Brent price from search results")
                 self._fallback_value('brent')
-
-            return True
+                return False
 
         except Exception as e:
-            logger.warning(f"   Tavily API error: {e}")
-            self._fallback_value('ttf')
-            self._fallback_value('eu_storage')
+            logger.warning(f"   Brent collection error: {e}")
             self._fallback_value('brent')
             return False
 
@@ -241,14 +431,16 @@ class EnergyDataCollector:
             # Tavily returns results in 'results' key
             results = response.get('results', [])
             
+            # Collect all potential values from all results
+            all_candidates = []
+            
             for result in results:
                 content = result.get('content', '')
                 url = result.get('url', '')
                 
                 # Extract price based on data type
                 if data_type == 'ttf':
-                    # Look for TTF price pattern - prioritize higher values (more likely to be current price)
-                    # Try multiple patterns and pick the highest valid price
+                    # Look for TTF price pattern - collect all candidates
                     ttf_prices = []
                     
                     # Pattern 1: Standard EUR/MWh format
@@ -272,35 +464,26 @@ class EnergyDataCollector:
                         if 15 < value < 300:
                             ttf_prices.append(value)
                     
-                    # Return the highest price (most likely to be current)
-                    if ttf_prices:
-                        value = max(ttf_prices)
-                        return {'value': value, 'source': url}
+                    # Add all TTF prices from this result
+                    for value in ttf_prices:
+                        all_candidates.append({'value': value, 'source': url})
                 
                 elif data_type == 'storage':
                     # Prioritize reliable sources for gas storage data
                     reliable_sources = ['gas-risiko.de', 'gie.agsi+', 'agsi.gie.eu', 'energiedashboard.admin.ch']
                     is_reliable = any(source in url for source in reliable_sources)
                     
-                    # Look for storage percentage (e.g., "26%" or "26.0%")
+                    # Look for storage percentage
                     storage_matches = re.findall(r'(\d+\.?\d*)\s*%', content)
                     for match in storage_matches:
                         value = float(match)
-                        if 0 < value <= 100:  # Valid storage range
-                            # If from reliable source, return immediately
-                            if is_reliable:
-                                return {'value': value, 'source': url}
-                            # Otherwise, store for potential fallback
-                            if 'storage_value' not in locals():
-                                storage_value = value
-                                storage_source = url
-                    
-                    # Return value if found
-                    if 'storage_value' in locals():
-                        return {'value': storage_value, 'source': storage_source}
+                        if 0 < value <= 100:
+                            # Higher priority for reliable sources
+                            priority = 1 if is_reliable else 0
+                            all_candidates.append({'value': value, 'source': url, 'priority': priority})
                 
                 elif data_type == 'brent':
-                    # Look for Brent price - try multiple patterns
+                    # Look for Brent price - collect all candidates
                     brent_prices = []
                     
                     # Pattern 1: Standard USD/barrel format
@@ -331,12 +514,38 @@ class EnergyDataCollector:
                         if 30 < value < 250:
                             brent_prices.append(value)
                     
-                    # Return the most reasonable price (avoid extremes)
-                    if brent_prices:
-                        # Use median to avoid outliers
-                        brent_prices.sort()
-                        value = brent_prices[len(brent_prices)//2]
-                        return {'value': value, 'source': url}
+                    # Add all Brent prices from this result
+                    for value in brent_prices:
+                        all_candidates.append({'value': value, 'source': url})
+            
+            # Choose the best candidate
+            if not all_candidates:
+                return None
+            
+            if data_type == 'ttf':
+                # For TTF, choose the highest price (most likely current)
+                best_candidate = max(all_candidates, key=lambda x: x['value'])
+                return {'value': best_candidate['value'], 'source': best_candidate['source']}
+            
+            elif data_type == 'storage':
+                # For storage, prioritize reliable sources, then any value
+                if any('priority' in candidate for candidate in all_candidates):
+                    reliable_candidates = [c for c in all_candidates if 'priority' in c and c['priority'] == 1]
+                    if reliable_candidates:
+                        best_candidate = reliable_candidates[0]
+                        return {'value': best_candidate['value'], 'source': best_candidate['source']}
+                
+                # Fallback to any storage value
+                return {'value': all_candidates[0]['value'], 'source': all_candidates[0]['source']}
+            
+            elif data_type == 'brent':
+                # For Brent, use median to avoid outliers
+                values = [c['value'] for c in all_candidates]
+                values.sort()
+                median_value = values[len(values)//2]
+                # Find the candidate closest to median
+                best_candidate = min(all_candidates, key=lambda x: abs(x['value'] - median_value))
+                return {'value': best_candidate['value'], 'source': best_candidate['source']}
             
             return None
 
@@ -386,8 +595,8 @@ class EnergyDataCollector:
         # Collect Belpex via REST API
         self.collect_belpex_price()
 
-        # Collect TTF, Storage, Brent via Tavily API
-        self.collect_via_tavily()
+        # Collect TTF, Storage, Brent via OilPriceAPI + GIE API
+        self.collect_via_oilpriceapi()
 
         # Verify all required data
         missing = [k for k, v in self.data.items()
