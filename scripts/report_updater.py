@@ -55,7 +55,13 @@ class ReportUpdater:
         if date_str:
             dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
         else:
-            dt = datetime.now()
+            # Use UTC time (GitHub Actions runs in UTC)
+            from datetime import timezone
+            dt = datetime.now(timezone.utc)
+        
+        # Convert UTC to CET (UTC+1) for display
+        from datetime import timedelta
+        cet_dt = dt + timedelta(hours=1)
         
         # Return: ("23 maart 2026", "20:30")
         month_names = {
@@ -63,11 +69,11 @@ class ReportUpdater:
             5: "mei", 6: "juni", 7: "juli", 8: "augustus",
             9: "september", 10: "oktober", 11: "november", 12: "december"
         }
-        date_full = f"{dt.day} {month_names[dt.month]} {dt.year}"
-        time_str = dt.strftime("%H:%M")
+        date_full = f"{cet_dt.day} {month_names[cet_dt.month]} {cet_dt.year}"
+        time_str = cet_dt.strftime("%H:%M")
         
         # Also return uppercase version for header
-        date_upper = f"{dt.day:02d} {month_names[dt.month].upper()} {dt.year}"
+        date_upper = f"{cet_dt.day:02d} {month_names[cet_dt.month].upper()} {cet_dt.year}"
         
         return (date_full, time_str, date_upper)
     
@@ -328,7 +334,9 @@ class ReportUpdater:
         if market_data.get('timestamp'):
             dt = datetime.fromisoformat(market_data['timestamp'].replace('Z', '+00:00'))
         else:
-            dt = datetime.now()
+            # Use UTC time and convert to CET
+            from datetime import timezone, timedelta
+            dt = datetime.now(timezone.utc) + timedelta(hours=1)
         month_short = {1:"jan",2:"feb",3:"mrt",4:"apr",5:"mei",6:"jun",
                       7:"jul",8:"aug",9:"sep",10:"okt",11:"nov",12:"dec"}[dt.month]
         date_label = f"{dt.day} {month_short} {dt.year}"
