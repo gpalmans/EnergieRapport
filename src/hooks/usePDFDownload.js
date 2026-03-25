@@ -39,6 +39,7 @@ const preparePDFData = (reportData) => {
   const ttfChange = previous ? ((latest.ttf - previous.ttf) / Math.abs(previous.ttf)) * 100 : null;
   const belpexChange = previous ? ((latest.belpex - previous.belpex) / Math.abs(previous.belpex)) * 100 : null;
   const brentChange = previous ? ((latest.brent - previous.brent) / Math.abs(previous.brent)) * 100 : null;
+  const ttfVsBase = ((latest.ttf - 31.96) / 31.96) * 100;
 
   const dateStr = `${currentDate} · ${currentTime}`;
   const dateSlug = currentDate.replace(/ /g, '_');
