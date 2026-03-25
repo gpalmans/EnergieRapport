@@ -43,7 +43,7 @@ const preparePDFData = (reportData) => {
   const dateStr = `${currentDate} · ${currentTime}`;
   const dateSlug = currentDate.replace(/ /g, '_');
 
-  const confirmedDates = ['27/02', '09/03', '11/03', '20/03', '21/03', '23/03'];
+  const confirmedDates = ["09/03", "11/03", "12/03", "13/03", "14/03", "15/03", "17/03", "19/03", "20/03", "22/03", "23/03", "24/03", "25/03"];
 
   return {
     date: dateStr,
