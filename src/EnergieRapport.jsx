@@ -16,8 +16,8 @@ import { addTrendlines } from "./utils/trendline";
 
 // Current API-driven KPI values (for PDF, alerts, and other applications)
 const currentTTF = 53.82;
-const currentBelpex = 72.04;
-const currentStorage = 22.9;
+const currentBelpex = 35.03;
+const currentStorage = 26.0;
 const currentBrent = 104.49;
 
 const rawData = [
@@ -52,7 +52,7 @@ const rawData = [
   { date: "22/03", ttf: 58.50, belpex: 78.00, note: "" },
   { date: "23/03", ttf: 60.60, belpex: 104.00, note: "" },
   { date: "24/03", ttf: 53.25, belpex: 72.78, note: "" },
-  { date: "25/03", ttf: 53.82, belpex: 72.04, note: "Vandaag" },
+  { date: "25/03", ttf: 53.82, belpex: 35.03, note: "Vandaag" },
 ];
 
 const marketData = rawData.map((row, i) => {
@@ -198,7 +198,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €53.82 (-11.4% vs piek) · Brent $104.49 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 23%
+            Hormuz crisis dag 21+ · TTF €53.82 (-11.4% vs piek) · Brent $104.49 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 26%
           </div>
         </div>
       </div>
@@ -237,8 +237,8 @@ export default function EnergieRapport() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
           ["TTF Gas vandaag", "€53.82", "/MWh", "+1.1% vs gisteren", "#ef4444"],
-          ["Belpex Elektr. vandaag", "€72.04", "/MWh", "-1.0% vs gisteren", "#22c55e"],
-          ["België Gasopslag", "~23%", " cap.", "kritiek laag niveau", "#ef4444"],
+          ["Belpex Elektr. vandaag", "€35.03", "/MWh", "-51.9% vs gisteren", "#22c55e"],
+          ["België Gasopslag", "~26%", " cap.", "kritiek laag niveau", "#ef4444"],
           ["Brent Ruwe Olie", "$104.49", "/vat", "+2.9% vs gisteren", "#ef4444"],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
@@ -366,12 +366,12 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (25 mrt 2026)", "~23%",          "#ef4444"],
+              ["BE-gemiddelde (25 mrt 2026)", "~26%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
               ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["Nog te vullen (apr–okt)",    "~67 pct-punten", "#f97316"],
+              ["Nog te vullen (apr–okt)",    "~64 pct-punten", "#f97316"],
             ].map(([l, v, c]) => (
               <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
@@ -453,7 +453,7 @@ export default function EnergieRapport() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "#f97316", marginTop: 10, marginBottom: 0 }}>
-              ⚡ Belpex op 24/03 (€72.04 daggemiddelde) toont daling: -42.0% vs gisteren door normaal weekend-effect (maandagcorrectie na piekweekend).
+              ⚡ Belpex op 24/03 (€35.03 daggemiddelde) toont daling: -42.0% vs gisteren door normaal weekend-effect (maandagcorrectie na piekweekend).
             </p>
           </div>
         </div>
