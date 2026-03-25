@@ -38,7 +38,7 @@ const preparePDFData = (reportData) => {
 
   const ttfChange = previous ? ((latest.ttf - previous.ttf) / Math.abs(previous.ttf)) * 100 : null;
   const belpexChange = previous ? ((latest.belpex - previous.belpex) / Math.abs(previous.belpex)) * 100 : null;
-  const ttfVsBase = ((latest.ttf - 31.96) / 31.96) * 100;
+  const brentChange = previous ? ((latest.brent - previous.brent) / Math.abs(previous.brent)) * 100 : null;
 
   const dateStr = `${currentDate} · ${currentTime}`;
   const dateSlug = currentDate.replace(/ /g, '_');
@@ -53,10 +53,10 @@ const preparePDFData = (reportData) => {
       ttf: currentTTF, ttfChange,
       belpex: currentBelpex, belpexChange,
       storage: Math.round(currentStorage), 
-      brent: currentBrent,
+      brent: currentBrent, brentChange,
     },
 
-    alert: `Hormuz crisis dag 21+ · TTF €${currentTTF.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) · Brent $${currentBrent.toFixed(2)} · Force majeure Qatar/Kuwait/UAE · EU opslag ${Math.round(currentStorage)}%`,
+    alert: `Hormuz crisis dag 21+ · TTF €${currentTTF.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) · Brent $${currentBrent.toFixed(2)} · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves ${Math.round(currentStorage)}%`,
 
     chartData: {
       ttf: marketData.map(d => ({ date: d.date, value: d.ttf })),

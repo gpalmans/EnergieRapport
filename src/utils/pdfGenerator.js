@@ -97,8 +97,8 @@ const buildPage1 = (d) => {
   const kpis = [
     { l: 'TTF Gas', v: `\u20AC${d.kpis.ttf.toFixed(2)}`, u: '/MWh', ch: d.kpis.ttfChange, c: '#0284c7', bg: '#f0f9ff', icon: '\uD83D\uDD25' },
     { l: 'Belpex', v: `\u20AC${d.kpis.belpex}`, u: '/MWh', ch: d.kpis.belpexChange, c: '#7c3aed', bg: '#faf5ff', icon: '\u26A1' },
-    { l: 'België gasopslag', v: `${d.kpis.storage}%`, u: '', ch: null, c: '#d97706', bg: '#fffbeb', icon: '\uD83D\uDCE6' },
-    { l: 'Brent Olie', v: `$${d.kpis.brent.toFixed(2)}`, u: '/vat', ch: null, c: '#475569', bg: '#f8fafc', icon: '\uD83D\uDEE2\uFE0F' },
+    { l: 'Belgische gasopslag', v: `${d.kpis.storage}%`, u: '', ch: null, c: '#d97706', bg: '#fffbeb', icon: '\uD83D\uDCE6' },
+    { l: 'Brent Olie', v: `$${d.kpis.brent.toFixed(2)}`, u: '/vat', ch: d.kpis.brentChange, c: '#475569', bg: '#f8fafc', icon: '\uD83D\uDEE2\uFE0F' },
   ];
 
   const kpiCards = kpis.map(k => {
