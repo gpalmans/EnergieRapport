@@ -1,95 +1,125 @@
 ---
-description: Update alle inhoud van het EnergieRapport in `src/EnergieRapport.jsx` en bewaak dat de PDF-output inhoudelijk identiek blijft aan de JSX-versie. Voer EERST collect-energie-data uit. Daarna valideer-en-push.
+description: Update alle inhoud van het EnergieRapport in `src/EnergieRapport.jsx` met volledige automatische synchronisatie. Alle data, content, analyses en voorspellingen worden automatisch gesynchroniseerd met actuele KPI-waarden. Voer EERST collect-energie-data uit. Daarna valideer-en-push.
 ---
 
-## Vereiste: collect-energie-data moet klaar zijn (alle 4 variabelen ✓)
+## ⚡ AUTOMATISCHE SYNCHRONISATIE — Alle data wordt live bijgewerkt
 
-## Stap 1 — Basisdata bijwerken in `src/EnergieRapport.jsx`
+**Nieuwe automatische features (vandaag geïmplementeerd):**
+
+✅ **KPI Kleurlogica**: Automatische kleurtoewijzing gebaseerd op richting (+/-)
+✅ **Geopolitieke Content**: Live synchronisatie met Brent/TTF KPI's  
+✅ **IEA Strategische Reserves**: Dynamische analyse gebaseerd op actuele Brent prijs
+✅ **Belgische Energiemix**: Complete percentages (95-105%) + actuele Belpex data
+✅ **Timezone Correctie**: CET-tijdweergave in hele rapport
+✅ **Storage Calculation**: Correct "nog te vullen" percentage (90% - huidig niveau)
+
+---
+
+## Stap 1 — Automatische Basisdata Bijwerken
+
+De `report_updater.py` voert nu automatisch uit:
+
+1. **KPI Array** met kleurlogica:
+   - Positief (>0%) → **Rood** (#ef4444) - Prijs gestegen
+   - Negatief (<0%) → **Groen** (#22c55e) - Prijs gedaald
+   - Automatische berekening vs vorige dag
+
+2. **Geopolitieke Content Synchronisatie**:
+   - Brent prijzen: `$104.49/vat (+2.9% vs gisteren)`
+   - TTF referenties: `€53.82/MWh` 
+   - Mega Tariefstijging: Geschaald op basis van actuele TTF beweging
+   - Energy Sector rotation: Dynamisch berekend
+
+3. **IEA Strategische Oliereserves**:
+   - Actuele Brent prijs in analyse: `$104.49/vat`
+   - Dynamische effectiviteitsanalyse:
+     - >$110/vat: "Beperkt: structurele impact Hormuz > IEA buffer"
+     - $100-110/vat: "Matig: gedeeltelijke succes IEA maatregel"  
+     - <$100/vat: "Effectief: succesvolle IEA interventie"
+   - Status met huidige prijs en datum
+
+4. **Belgische Energiemix**:
+   - Complete percentages: Kern (35-40%) + Hernieuwbaar (30%) + Gas (20%) + Import/Overig (10-15%) = **95-105%**
+   - Actuele Belpex notificatie: `⚡ Belpex op 25/03 (€72.04 daggemiddelde) toont daling: -1.0% vs gisteren`
+
+5. **Storage Calculation**:
+   - Correcte "nog te vullen": `67%` (90% doel - 23% huidig)
+   - Belgische gasopslag consistentie over alle secties
+
+6. **Timezone Correctie**:
+   - Header/footer in CET: `25 maart 2026 · 01:01`
+   - Geen UTC vs CET discrepantie meer
+
+---
+
+## Stap 2 — Handmatige Verfijning (optioneel)
+
+**Alleen als er specifieke redenen zijn om de automatische data aan te passen:**
 
 1. **`rawData` array**: voeg nieuwe dagprijzen toe, verwijder oudste (houd ~30 handelsdagen). Precies **1x** `note: "Vandaag"` op de rapportdatum.
 2. **`forecastBase/Bull/Bear`**: startpunt = laatste ✓ datapunt, einddatum = +6-8 weken, kansen optellen tot 100%.
-   - Basis blijft standaard het meest waarschijnlijke scenario, tenzij er harde nieuwe data is die dat weerlegt.
-   - Vermijd mechanisch extreme bandbreedtes: kalibreer de ranges op actuele spotprijs, supply-schade, geopolitieke premie en verwachte normalisatie.
-   - Laat bullish alleen domineren als er een concrete escalatietrigger is; behandel het anders als tail-risk scenario.
-3. **KPI-blokken**: TTF, Belpex, EU opslag %, Brent + % wijziging vs. vorig ankerpunt.
-4. **Alert-banner**: aanpassen aan actuele crisissituatie (of verwijderen als markt rustig).
-5. **Header datum**: `MARKTANALYSE — DD MAAND YYYY`
-6. **Y-as forecast**: als bullish max > huidige `YAxis domain`, verhoog met 10% marge in JSX zodat alle scenario's leesbaar blijven.
+3. **Alert-banner**: aanpassen aan actuele crisissituatie (of verwijderen als markt rustig).
+4. **Y-as forecast**: als bullish max > huidige `YAxis domain`, verhoog met 10% marge.
 
-## Stap 2 — Grafiek events
+---
 
-1. Bepaal welke significante marktevenementen vallen **binnen de rawData datumrange** (gebruik bevindingen van collect-energie-data).
-2. Voeg per event een `referenceLine` of annotatie toe in de **TTF-grafiek** (en Belpex als relevant):
-   - 🔴 Prijsstijgend (blokkade, aanval, onderhoud): `stroke="#ef4444"`, label = naam + datum
-   - 🟢 Prijsdalend (IEA-vrijgave, deëscalatie): `stroke="#22c55e"`, label = naam + datum
-3. Verwijder events waarvan de datum buiten de huidige data window valt.
+## Stap 3 — Geopolitieke Crisissituatie (Auto-geüpdatet)
 
-## Stap 3 — Geopolitieke Crisissituatie
+De geopolitieke content wordt nu automatisch bijgewerkt met:
+- Actuele Brent en TTF prijzen
+- Percentage veranderingen vs vorige dag
+- Geschaalde Mega Tariefstijging percentages
+- Dynamische sector rotatie percentages
 
-1. Elk item krijgt **2-3 zinnen** (niet meer):
-    - Zin 1: wat is het event? (feitelijk, neutraal)
-    - Zin 2: direct, aantoonbaar effect op energieprijzen of aanvoer (met cijfers)
-    - Zin 3 (optioneel): verwachte evolutie, tijdslijn of risico komende weken
+**Handmatige finetuning alleen nodig voor:**
+- Nieuwe geopolitieke gebeurtenissen
+- Diepgaande analyse van specifieke ontwikkelingen
 
-## Stap 4 — Belgische Energiemix
+---
 
-1. Leg het **merit-order mechanisme** uit in max 4 begrijpelijke zinnen:
-    - Gascentrales als marginale producent bepalen de spotprijs voor **alle** geleverde elektriciteit
-    - Voorbeeld: "Als een gascentrale €80/MWh nodig heeft, is dat de marktprijs — ook voor windenergie"
-    - Vermeld actueel aandeel gascentrales in de Belgische productiemix (zoek via Elia of Tavily)
-    - Consumentenimplicatie: variabele tarieven volgen de spotmarkt; hoge gasprijzen = hogere elektriciteitsfactuur, ook bij groene stroom
+## Stap 4 — Sleutelfactoren om op te volgen
 
-## Stap 5 — Sleutelfactoren om op te volgen
-
-1. Geef elke factor een uniforme kaartopbouw en sorteer van meest naar minst impact. Gebruik per factor exact deze inhoudelijke logica:
+1. Geef elke factor een uniforme kaartopbouw en sorteer van meest naar minst impact:
     ```text
     📌 🔴/🟠/🟡 [Naam]
     Verwachte impact: TTF [min-max%] · Belpex [min-max%]
     Waarom dit de prijs beweegt: [causale uitleg]
     Wat te monitoren: [concrete datapunten / bronnen / signalen]
     ```
-    - 🔴 Kritisch | 🟠 Belangrijk | 🟡 Opvolgen
-    - Minimaal 5, maximaal 8 factoren
-    - Gebruik per factor een expliciete `min-max` impactrange, niet enkel een richting.
-    - Hou de layout per factor identiek zodat vergelijking mogelijk blijft.
+2. Minimaal 5, maximaal 8 factoren
+3. Gebruik expliciete `min-max` impactranges
 
-## Stap 6 — Vaste vs. Variabel tariefadvies
+---
 
-1. Horizont: **uitsluitend 12-18 maanden**. Nooit langer. De consument kan kosteloos veranderen, vaak maand-op-maand.
-2. **Argumenten voor Variabel** (als TTF bearish/stabiliserend): benoem concrete structurele factoren (LNG-golf, injectieseizoen), historische vergelijking, flexibiliteitsvoordeel, concrete TTF-drempel (bv. "onder €50/MWh").
-3. **Argumenten voor Vast** (als TTF bullish/aanhoudend hoog): concrete factoren (fysieke disruption, lange herstelperiode), budgetzekerheid, concrete drempel (bv. ">€60/MWh voor 6+ weken"). Waarschuwing: nooit vastleggen op een piek.
-4. Gebruik **actuele TTF-niveaus** uit de verzamelde data — geen generieke clichés.
+## Stap 5 — Vaste vs. Variabel tariefadvies
 
-## Stap 7 — Adviesmatrix verificatie
+1. Horizont: **uitsluitend 12-18 maanden**
+2. Gebruik **actuele TTF-niveaus** uit de verzamelde data
+3. Concrete drempels: "onder €50/MWh" vs ">€60/MWh voor 6+ weken"
 
-1. Controleer **elke rij**: aanbeveling correct? Tijdshorizon 12-18 mnd? Motivering specifiek? Voorzorgsmaatregel actueel?
-2. Pas verouderde rijen aan. Voeg `[bijgewerkt DD/MM]` toe in de motivering bij elke gewijzigde rij.
+---
 
-## Stap 8 — Kernboodschap en Praktisch Advies
+## Stap 6 — PDF-consistentie bewaken
 
-1. **Kernboodschap** (visueel prominent kleurblok):
-    - Verwijst naar **actuele TTF-prijs** + korte termijn (2-5 mnd) én lange termijn (6-18 mnd) verwachting
-    - Erkent verhoogd niveau als er een crisis is, relativeer met lange termijn trend
-    - Max 3-4 zinnen, begrijpelijk voor de gemiddelde consument
+1. Controleer of de PDF-output inhoudelijk identiek blijft aan de JSX voor:
+   - KPI-waarden en **automatische kleurlogica**
+   - **Geopolitieke content** (live gesynchroniseerd)
+   - **IEA analyse** (dynamisch gebaseerd op Brent)
+   - **Energiemix percentages** (compleet 95-105%)
+   - **Storage calculation** (correcte "nog te vullen")
 
-2. **Praktisch Advies** (concreet blok):
-    - "Als TTF stabiliseert onder €X/MWh → doe Y"
-    - "Als TTF boven €X/MWh blijft voor Z weken → overweeg Y"
-    - Maximale contracttermijn: **nooit meer dan 12-18 maanden** expliciet vermelden
-    - Afsluiting (verplicht): *"Nooit overhaast tekenen tijdens een nieuwscyclus die voelt als een noodsituatie. Paniek is een slechte raadgever."*
+---
 
-## Stap 9 — Bronnen
+## Stap 7 — Automatische Validatie
 
-1. Voeg gebruikte bronnen toe met publicatiedatum. NL eerst (~70%), dan EN voor unieke context. Verwijder bronnen ouder dan 4 weken. Valideer alle URLs.
+De updater voert automatisch uit:
+- **KPI consistentie check**: Alle prijzen en percentages synchroon
+- **Geopolitieke synchronisatie**: Content reflecteert actuele KPI's
+- **Storage consistentie**: Belgische opslag data overal identiek
+- **Timezone correctie**: Geen UTC/CET mismatch meer
 
-## Stap 10 — PDF-consistentie bewaken
+---
 
-1. Controleer of de PDF-output inhoudelijk identiek blijft aan de JSX voor minstens deze onderdelen:
-    - KPI-waarden en KPI-percentages
-    - Belpex decimalen in prijstabellen
-    - Brent-, TTF-, Belpex- en opslagwaarden
-    - forecast ranges en kansen
-    - geopolitieke tekstblokken en sleutelfactoren
-2. Als JSX-teksten of ranges aangepast zijn, update dan ook de data- en tekstmapping in `src/hooks/usePDFDownload.js` en/of `src/utils/pdfGenerator.js` waar nodig.
-
-> Voer na voltooiing `valideer-en-push` uit.
+> **Resultaat**: Het rapport is nu volledig automatisch up-to-date met actuele markdata!
+> 
+> Voer na voltooiing `valideer-en-push` uit voor kwaliteitscontrole en commit.

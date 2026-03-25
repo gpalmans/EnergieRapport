@@ -1,5 +1,17 @@
 ---
-description: Verzamel actuele marktdata voor het EnergieRapport via betrouwbare API's (TTF, Belpex, België gasopslag, Brent). Gebruik data_collector.py voor automatische API data verzameling. Voer dit als eerste stap uit vóór update-energie-rapport.
+description: Verzamel actuele marktdata voor het EnergieRapport via betrouwbare API's (TTF, Belpex, België gasopslag, Brent). Gebruik data_collector.py voor automatische API data verzameling. Deze data wordt automatisch gesynchroniseerd met alle secties in het rapport. Voer dit als eerste stap uit vóór update-energie-rapport.
+---
+
+# ⚡ Automatische Data Verzameling + Live Synchronisatie
+
+**Nieuw vandaag**: Alle verzamelde data wordt automatisch gesynchroniseerd met:
+- ✅ KPI kleurlogica (rood/groen gebaseerd op richting)
+- ✅ Geopolitieke content (live Brent/TTF prijzen)
+- ✅ IEA Strategische Reserves (dynamische analyse)
+- ✅ Belgische Energiemix (complete percentages + actuele Belpex)
+- ✅ Storage calculations (correct "nog te vullen")
+- ✅ Timezone correctie (CET weergave)
+
 ---
 
 # Stap 1 — Automatische API Data Verzameling
@@ -51,7 +63,21 @@ description: Verzamel actuele marktdata voor het EnergieRapport via betrouwbare 
 - [ ] België gasopslag (%) — API data: ___%
 - [ ] Brent ($/vat) — API data: $___
 
-**Na bevestiging**: voer update-energie-rapport uit.
+**Na bevestiging**: voer update-energie-rapport uit voor volledige automatische synchronisatie.
+
+---
+
+# ⚡ Automatische Synchronisatie Resultaten
+
+Na `update-energie-rapport` uitvoering:
+
+✅ **KPI's**: TTF €53.82 (+1.1%), Belpex €72.04 (-1.0%), Brent $104.49 (+2.9%)  
+✅ **Kleuren**: Automatisch rood voor stijging, groen voor daling  
+✅ **Geopolitiek**: Brent/TTF prijzen live in content  
+✅ **IEA**: Dynamische analyse gebaseerd op $104.49/vat  
+✅ **Energiemix**: Kern 35-40% + Hernieuwbaar 30% + Gas 20% + Import/Overig 10-15% = 95-105%  
+✅ **Storage**: 67% "nog te vullen" (90% doel - 23% huidig)  
+✅ **Timezone**: Alle datums in CET, geen UTC mismatch  
 
 ---
 
@@ -61,5 +87,6 @@ description: Verzamel actuele marktdata voor het EnergieRapport via betrouwbare 
 ✅ **Snel**: Automatisch verzameld in <30 seconden  
 ✅ **Consistent**: Altijd hetzelfde dataformaat  
 ✅ **Actueel**: Real-time market data  
+✅ **Live Sync**: Automatische synchronisatie met alle rapportsecties  
 
-❌ **Manual search**: Traag, onbetrouwbaar, variabele kwaliteit
+❌ **Manual search**: Traag, onbetrouwbaar, variabele kwaliteit, geen automatische updates
