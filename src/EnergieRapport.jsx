@@ -8,17 +8,8 @@ import PDFDownloadButton from "./components/PDFDownloadButton";
 import { addTrendlines } from "./utils/trendline";
 
 // === DATA ===
-// Confirmed points (✓): TTF 21/03=€59.34 (OilPriceAPI), TTF 22/03=€58.50 (schatting -1.4%)
-// Belpex 22/03=€78.00 (schatting, volatiel door crisis)
-// EU opslag 22/03=~26% (Trading Economics + Reuters, kritiek laag)
-// Brent 20/03=$112.19 (Trading Economics), +3.26% vs vorige dag
-// Geopolitical: Hormuz crisis dag 21+, force majeure Qatar/Kuwait/UAE, TTF volatiel €30→€60 piek
-
-// Current API-driven KPI values (for PDF, alerts, and other applications)
-const currentTTF = 52.07;
-const currentBelpex = 35.03;
-const currentStorage = 22.7;
-const currentBrent = 102.22;
+// Single Source of Truth: rawData contains all historical and current data
+// The last entry in rawData always contains the most recent live API data
 
 const rawData = [
   { date: "17/02", ttf: 31.5,  belpex: 81.0,  note: "" },
@@ -51,9 +42,36 @@ const rawData = [
   { date: "21/03", ttf: 59.34, belpex: 95.00,  note: "" },
   { date: "22/03", ttf: 58.50, belpex: 78.00, note: "" },
   { date: "23/03", ttf: 60.60, belpex: 104.00, note: "" },
-  { date: "24/03", ttf: 53.25, belpex: 72.78, note: "" },
-  { date: "25/03", ttf: 52.07, belpex: 35.03, note: "Vandaag" },
-];
+  { date: "24/03", ttf: 53.25, belpex: 72.78,  note: "" },
+  { date: "25/03", ttf: 52.07, belpex: 72.04,  note: "" },
+  { date: "26/03", ttf: 52.12, belpex: 87.48, note: "Vandaag" },
+].sort((a, b) => {
+  const dateA = a.date.split('/').reverse().join('');
+  const dateB = b.date.split('/').reverse().join('');
+  return dateA.localeCompare(dateB);
+});
+
+// Helper functions to get current data from rawData (Single Source of Truth)
+const getCurrentData = () => {
+  const lastEntry = rawData[rawData.length - 1];
+  const prevEntry = rawData.length > 1 ? rawData[rawData.length - 2] : null;
+  
+  return {
+    currentTTF: lastEntry.ttf,
+    currentBelpex: lastEntry.belpex,
+    currentDate: lastEntry.date,
+    currentNote: lastEntry.note,
+    prevTTF: prevEntry?.ttf,
+    prevBelpex: prevEntry?.belpex,
+    prevDate: prevEntry?.date
+  };
+};
+
+// Calculate percentage changes
+const calculateChange = (current, previous) => {
+  if (previous === null || previous === undefined || previous === 0) return null;
+  return ((current - previous) / Math.abs(previous)) * 100;
+};
 
 const marketData = rawData.map((row, i) => {
   const prev = i > 0 ? rawData[i - 1] : null;
@@ -141,6 +159,11 @@ export default function EnergieRapport() {
   const [tab, setTab] = useState("analyse");
   const [ttfTrends, setTtfTrends] = useState({ short: false, medium: false });
   const [belpexTrends, setBelpexTrends] = useState({ short: false, medium: false });
+  
+  // Get current data from Single Source of Truth
+  const currentData = getCurrentData();
+  const ttfChange = calculateChange(currentData.currentTTF, currentData.prevTTF);
+  const belpexChange = calculateChange(currentData.currentBelpex, currentData.prevBelpex);
 
   const TrendToggle = ({ label, checked, onChange, color }) => (
     <label style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", fontSize: 11, color: "#94a3b8", userSelect: "none" }}>
@@ -182,7 +205,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 26 MAART 2026 · 00:30
+          MARKTANALYSE — 26 MAART 2026 · 13:01 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -198,7 +221,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €52.07 (-11.4% vs piek) · Brent $102.22 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 23%
+            Hormuz crisis dag 21+ · TTF €{currentData.currentTTF.toFixed(2)} (-11.4% vs piek) · Brent $105.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 23%
           </div>
         </div>
       </div>
@@ -236,10 +259,34 @@ export default function EnergieRapport() {
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 24 }}>
         {[
-          ["TTF Gas vandaag", "€52.07", "/MWh", "-2.2% vs gisteren", "#22c55e"],
-          ["Belpex Elektr. vandaag", "€35.03", "/MWh", "-51.9% vs gisteren", "#22c55e"],
-          ["België Gasopslag", "~23%", " cap.", "kritiek laag niveau", "#ef4444"],
-          ["Brent Ruwe Olie", "$102.22", "/vat", "+0.7% vs gisteren", "#ef4444"],
+          [
+            "TTF Gas vandaag", 
+            `€${currentData.currentTTF.toFixed(2)}`, 
+            "/MWh", 
+            ttfChange !== null ? `${ttfChange > 0 ? '+' : ''}${ttfChange.toFixed(1)}% vs gisteren` : "N/A", 
+            ttfChange !== null ? (ttfChange > 0 ? "#ef4444" : "#22c55e") : "#94a3b8"
+          ],
+          [
+            "Belpex Elektr. vandaag", 
+            `€${currentData.currentBelpex.toFixed(2)}`, 
+            "/MWh", 
+            belpexChange !== null ? `${belpexChange > 0 ? '+' : ''}${belpexChange.toFixed(1)}% vs gisteren` : "N/A", 
+            belpexChange !== null ? (belpexChange > 0 ? "#ef4444" : "#22c55e") : "#94a3b8"
+          ],
+          [
+            "België Gasopslag", 
+            "~23%", 
+            " cap.", 
+            "kritiek laag niveau", 
+            "#ef4444"
+          ],
+          [
+            "Brent Ruwe Olie", 
+            "$105.55", 
+            "/vat", 
+            "+3.9% vs gisteren", 
+            "#ef4444"
+          ],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
             <div style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>{label}</div>
@@ -366,7 +413,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (25 mrt 2026)", "~23%",          "#ef4444"],
+              ["BE-gemiddelde (26 mrt 2026)", "~23%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -390,10 +437,10 @@ export default function EnergieRapport() {
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
             {[
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
-              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €52.07, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies."],
+              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €52.12, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies."],
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
-              ["Brent Prijsstijging", "#8b5cf6", "Brent crude handelt op $102.22/vat (-8.9% vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026."],
+              ["Brent Prijsstijging", "#8b5cf6", "Brent crude handelt op $105.55/vat (-5.9% vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -754,7 +801,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €52.07/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €52.12/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
@@ -883,7 +930,7 @@ export default function EnergieRapport() {
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
         GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 26 maart 2026 · 00:30 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        Opgesteld: 26 maart 2026 · 13:01 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
