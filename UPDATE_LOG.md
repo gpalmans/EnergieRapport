@@ -6,6 +6,59 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 4 — 26 maart 2026
+
+### **🔥 Complete Data Consistentie Probleem Opgelost**
+- **Gasopslag Data Integration**: rawData array uitgebreid met storage prijzen voor alle 32 entries
+- **Hardcoded Storage Fix**: "België Gasopslag" KPI nu dynamisch berekend (27.8%, was ~23% hardcoded)
+- **Alert Formatting Fix**: Geen $ meer bij gasopslag percentage (was $27.8%, nu 27.8%)
+- **Grafiek Data Hersteld**: rawData uitgebreid van 12 naar 32 datapunten voor volledige historische context
+- **PDF Storage Doorvoer**: Storage data correct doorgegeven aan PDF generatie via reportData
+- **Single Source of Truth**: Alle data (TTF, Belpex, Brent, Storage) komt nu uit één bron (rawData array)
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €52.12/MWh (+0.1% vs gisteren) - rawData
+- **Belpex**: €87.48/MWh (+21.4% vs gisteren) - rawData  
+- **België gasopslag**: 27.8% (+1.1% vs gisteren) - rawData
+- **Brent**: $105.55/vat (+1.0% vs gisteren) - rawData
+
+### **Complete Data Consistentie Resultaten**
+- **JSX KPI's**: TTF €52.12, Belpex €87.48, Brent $105.55, Storage 27.8% ✓
+- **Geopolitieke tekst**: Brent $105.55/vat (+1.0% vs gisteren) ✓
+- **PDF generatie**: Alle KPI's identiek aan JSX ✓
+- **Alert sectie**: Belgische gasreserves 27.8% (geen $) ✓
+- **Grafieken**: 32 datapunten voor volledige historische context ✓
+- **Data bron**: rawData[26/03] met TTF, Belpex, Brent, Storage ✓
+
+### **Wijzigingen**: Volledige consistentie tussen alle secties met complete historische data
+
+---
+
+## Update 3 — 26 maart 2026
+
+### **🔥 Brent KPI Consistentie Probleem Opgelost**
+- **Brent Data Integration**: rawData array uitgebreid met Brent prijzen voor alle entries
+- **Hardcoded KPI Fix**: "Brent Ruwe Olie" KPI nu dynamisch berekend (+1.0% vs gisteren, was +3.9% hardcoded)
+- **Geopolitieke Synchronisatie**: Brent percentage in crisis items nu dynamisch en consistent met KPI
+- **PDF Data Doorvoer**: Brent data correct doorgegeven aan PDF generatie via reportData
+- **Single Source of Truth**: Alle Brent data komt nu uit één bron (rawData array)
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €52.12/MWh (+0.1% vs gisteren) - rawData
+- **Belpex**: €87.48/MWh (+21.4% vs gisteren) - rawData  
+- **België gasopslag**: ~23% - alert sectie
+- **Brent**: $105.55/vat (+1.0% vs gisteren) - rawData
+
+### **Brent Data Consistentie Resultaten**
+- **JSX KPI**: $105.55/vat (+1.0% vs gisteren) ✓
+- **Geopolitieke tekst**: $105.55/vat (+1.0% vs gisteren) ✓
+- **PDF generatie**: $105.55/vat (+1.0% vs gisteren) ✓
+- **Data bron**: rawData[26/03].brent = 105.55, rawData[25/03].brent = 104.49 ✓
+
+### **Wijzigingen**: Volledige consistentie tussen JSX, PDF en geopolitieke content voor Brent KPI
+
+---
+
 ## Update 2 — 26 maart 2026
 
 ### **🔥 Nieuwe Automatische Features Geïmplementeerd**

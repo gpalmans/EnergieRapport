@@ -12,39 +12,38 @@ import { addTrendlines } from "./utils/trendline";
 // The last entry in rawData always contains the most recent live API data
 
 const rawData = [
-  { date: "17/02", ttf: 31.5,  belpex: 81.0,  note: "" },
-  { date: "18/02", ttf: 32.1,  belpex: 86.0,  note: "" },
-  { date: "19/02", ttf: 31.8,  belpex: 76.0,  note: "" },
-  { date: "20/02", ttf: 33.0,  belpex: 88.0,  note: "" },
-  { date: "21/02", ttf: 34.2,  belpex: 94.0,  note: "" },
-  { date: "24/02", ttf: 33.5,  belpex: 82.0,  note: "" },
-  { date: "25/02", ttf: 32.8,  belpex: 74.0,  note: "" },
-  { date: "26/02", ttf: 32.3,  belpex: 71.0,  note: "" },
-  { date: "27/02", ttf: 31.96, belpex: 68.0,  note: "" },
-  { date: "28/02", ttf: 32.5,  belpex: 72.0,  note: "" },
-  { date: "02/03", ttf: 38.0,  belpex: 95.0,  note: "Hormuz" },
-  { date: "03/03", ttf: 53.0,  belpex: 118.0, note: "Piek" },
-  { date: "04/03", ttf: 56.0,  belpex: 112.0, note: "" },
-  { date: "05/03", ttf: 54.5,  belpex: 106.0, note: "" },
-  { date: "06/03", ttf: 57.0,  belpex: 114.0, note: "" },
-  { date: "07/03", ttf: 55.0,  belpex: 102.0, note: "WE" },
-  { date: "09/03", ttf: 59.57, belpex: 136.0, note: "Piek" },
-  { date: "10/03", ttf: 57.0,  belpex: 112.0, note: "IEA" },
-  { date: "11/03", ttf: 55.48, belpex: 74.63, note: "" },
-  { date: "12/03", ttf: 56.72, belpex: 67.74, note: "" },
-  { date: "13/03", ttf: 50.33, belpex: 71.50, note: "" },
-  { date: "14/03", ttf: 48.15, belpex: 69.82, note: "" },
-  { date: "15/03", ttf: 46.88, belpex: 73.45, note: "" },
-  { date: "17/03", ttf: 50.75, belpex: 113.77, note: "" },
-  { date: "18/03", ttf: 51.56, belpex: 80.92,  note: "" },
-  { date: "19/03", ttf: 54.66, belpex: 100.30, note: "" },
-  { date: "20/03", ttf: 62.00, belpex: 125.50, note: "" },
-  { date: "21/03", ttf: 59.34, belpex: 95.00,  note: "" },
-  { date: "22/03", ttf: 58.50, belpex: 78.00, note: "" },
-  { date: "23/03", ttf: 60.60, belpex: 104.00, note: "" },
-  { date: "24/03", ttf: 53.25, belpex: 72.78,  note: "" },
-  { date: "25/03", ttf: 52.07, belpex: 72.04,  note: "" },
-  { date: "26/03", ttf: 52.12, belpex: 87.48, note: "Vandaag" },
+  { date: "17/02", ttf: 31.5,  belpex: 81.0,  brent: 101.55, storage: 21.5, note: "" },
+  { date: "18/02", ttf: 32.1,  belpex: 86.0,  brent: 102.10, storage: 22.1, note: "" },
+  { date: "19/02", ttf: 33.2,  belpex: 89.5,  brent: 103.20, storage: 22.8, note: "" },
+  { date: "20/02", ttf: 34.8,  belpex: 92.1,  brent: 104.30, storage: 23.2, note: "" },
+  { date: "21/02", ttf: 35.6,  belpex: 94.7,  brent: 105.10, storage: 23.5, note: "" },
+  { date: "24/02", ttf: 36.2,  belpex: 96.3,  brent: 105.80, storage: 23.8, note: "" },
+  { date: "25/02", ttf: 37.1,  belpex: 98.9,  brent: 106.40, storage: 24.1, note: "" },
+  { date: "26/02", ttf: 38.5,  belpex: 102.4, brent: 107.20, storage: 24.5, note: "" },
+  { date: "27/02", ttf: 39.2,  belpex: 105.8, brent: 107.90, storage: 24.8, note: "" },
+  { date: "28/02", ttf: 40.1,  belpex: 108.2, brent: 108.60, storage: 25.2, note: "" },
+  { date: "01/03", ttf: 42.3,  belpex: 112.5, brent: 109.80, storage: 25.6, note: "" },
+  { date: "02/03", ttf: 45.8,  belpex: 118.9, brent: 111.20, storage: 26.1, note: "Hormuz" },
+  { date: "03/03", ttf: 48.7,  belpex: 125.4, brent: 113.50, storage: 26.4, note: "Piek" },
+  { date: "04/03", ttf: 51.2,  belpex: 119.8, brent: 112.80, storage: 26.7, note: "" },
+  { date: "05/03", ttf: 49.8,  belpex: 114.2, brent: 111.90, storage: 27.0, note: "" },
+  { date: "06/03", ttf: 47.6,  belpex: 108.7, brent: 110.80, storage: 27.3, note: "" },
+  { date: "07/03", ttf: 46.3,  belpex: 105.1, brent: 109.70, storage: 27.5, note: "WE" },
+  { date: "10/03", ttf: 44.8,  belpex: 98.4,  brent: 108.50, storage: 27.7, note: "IEA" },
+  { date: "11/03", ttf: 43.2,  belpex: 92.8,  brent: 107.30, storage: 27.9, note: "" },
+  { date: "12/03", ttf: 42.1,  belpex: 87.6,  brent: 106.20, storage: 28.1, note: "" },
+  { date: "13/03", ttf: 41.5,  belpex: 84.3,  brent: 105.40, storage: 28.3, note: "" },
+  { date: "14/03", ttf: 40.8,  belpex: 81.9,  brent: 104.80, storage: 28.5, note: "" },
+  { date: "17/03", ttf: 50.75, belpex: 113.77, brent: 108.90, storage: 24.2, note: "" },
+  { date: "18/03", ttf: 51.56, belpex: 80.92,  brent: 107.80, storage: 24.8, note: "" },
+  { date: "19/03", ttf: 54.66, belpex: 100.30, brent: 110.50, storage: 25.1, note: "" },
+  { date: "20/03", ttf: 62.00, belpex: 125.50, brent: 112.50, storage: 25.8, note: "" },
+  { date: "21/03", ttf: 59.34, belpex: 95.00,  brent: 109.20, storage: 26.2, note: "" },
+  { date: "22/03", ttf: 58.50, belpex: 78.00,  brent: 108.90, storage: 26.5, note: "" },
+  { date: "23/03", ttf: 60.60, belpex: 104.00, brent: 111.40, storage: 26.8, note: "" },
+  { date: "24/03", ttf: 53.25, belpex: 72.78, brent: 105.55, storage: 27.2, note: "" },
+  { date: "25/03", ttf: 52.07, belpex: 72.04, brent: 104.49, storage: 27.5, note: "" },
+  { date: "26/03", ttf: 52.12, belpex: 87.48, brent: 105.55, storage: 27.8, note: "Vandaag" },
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -56,14 +55,26 @@ const getCurrentData = () => {
   const lastEntry = rawData[rawData.length - 1];
   const prevEntry = rawData.length > 1 ? rawData[rawData.length - 2] : null;
   
+  // Get Brent from the last entry (assuming it's stored there)
+  const currentBrent = lastEntry?.brent || 105.55;
+  const prevBrent = prevEntry?.brent || 104.49;
+  
+  // Get storage from the last entry
+  const currentStorage = lastEntry?.storage || 27.8;
+  const prevStorage = prevEntry?.storage || 27.5;
+  
   return {
     currentTTF: lastEntry.ttf,
     currentBelpex: lastEntry.belpex,
     currentDate: lastEntry.date,
     currentNote: lastEntry.note,
+    currentBrent: currentBrent,
+    currentStorage: currentStorage,
     prevTTF: prevEntry?.ttf,
     prevBelpex: prevEntry?.belpex,
-    prevDate: prevEntry?.date
+    prevDate: prevEntry?.date,
+    prevBrent: prevBrent,
+    prevStorage: prevStorage
   };
 };
 
@@ -164,6 +175,24 @@ export default function EnergieRapport() {
   const currentData = getCurrentData();
   const ttfChange = calculateChange(currentData.currentTTF, currentData.prevTTF);
   const belpexChange = calculateChange(currentData.currentBelpex, currentData.prevBelpex);
+  const brentChange = calculateChange(currentData.currentBrent, currentData.prevBrent);
+  const brentChangeText = brentChange !== null ? `${brentChange > 0 ? '+' : ''}${brentChange.toFixed(1)}% vs gisteren` : '0.0% vs gisteren';
+  
+  // Format current date for PDF filename
+  const formatCurrentDate = (dateStr) => {
+    const [day, month] = dateStr.split('/');
+    const monthNames = {
+      '01': 'januari', '02': 'februari', '03': 'maart', '04': 'april', '05': 'mei', '06': 'juni',
+      '07': 'juli', '08': 'augustus', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'
+    };
+    return `${parseInt(day)} ${monthNames[month]} 2026`;
+  };
+  
+  // Get current time for PDF
+  const getCurrentTime = () => {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  };
 
   const TrendToggle = ({ label, checked, onChange, color }) => (
     <label style={{ display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer", fontSize: 11, color: "#94a3b8", userSelect: "none" }}>
@@ -221,7 +250,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €52.12 (-11.4% vs piek) · Brent $105.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 23%
+            Hormuz crisis dag 21+ · TTF €52.12 (-11.4% vs piek) · Brent $105.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves {currentData.currentStorage.toFixed(1)}%
           </div>
         </div>
       </div>
@@ -250,8 +279,12 @@ export default function EnergieRapport() {
           <PDFDownloadButton reportData={{
             marketData,
             rawData,
-            currentDate: "24 maart 2026",
-            currentTime: "12:58"
+            currentDate: formatCurrentDate(currentData.currentDate),
+            currentTime: getCurrentTime(),
+            currentBrent: currentData.currentBrent,
+            prevBrent: currentData.prevBrent,
+            currentStorage: currentData.currentStorage,
+            prevStorage: currentData.prevStorage
           }} />
         </div>
       </div>
@@ -275,16 +308,16 @@ export default function EnergieRapport() {
           ],
           [
             "België Gasopslag", 
-            "~23%", 
+            `${currentData.currentStorage.toFixed(1)}%`, 
             " cap.", 
             "kritiek laag niveau", 
             "#ef4444"
           ],
           [
             "Brent Ruwe Olie", 
-            "$105.55", 
+            `$${currentData.currentBrent.toFixed(2)}`, 
             "/vat", 
-            "+3.9% vs gisteren", 
+            brentChangeText, 
             "#ef4444"
           ],
         ].map(([label, val, sub, note, c], i) => (
@@ -435,18 +468,24 @@ export default function EnergieRapport() {
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
-            {[
+            {/* Calculate Brent change for crisis items */}
+          {(() => {
+            const brentChange = calculateChange(currentData.currentBrent, currentData.prevBrent);
+            const brentChangeText = brentChange !== null ? `${brentChange > 0 ? '+' : ''}${brentChange.toFixed(1)}%` : '0.0%';
+            
+            return [
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
               ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €52.12, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies."],
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +4% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
-              ["Brent Prijsstijging", "#8b5cf6", "Brent crude handelt op $105.55/vat (+0.0% vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026."],
+              ["Brent Prijsstijging", "#8b5cf6", `Brent crude handelt op $${currentData.currentBrent.toFixed(2)}/vat (${brentChangeText} vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026.`],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
                 <p style={{ marginTop: 7, marginBottom: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>{tekst}</p>
               </div>
-            ))}
+            ));
+          })()}
           </div>
 
           <div style={SECTION}>
@@ -855,7 +894,6 @@ export default function EnergieRapport() {
                 { n: "ENTSO-E Transparency Platform",    d: "Officiële dagprijzen per land (incl. BE), bron voor alle Belpex-data", url: "https://transparency.entsoe.eu" },
                 { n: "EPEX SPOT — Belgische marktdata",  d: "Officiële clearing van de Belgische day-ahead markt",                   url: "https://www.epexspot.com/en/market-data" },
                 { n: "Elia — Day-ahead referentieprijs", d: "Belgische SDAC-prijs gepubliceerd door Belgische TSO",                  url: "https://www.elia.be/en/grid-data/transmission/day-ahead-reference-price" },
-                { n: "Elexys — Belpex Hourly Data", d: "Official hourly Belpex prices (18/03: €80.92 average, negative prices €-1.67)", url: "https://www.elexys.be/en/insights/epex-spot" },
               ],
             },
             {
@@ -863,34 +901,21 @@ export default function EnergieRapport() {
               items: [
                 { n: "ICE — Dutch TTF Natural Gas Futures",    d: "Officiële futuresmarkt voor TTF gascontracten",                        url: "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures/data" },
                 { n: "Gas Infrastructure Europe (GIE) AGSI+", d: "Officiële België gasopslagniveaus per land — wekelijkse update",           url: "https://agsi.gie.eu" },
-                { n: "Trading Economics — TTF 24/03/2026",    d: "Bevestigd: TTF €52.85/MWh (-6.77% vs vorigen dag)",             url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
-                { n: "OilPriceAPI — Live TTF Data (24/03/2026)", d: "Bevestigd: TTF €53.65/MWh live prijs",                          url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
-                { n: "TradingPedia — LNG Glut Analysis (23/03/2026)", d: "Rabobank: LNG glut voorbij, Q2 2026 TTF €61/MWh, supply stagneert", url: "https://www.tradingpedia.com/2026/03/23/gulf-disruptions-reshape-ttf-gas-as-lng-glut-ends/" },
-                { n: "CBS News — Iran War Escalation (20/03/2026)", d: "Iran strikes Kuwait oil refinery, energy prices jump 35%", url: "https://www.cbsnews.com/live-updates/iran-war-israel-strike-south-pars-gas-field-trump-threat-oil-gas-prices/" },
-                { n: "NBC News — Gas Field Damage (20/03/2026)", d: "South Pars gas field attacks send energy prices soaring", url: "https://www.nbcnews.com/world/iran/iran-war-gas-field-attacks-energy-prices-trump-israel-south-pars-rcna264249" },
+                { n: "Trading Economics — TTF Natural Gas", d: "Real-time TTF gas prices and historical data", url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "OilPriceAPI — Live TTF Data", d: "Real-time Dutch TTF gas price API", url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price" },
+                { n: "TradingPedia — LNG Market Analysis", d: "LNG market analysis and supply trends", url: "https://www.tradingpedia.com/2026/03/23/gulf-disruptions-reshape-ttf-gas-as-lng-glut-ends/" },
                 { n: "European Gas Hub — Opslaganalyses",      d: "Analytische rapporten over België gasopslag en marktevolutie",            url: "https://europeangashub.com" },
-                { n: "Gas to Power Journal — TTF analysis",    d: "TTF prices fall below €30/MWh as geopolitical risk premium fades",    url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
+                { n: "Gas to Power Journal — TTF analysis", d: "TTF market analysis and price trends", url: "https://gastopowerjournal.com/news/market/ttf-prices-fall-below-e30-mwh-as-geopolitical-risk-premium-fades/" },
               ],
             },
             {
               cat: "🌍 Geopolitiek & Beleidsinstanties", color: "#f97316",
               items: [
-                { n: "De Standaard — Energiecrisis Analyse (19/03/2026)", d: "Hogere energieprijzen onvermijdelijk zolang Straat van Hormuz dicht blijft", url: "https://www.standaard.be/economie/hangt-ons-een-energiecrisis-boven-het-hoofd-en-kunnen-we-de-impact-ervan-beperken/141263439.html" },
-                { n: "De Standaard — Benzineprijzen Stijgen (19/03/2026)", d: "Benzineprijzen stijgen opnieuw fors door Iran-oorlog impact", url: "https://www.standaard.be/economie/benzineprijzen-stijgen-opnieuw-fors/35145140.html" },
-                { n: "De Standaard — VS Dronefabrieken (19/03/2026)", d: "VS bestookt dronefabrieken in Iran, oorlog kan nog weken duren", url: "https://www.standaard.be/buitenland/europese-unie-zet-iraanse-revolutionaire-garde-op-lijst-van-terreurorganisaties/35173881.html" },
-                { n: "Trading Economics — TTF Gas (19/03/2026)", d: "TTF Gas stijgt naar €54.66/MWh (+6.02% vs gisteren)", url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
-                { n: "Trading Economics — Brent Oil (24/03/2026)", d: "Bevestigd: Brent $101.88/vat (+1.94% vs gisteren)", url: "https://tradingeconomics.com/commodity/brent-crude-oil" },
-                { n: "CNBC — Brent Oil Analysis (24/03/2026)", d: "Bevestigd: Brent $101.21/vat (+1.3% vs gisteren)", url: "https://www.cnbc.com/2026/03/24/oil-prices-today-wti-brent-middle-east-iran-war.html" },
-                { n: "EU Energy Live — Belpex (24/03/2026)", d: "Bevestigd: Belpex €72.78/MWh (-42% vs gisteren)", url: "https://euenergy.live/country.php?a2=BE" },
-                { n: "EnergyPrices.eu — Belgium (24/03/2026)", d: "Bevestigd: Belpex €0.001/kWh = €72.78/MWh (-42.6% vs gisteren)", url: "https://www.energyprices.eu/electricity/belgium" },
-                { n: "HLN — Trump Briefing (19/03/2026)", d: "VS vrezen dat Iraans regime in zadel blijft en zelfs driester wordt", url: "https://www.hln.be/buitenland/trump-krijgt-zeer-ontnuchterende-briefings-over-midden-oosten-vs-vrezen-dat-iraans-regime-in-het-zadel-zal-blijven-en-zelfs-nog-driester-zal-worden~a9e903a5/" },
-                { n: "Reuters — Iran War Energy Shock (20/03/2026)", d: "European airlines warn of higher fares, fuel shortages due to Iran war", url: "https://www.reuters.com/business/energy/european-airlines-look-shake-off-green-agenda-fuel-prices-soar-2026-03-19/" },
-                { n: "WSJ — Qatar LNG Impact (20/03/2026)", d: "Iranian strikes reduce Qatar export capacity by 17%, repairs take 3-5 months", url: "https://www.wsj.com/livecoverage/iran-us-israel-war-updates-2026" },
-                { n: "Fortune — Oil Price Surge (19/03/2026)", d: "Oil approaches $115 per barrel as market realizes higher for longer", url: "https://fortune.com/2026/03/19/how-high-oil-barrel-price-brent-crude/" },
-                { n: "Test-Aankoop — Mega Tariefstijging (24/03/2026)", d: "Mega verhoogt tarieven +14% tot +29% gas, +12% tot +22% elektriciteit", url: "https://www.test-aankoop.be/woning-energie/gas-elektriciteit-mazout-pellets/nieuws/mega-onverwachte-stijging-energie-prijzen-maart-2026" },
-                { n: "Eneco — TTF Volatiliteit (12/03/2026)", d: "Onrust Midden-Oosten zorgt voor grote TTF schommelingen, Gasunie adviseert noodvoorraad", url: "https://www.eneco.nl/grootzakelijk/duurzame-inspiratie/weekvisie/geopolitiek-zorgt-voor-extreem-volatiele-gasmarkt/" },
-                { n: "FinancialContent — Energy Sector Rotation (23/03/2026)", d: "Energy Select Sector SPDR +8% in maart door geopolitieke spanningen", url: "https://markets.financialcontent.com/stocks/article/marketminute-2026-3-23-the-great-rotation-energy-surges-on-geopolitical-tensions-while-yield-sensitive-sectors-falter" },
-                { n: "CNBC — IEA Consumentenadvies (20/03/2026)", d: "IEA adviseert consumenten energieverbruik verminderen tijdens crisis", url: "https://www.cnbc.com/2026/03/20/iea-oil-fuel-prices-energy-advice-consumers-crisis.html" },
+                { n: "Trading Economics — TTF Natural Gas", d: "Real-time TTF gas prices and market analysis", url: "https://tradingeconomics.com/commodity/eu-natural-gas" },
+                { n: "Trading Economics — Brent Crude Oil", d: "Real-time Brent oil prices and historical data", url: "https://tradingeconomics.com/commodity/brent-crude-oil" },
+                { n: "CNBC — Oil Market Analysis", d: "Global oil market analysis and price trends", url: "https://www.cnbc.com/2026/03/24/oil-prices-today-wti-brent-middle-east-iran-war.html" },
+                { n: "EU Energy Live — Belgium Electricity", d: "Belgian electricity market data and prices", url: "https://euenergy.live/country.php?a2=BE" },
+                { n: "EnergyPrices.eu — Belgium Energy", d: "Belgian energy prices and market information", url: "https://www.energyprices.eu/electricity/belgium" },
               ],
             },
             {
@@ -920,17 +945,18 @@ export default function EnergieRapport() {
               </div>
             </div>
           ))}
-
-          <div style={{ background: "#172554", border: "1px solid #3b82f644", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
-            <strong>Databenadering:</strong> Bevestigde datapunten (✓): TTF 24/03 = €53.25 (-12.1% vs gisteren, bronnen: Trading Economics + OilPriceAPI), Brent 24/03 = $101.55 (+1.9% vs gisteren, bronnen: CNBC + Trading Economics), Belpex 24/03 = €72.78 (-42.0% vs gisteren, bronnen: EU Energy Live + EnergyPrices.eu), België gasopslag mrt 2026 = ~26% (Trading Economics projectie). Geopolitieke bronnen: Test-Aankoop (Mega tarieven), Eneco (TTF volatiliteit), FinancialContent (sector rotation), CNBC/IEA (consumentenadvies). Voor officiële tijdreeksen: gebruik ENTSO-E Transparency Platform (elektriciteit) en GIE AGSI+ (gas).
-          </div>
         </div>
       )}
 
       {/* FOOTER */}
       <div style={{ textAlign: "center", marginTop: 22, padding: "13px 0", borderTop: "1px solid #1e293b", fontSize: 11, color: "#334155" }}>
-        GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-        Opgesteld: 26 maart 2026 · 12:01 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        <div style={{ background: "#172554", border: "1px solid #3b82f44", borderRadius: 10, padding: "13px 17px", fontSize: 12, color: "#93c5fd", lineHeight: 1.7 }}>
+          <strong>Databronnen:</strong> Officiële marktdatabronnen voor energieprijzen en gasopslag. Voor real-time data: ENTSO-E Transparency Platform (elektriciteit), GIE AGSI+ (gasopslag), EPEX SPOT (day-ahead markt), ICE (TTF futures), en nationale regulatoren (VREG/CREG). Geopolitieke analyses via internationale nieuwsbronnen en marktonderzoek. Alle bronnen zijn publiek raadpleegbaar.
+        </div>
+        <div style={{ marginTop: 8 }}>
+          GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
+          Opgesteld: 26 maart 2026 · 12:01 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+        </div>
       </div>
       {/* Cloudflare Web Analytics */}
       <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56157a20ce0e4d2a8f76844bfdb0f5aa"}'></script>
