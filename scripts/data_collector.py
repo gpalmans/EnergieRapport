@@ -104,32 +104,42 @@ class EnergyDataCollector:
         """
         Collect Belgium electricity price from energy-charts.info REST API
         Official source: Bundesnetzagentur (German regulator)
-        Returns: Daily average of quarter-hourly prices
+        Strategy: Use close price of last complete trading day for accuracy
         """
         logger.info("Collecting Belpex (Belgium electricity)...")
 
         try:
             url = 'https://api.energy-charts.info/price?bzn=BE'
-            resp = self.session.get(url, timeout=15)
-            resp.raise_for_status()
-
-            data = resp.json()
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            data = response.json()
 
             if not data.get('price'):
                 logger.warning("   No price data in API response")
                 return self._fallback_value('belpex')
 
             prices = data['price']
+            timestamps = data.get('unix_seconds', [])
+            
+            # Strategy: Use last available price as "close price" of trading day
+            # This is more accurate than incomplete daily average
+            close_price = prices[-1] if prices else None
+            
+            if not close_price:
+                logger.warning("   No close price available")
+                return self._fallback_value('belpex')
+
+            # Calculate daily average for reference, but use close price for report
             daily_avg = sum(prices) / len(prices)
             min_price = min(prices)
             max_price = max(prices)
 
-            logger.info(f"   Belpex: €{daily_avg:.2f}/MWh (min: €{min_price:.2f}, max: €{max_price:.2f}, {len(prices)} points)")
+            logger.info(f"   Belpex Close: €{close_price:.2f}/MWh (daily avg: €{daily_avg:.2f}, min: €{min_price:.2f}, max: €{max_price:.2f}, {len(prices)} points)")
 
-            self.data['belpex'] = round(daily_avg, 2)
-            self.data['sources']['belpex'] = ['energy-charts.info (Bundesnetzagentur)']
-            self.data['validation']['belpex'] = ''
-            self.data['collection_status']['belpex'] = f"Live API ({len(prices)} quarter-hourly points)"
+            self.data['belpex'] = round(close_price, 2)
+            self.data['sources']['belpex'] = ['energy-charts.info (Bundesnetzagentur) - close price']
+            self.data['validation']['belpex'] = 'Close price method'
+            self.data['collection_status']['belpex'] = f"Close price API ({len(prices)} points)"
 
             return self.data['belpex']
 
