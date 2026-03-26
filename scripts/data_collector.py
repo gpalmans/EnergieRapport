@@ -121,25 +121,18 @@ class EnergyDataCollector:
             prices = data['price']
             timestamps = data.get('unix_seconds', [])
             
-            # Strategy: Use last available price as "close price" of trading day
-            # This is more accurate than incomplete daily average
-            close_price = prices[-1] if prices else None
-            
-            if not close_price:
-                logger.warning("   No close price available")
-                return self._fallback_value('belpex')
-
-            # Calculate daily average for reference, but use close price for report
+            # Strategy: Use daily average of complete trading day for accuracy
+            # This represents the true average cost of electricity for the day
             daily_avg = sum(prices) / len(prices)
             min_price = min(prices)
             max_price = max(prices)
 
-            logger.info(f"   Belpex Close: €{close_price:.2f}/MWh (daily avg: €{daily_avg:.2f}, min: €{min_price:.2f}, max: €{max_price:.2f}, {len(prices)} points)")
+            logger.info(f"   Belpex Daily: €{daily_avg:.2f}/MWh (min: €{min_price:.2f}, max: €{max_price:.2f}, {len(prices)} points)")
 
-            self.data['belpex'] = round(close_price, 2)
-            self.data['sources']['belpex'] = ['energy-charts.info (Bundesnetzagentur) - close price']
-            self.data['validation']['belpex'] = 'Close price method'
-            self.data['collection_status']['belpex'] = f"Close price API ({len(prices)} points)"
+            self.data['belpex'] = round(daily_avg, 2)
+            self.data['sources']['belpex'] = ['energy-charts.info (Bundesnetzagentur) - daily average']
+            self.data['validation']['belpex'] = 'Daily average method'
+            self.data['collection_status']['belpex'] = f"Daily average API ({len(prices)} points)"
 
             return self.data['belpex']
 

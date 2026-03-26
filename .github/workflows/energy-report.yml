@@ -2,10 +2,10 @@ name: EnergieRapport Auto-Update
 
 on:
   schedule:
-    # Dagelijks dinsdag t/m zondag om 18:30 CET (17:30 UTC) - na marktsluiting
-    - cron: '30 17 * * 2,3,4,5,6,0'
-    # Wekelijks maandag om 18:30 CET (17:30 UTC)
-    - cron: '30 17 * * 1'
+    # Dagelijks dinsdag t/m zondag om 23:30 CET (22:30 UTC) - volledige dag, vóór nachtprijzen
+    - cron: '30 21 * * 2,3,4,5,6,0'
+    # Wekelijks maandag om 23:30 CET (22:30 UTC)
+    - cron: '30 21 * * 1'
   workflow_dispatch:
     inputs:
       force_ai_analysis:
@@ -103,7 +103,7 @@ jobs:
         run: |
           echo "✅ EnergieRapport data update completed successfully!"
           echo "📊 Mode: ${{ steps.mode.outputs.mode }}"
-          echo "🔄 Next scheduled run: Daily at 18:30 CET"
+          echo "🔄 Next scheduled run: Daily at 23:30 CET"
       
       - name: Notify on failure
         if: failure()
