@@ -53,15 +53,13 @@ class ReportUpdater:
     def format_datetime_full(self, date_str: Optional[str] = None) -> tuple:
         """Formatteer datum en tijd voor header/footer"""
         if date_str:
+            # Timestamp from data collector is already local time (CET)
             dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            # Remove timezone info to treat as local time
+            dt = dt.replace(tzinfo=None)
         else:
-            # Use UTC time (GitHub Actions runs in UTC)
-            from datetime import timezone
-            dt = datetime.now(timezone.utc)
-        
-        # Convert UTC to CET (UTC+1) for display
-        from datetime import timedelta
-        cet_dt = dt + timedelta(hours=1)
+            # Use local time
+            dt = datetime.now()
         
         # Return: ("23 maart 2026", "20:30")
         month_names = {
@@ -69,11 +67,11 @@ class ReportUpdater:
             5: "mei", 6: "juni", 7: "juli", 8: "augustus",
             9: "september", 10: "oktober", 11: "november", 12: "december"
         }
-        date_full = f"{cet_dt.day} {month_names[cet_dt.month]} {cet_dt.year}"
-        time_str = cet_dt.strftime("%H:%M")
+        date_full = f"{dt.day} {month_names[dt.month]} {dt.year}"
+        time_str = dt.strftime("%H:%M")
         
         # Also return uppercase version for header
-        date_upper = f"{cet_dt.day:02d} {month_names[cet_dt.month].upper()} {cet_dt.year}"
+        date_upper = f"{dt.day:02d} {month_names[dt.month].upper()} {dt.year}"
         
         return (date_full, time_str, date_upper)
     
@@ -234,9 +232,9 @@ class ReportUpdater:
         """Update header en footer datums met tijd"""
         date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
         
-        # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30"
+        # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30 CET"
         header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})?'
-        content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str}', content)
+        content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str} CET', content)
         
         # Update footer: "Opgesteld: 23 maart 2026 · 20:30 ·"
         footer_pattern = r'(Opgesteld: )\d{1,2} \w+ \d{4}( · \d{2}:\d{2})?( ·)'

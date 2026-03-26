@@ -6,6 +6,50 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 2 — 26 maart 2026
+
+### **🔥 Nieuwe Automatische Features Geïmplementeerd**
+- **Single Source of Truth**: rawData array als enige bron van waarheid
+- **KPI Kleurlogica**: Automatisch rood/groen gebaseerd op richting (+/-)
+- **Geopolitieke Content Sync**: Live Brent/TTF synchronisatie met KPI's
+- **IEA Strategische Reserves**: Dynamische analyse gebaseerd op Brent prijs
+- **Belgische Energiemix**: Compleet 95-105% + actuele Belpex data
+- **Timezone Correctie**: CET-tijdweergave in hele rapport
+- **Storage Calculation**: Correct "nog te vullen" percentage
+- **Data Corruptie Fix**: Belpex 25/03 gecorrigeerd van €35.03 naar €72.04
+- **KPI Terminologie**: "vandaag" → "(24-uurs gemiddelde)" voor nauwkeurigheid
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €52.12/MWh (+0.1% vs gisteren) - OilPriceAPI (23 trade points)
+- **Belpex**: €87.48/MWh (+21.4% vs gisteren) - energy-charts.info (96 points)
+- **België gasopslag**: 22.7% (2 dagen geleden) - GIE AGSI+ API
+- **Brent**: $105.55/barrel (+3.9% vs gisteren) - OilPriceAPI (100 trade points)
+
+### **Marktontwikkelingen & Geopolitiek**
+- Hormuz crisis dag 21+ met continue impact op energieprijzen
+- TTF volatiliteit blijft hoog door geopolitieke onzekerheid
+- Brent prijzen tonen stabilisatie rond $105/vat niveau
+- Belgische gasreserves kritiek laag bij ~23% niveau
+
+### **Automatische Synchronisatie Resultaten**
+- **Geopolitieke content**: Brent $105.55/vat (+3.9% vs gisteren)
+- **IEA effectiviteit**: Matig (prijs $100-110/vat toont gedeeltelijke succes)
+- **Energiemix**: Kern 35-40% + Hernieuwbaar 30% + Gas 20% + Import/Overig 10-15% = 95-105%
+- **Storage**: 67% nog te vullen (90% doel - 22.7% huidig)
+- **KPI kleuren**: Automatisch rood voor stijging, groen voor daling
+- **Terminologie**: KPI's tonen correct "(24-uurs gemiddelde)" in plaats van "vandaag"
+
+### **Forecast**: Bearish 35% / Basis 40% / Bullish 25% — Markt onzeker door Hormuz crisis maar stabiliserende Brent prijzen
+
+### **Wijzigingen**: Volledige automatische synchronisatie van alle secties met live KPI-data, Single Source of Truth architectuur en correcte terminologie
+
+### **Wijzigingen**: 
+- **Belpex basislijn toegevoegd** - 27/02 horizontale lijn op €68/MWh
+- **Grafiek labels geoptimaliseerd** - Alle event-teksten boven grafieken (position="top")
+- **Kleurconsistentie** - Groene basislijnen in beide grafieken, IEA paars in Belpex
+
+---
+
 ## Update 1 — 26 maart 2026
 
 ### **Nieuwe Automatische Features Geïmplementeerd**
