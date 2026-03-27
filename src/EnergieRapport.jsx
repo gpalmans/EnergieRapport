@@ -234,7 +234,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 26 MAART 2026 · 21:54 CET
+          MARKTANALYSE — 27 MAART 2026 · 21:58 CET CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -250,7 +250,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €55.90 (-11.4% vs piek) · Brent $106.71 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
+            Hormuz crisis dag 21+ · TTF €54.43 (-11.4% vs piek) · Brent $114.27 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
           </div>
         </div>
       </div>
@@ -446,7 +446,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (26 mrt 2026)", "~22%",          "#ef4444"],
+              ["BE-gemiddelde (27 mrt 2026)", "~22%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -470,7 +470,7 @@ export default function EnergieRapport() {
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
             {[
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
-              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies. Zie KPI sectie voor actuele prijzen."],
+              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €54.43, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies. Zie KPI sectie voor actuele prijzen."],
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
               ["Brent Prijsstijging", "#8b5cf6", "Brent crude toont optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. Zie KPI sectie voor actuele prijzen."],
@@ -834,7 +834,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €55.90/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €54.43/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
@@ -949,7 +949,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-          Opgesteld: 26 maart 2026 · 21:54 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+          Opgesteld: 27 maart 2026 · 21:58 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
