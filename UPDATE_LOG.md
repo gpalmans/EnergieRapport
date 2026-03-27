@@ -6,6 +6,41 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 5 — 27 maart 2026
+
+### **🔥 Single Source of Truth Architectuur Voltooid**
+- **KPI Sectie**: Enige bron voor effectieve marktdata (TTF, Belpex, Brent, Storage)
+- **Geopolitieke Sectie**: Volledig generiek, geen hardcoded of dynamische waardes
+- **IEA Sectie**: Data-driven analyse gebaseerd op Trading Economics data
+- **GitHub Actions**: data/latest_prices.json toegevoegd aan commit workflow
+
+### **Bevestigde Marktdata (✓)**
+- **TTF Gas**: €55.90/MWh (OilPriceAPI) - Live data
+- **Belpex**: €87.48/MWh (energy-charts.info) - Daily average method
+- **België gasopslag**: 22.5% (GIE AGSI+ API) - Live data
+- **Brent**: $106.71/vat (OilPriceAPI) - Live data
+
+### **Marktontwikkelingen & Geopolitiek**
+- **IEA Release Impact**: Beperkt effect - TTF +27% in laatste maand ondanks 400mln vaten release
+- **Trading Economics Data**: TTF €56.58/MWh (+27.12% maand, +39.25% jaar)
+- **Market Fundamentals**: Storage levels 36% onder vorig jaar,保持 tight
+
+### **Single Source of Truth Resultaten**
+- **Geopolitieke content**: Volledig generiek, "Zie KPI sectie voor actuele prijzen"
+- **IEA analyse**: "Beperkte impact: TTF +27% in laatste maand ondanks release"
+- **Data Consistentie**: Geen hardcoded waardes, geen sync issues meer
+- **GitHub Actions**: Automatische data verzameling + JSX update + commit
+
+### **Technische Fixes**
+- **GitHub Actions Workflow**: data/latest_prices.json toegevoegd aan git add
+- **Report Updater Pattern**: Aangepast voor brent/storage velden in rawData
+- **JSX Syntax Errors**: Verwijderd template literals, em-dashes, nested JSX tags
+- **Data Pipeline**: Live collection → JSON → JSX → PDF synchronisatie
+
+### **Wijzigingen**: Volledige Single Source of Truth architectuur met automatische data synchronisatie
+
+---
+
 ## Update 4 — 26 maart 2026
 
 ### **🔥 Complete Data Consistentie Probleem Opgelost**

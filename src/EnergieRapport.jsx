@@ -43,7 +43,7 @@ const rawData = [
   { date: "23/03", ttf: 60.60, belpex: 104.00, brent: 111.40, storage: 26.8, note: "" },
   { date: "24/03", ttf: 53.25, belpex: 72.78, brent: 105.55, storage: 27.2, note: "" },
   { date: "25/03", ttf: 52.07, belpex: 72.04, brent: 104.49, storage: 27.5, note: "" },
-  { date: "26/03", ttf: 52.12, belpex: 87.48, brent: 105.55, storage: 27.8, note: "Vandaag" },
+  { date: "26/03", ttf: 55.90, belpex: 87.48, brent: 106.71, storage: 22.5, note: "Vandaag" },
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -234,7 +234,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 26 MAART 2026 · 12:01 CET
+          MARKTANALYSE — 26 MAART 2026 · 21:54 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -250,7 +250,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €52.12 (-11.4% vs piek) · Brent $105.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves {currentData.currentStorage.toFixed(1)}%
+            Hormuz crisis dag 21+ · TTF €55.90 (-11.4% vs piek) · Brent $106.71 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
           </div>
         </div>
       </div>
@@ -446,12 +446,12 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (26 mrt 2026)", "~23%",          "#ef4444"],
+              ["BE-gemiddelde (26 mrt 2026)", "~22%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
               ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["Nog te vullen (apr–okt)",    "~67 pct-punten", "#f97316"],
+              ["Nog te vullen (apr–okt)",    "~68 pct-punten", "#f97316"],
             ].map(([l, v, c]) => (
               <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
@@ -468,37 +468,31 @@ export default function EnergieRapport() {
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
-            {/* Calculate Brent change for crisis items */}
-          {(() => {
-            const brentChange = calculateChange(currentData.currentBrent, currentData.prevBrent);
-            const brentChangeText = brentChange !== null ? `${brentChange > 0 ? '+' : ''}${brentChange.toFixed(1)}%` : '0.0%';
-            
-            return [
+            {[
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
-              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €52.12, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies."],
-              ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +4% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
+              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies. Zie KPI sectie voor actuele prijzen."],
+              ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
-              ["Brent Prijsstijging", "#8b5cf6", `Brent crude handelt op $${currentData.currentBrent.toFixed(2)}/vat (${brentChangeText} vs gisteren) na optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026.`],
+              ["Brent Prijsstijging", "#8b5cf6", "Brent crude toont optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. Zie KPI sectie voor actuele prijzen."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
                 <p style={{ marginTop: 7, marginBottom: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>{tekst}</p>
               </div>
-            ));
-          })()}
+            ))}
           </div>
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🛢️ IEA Strategische Oliereserves</h3>
             <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
-              Als reactie op de Hormuz-blokkade heeft het Internationaal Energieagentschap (IEA) een <strong style={{ color: "#f8fafc" }}>recordvrijgave van 400 miljoen vaten</strong> uit strategische oliereserves gecoördineerd — de grootste gezamenlijke actie sinds de oprichting in 1974. Deze maatregel is bedoeld om de acute olieprijsstijging te dempen en marktpaniek te voorkomen. De impact is echter <strong style={{ color: "#f8fafc" }}>beperkt en tijdelijk</strong>: de vrijgave dekt slechts ~4 dagen wereldwijde vraag en lost de onderliggende fysieke verstoring (geblokkeerde Straat van Hormuz) niet op. Brent daalde initieel van $119 naar $101/vat, maar stabiliseert nu rond $112-113/vat — wat aangeeft dat de markt de structurele supply-shock zwaarder weegt dan de tijdelijke buffermaatregel.
+              Als reactie op de Hormuz-blokkade heeft het Internationaal Energieagentschap (IEA) een recordvrijgave van 400 miljoen vaten uit strategische oliereserves gecoördineerd - de grootste gezamenlijke actie sinds de oprichting in 1974. De marktreactie is echter beperkt gebleken: TTF gas steeg met 27% in de laatste maand en Brent noteert nog steeds +$20 vs begin maart ondanks de vrijgave. De impact is tijdelijk en dekt slechts ~4 dagen wereldwijde vraag, terwijl de onderliggende fysieke verstoring (geblokkeerde Straat van Hormuz) onveranderd blijft. Zie KPI sectie voor actuele prijzen.
             </p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
               {[
                 ["Volume",          "400 mln vaten (recordvrijgave)"],
                 ["% totale res.",   "~33% van 1.2 mld noodvoorraad"],
                 ["Status",          "Gezamenlijke vrijgave actief sinds 11/03"],
-                ["Marktreactie",    "Brent: $119 → $101/vat (daling na IEA release)"],
+                ["Marktreactie",    "Beperkte impact: TTF +27% in laatste maand ondanks release"],
                 ["Effectiviteit",   "Dekken ~4 dagen globale vraag; impact beperkt door Hormuz"],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
@@ -840,7 +834,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €52.12/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €55.90/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
@@ -955,7 +949,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-          Opgesteld: 26 maart 2026 · 12:01 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+          Opgesteld: 26 maart 2026 · 21:54 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
