@@ -235,11 +235,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-<<<<<<< HEAD
-          MARKTANALYSE — 27 MAART 2026 · 21:58 CET CET
-=======
           MARKTANALYSE — 27 MAART 2026 · 21:30 CET
->>>>>>> 978c1b5 (Bugfix: report_updater.py regex patterns voor .sort() compatibility)
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -954,11 +950,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-<<<<<<< HEAD
-          Opgesteld: 27 maart 2026 · 21:58 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
-=======
-          Opgesteld: 27 maart 2026 · 21:30 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
->>>>>>> 978c1b5 (Bugfix: report_updater.py regex patterns voor .sort() compatibility)
+Opgesteld: 27 maart 2026 · 21:30 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
