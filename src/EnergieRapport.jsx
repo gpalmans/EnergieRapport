@@ -35,6 +35,7 @@ const rawData = [
   { date: "13/03", ttf: 41.5,  belpex: 84.3,  brent: 105.40, storage: 28.3, note: "" },
   { date: "14/03", ttf: 40.8,  belpex: 81.9,  brent: 104.80, storage: 28.5, note: "" },
   { date: "17/03", ttf: 50.75, belpex: 113.77, brent: 108.90, storage: 24.2, note: "" },
+  { date: "27/03", ttf: 54.43, belpex: 117.78, brent: 114.27, storage: 22.3, note: "Vandaag" },
   { date: "18/03", ttf: 51.56, belpex: 80.92,  brent: 107.80, storage: 24.8, note: "" },
   { date: "19/03", ttf: 54.66, belpex: 100.30, brent: 110.50, storage: 25.1, note: "" },
   { date: "20/03", ttf: 62.00, belpex: 125.50, brent: 112.50, storage: 25.8, note: "" },
@@ -43,7 +44,7 @@ const rawData = [
   { date: "23/03", ttf: 60.60, belpex: 104.00, brent: 111.40, storage: 26.8, note: "" },
   { date: "24/03", ttf: 53.25, belpex: 72.78, brent: 105.55, storage: 27.2, note: "" },
   { date: "25/03", ttf: 52.07, belpex: 72.04, brent: 104.49, storage: 27.5, note: "" },
-  { date: "26/03", ttf: 55.90, belpex: 87.48, brent: 106.71, storage: 22.5, note: "Vandaag" },
+  { date: "26/03", ttf: 55.90, belpex: 87.48, brent: 106.71, storage: 22.5, note: "" },
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -234,7 +235,11 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
+<<<<<<< HEAD
           MARKTANALYSE — 27 MAART 2026 · 21:58 CET CET
+=======
+          MARKTANALYSE — 27 MAART 2026 · 21:30 CET
+>>>>>>> 978c1b5 (Bugfix: report_updater.py regex patterns voor .sort() compatibility)
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -949,7 +954,11 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
+<<<<<<< HEAD
           Opgesteld: 27 maart 2026 · 21:58 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+=======
+          Opgesteld: 27 maart 2026 · 21:30 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+>>>>>>> 978c1b5 (Bugfix: report_updater.py regex patterns voor .sort() compatibility)
         </div>
       </div>
       {/* Cloudflare Web Analytics */}

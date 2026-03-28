@@ -79,8 +79,12 @@ class ReportUpdater:
         """Update rawData array in JSX - update existing entry or add new one"""
         date_str = self.format_date(market_data.get('timestamp'))
         
+        # First, reset any existing "Vandaag" note to empty string (only one Vandaag allowed)
+        content = re.sub(r'note: "Vandaag"', 'note: ""', content)
+        logger.info("Reset previous Vandaag entries to empty note")
+        
         # Check if date already exists in rawData
-        date_pattern = rf'\{{ date: "{re.escape(date_str)}", ttf: [\d.]+, belpex: [\d.]+, note: "[^"]*" \}}'
+        date_pattern = rf'\{{ date: "{re.escape(date_str)}", ttf: [\d.]+, belpex: [\d.]+, brent: [\d.]+, storage: [\d.]+, note: "[^"]*" \}}'
         existing_entry = re.search(date_pattern, content)
         
         if existing_entry:
@@ -88,22 +92,31 @@ class ReportUpdater:
             updated_entry = (
                 f'{{ date: "{date_str}", '
                 f'ttf: {market_data["ttf"]:.2f}, '
-                f'belpex: {market_data["belpex"]:.2f}, note: "Vandaag" }}'
+                f'belpex: {market_data["belpex"]:.2f}, '
+                f'brent: {market_data["brent"]:.2f}, '
+                f'storage: {market_data["eu_storage"]:.1f}, note: "Vandaag" }}'
             )
             content = re.sub(date_pattern, updated_entry, content)
             logger.info(f"Updated existing rawData entry for {date_str}")
         else:
-            # Add new entry at the end of array (before closing bracket)
-            pattern = r'(const rawData = \[[\s\S]*?)(\{ date: "[^"]+", ttf: [^,]+, belpex: [^,]+, note: "[^"]*" \})([\s\S]*?\];)'
+            # Add new entry at the end of array (before closing bracket or .sort)
+            # Pattern handles both ]; and .sort((a, b) => after the array
+            # Also handles optional comma after last entry
+            pattern = r'(const rawData = \[[\s\S]*?)(\{ date: "[^"]+", ttf: [^,]+, belpex: [^,]+, brent: [^,]+, storage: [^,]+, note: "[^"]*" \}),?\s*(\]\.sort|\];)'
             
             new_entry = (
                 f'  {{ date: "{date_str}", '
                 f'ttf: {market_data["ttf"]:.2f}, '
-                f'belpex: {market_data["belpex"]:.2f}, note: "Vandaag" }}'
+                f'belpex: {market_data["belpex"]:.2f}, '
+                f'brent: {market_data["brent"]:.2f}, '
+                f'storage: {market_data["eu_storage"]:.1f}, note: "Vandaag" }}'
             )
             
             def replacer(match):
-                return match.group(1) + match.group(2) + ',\n' + new_entry + match.group(3)
+                # match.group(1) = everything before last entry
+                # match.group(2) = last entry (with optional comma)
+                # match.group(3) = ].sort or ];
+                return match.group(1) + match.group(2) + ',\n' + new_entry + '\n' + match.group(3)
             
             updated = re.sub(pattern, replacer, content, count=1)
             
@@ -170,8 +183,8 @@ class ReportUpdater:
     
     def get_previous_values(self, content: str) -> tuple:
         """Extract previous day values from rawData"""
-        # Find all rawData entries
-        pattern = r'\{ date: "([^"]+)", ttf: ([\d.]+), belpex: ([\d.]+), note: "([^"]*)" \}'
+        # Find all rawData entries including brent and storage
+        pattern = r'\{ date: "([^"]+)", ttf: ([\d.]+), belpex: ([\d.]+), brent: [\d.]+, storage: [\d.]+, note: "([^"]*)" \}'
         entries = re.findall(pattern, content)
         
         if not entries:
@@ -233,7 +246,7 @@ class ReportUpdater:
         date_full, time_str, date_upper = self.format_datetime_full(market_data.get('timestamp'))
         
         # Update header: "MARKTANALYSE — 23 MAART 2026 · 20:30 CET"
-        header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})?'
+        header_pattern = r'(MARKTANALYSE — )\d{2} \w+ \d{4}( · \d{2}:\d{2})( CET)?'
         content = re.sub(header_pattern, f'\\g<1>{date_upper} · {time_str} CET', content)
         
         # Update footer: "Opgesteld: 23 maart 2026 · 20:30 ·"
@@ -403,7 +416,7 @@ class ReportUpdater:
     
     def find_ttf_peak(self, content: str) -> float:
         """Find TTF peak value in rawData"""
-        pattern = r'\{ date: "[^"]+", ttf: ([\d.]+), belpex: [\d.]+, note: "([^"]*)" \}'
+        pattern = r'\{ date: "[^"]+", ttf: ([\d.]+), belpex: [\d.]+, brent: [\d.]+, storage: [\d.]+, note: "([^"]*)" \}'
         entries = re.findall(pattern, content)
         
         if not entries:
@@ -411,6 +424,86 @@ class ReportUpdater:
         
         ttf_values = [float(ttf) for ttf, note in entries if "Piek" in note]
         return max(ttf_values) if ttf_values else 56.0
+    
+    def update_sources_section(self, content: str, market_data: Dict) -> str:
+        """Update sources section with current data and remove outdated dates"""
+        date_str = self.format_date(market_data.get('timestamp'))
+        
+        # Update Trading Economics references with generic descriptions
+        old_ttf_pattern = r'Trading Economics — TTF \d{2}/\d{2}/\d{4}.*?url: "https://tradingeconomics.com/commodity/eu-natural-gas"'
+        new_ttf_ref = 'Trading Economics — TTF Natural Gas', 'Real-time TTF gas prices and historical data', 'url: "https://tradingeconomics.com/commodity/eu-natural-gas"'
+        
+        # Update Trading Economics Brent reference  
+        old_brent_pattern = r'Trading Economics — Brent Oil \d{2}/\d{2}/\d{4}.*?url: "https://tradingeconomics.com/commodity/brent-crude-oil"'
+        new_brent_ref = 'Trading Economics — Brent Crude Oil', 'Real-time Brent oil prices and historical data', 'url: "https://tradingeconomics.com/commodity/brent-crude-oil"'
+        
+        # Update OilPriceAPI references
+        old_oilprice_pattern = r'OilPriceAPI — Live TTF Data \(\d{2}/\d{2}/\d{4}\).*?url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price"'
+        new_oilprice_ref = 'OilPriceAPI — Live TTF Data', 'Real-time Dutch TTF gas price API', 'url: "https://www.oilpriceapi.com/live/dutch-ttf-gas-price"'
+        
+        # Update Elexys reference
+        old_elexys_pattern = r'Elexys — Belpex Hourly Data.*?url: "https://www.elexys.be/en/insights/epex-spot"'
+        new_elexys_ref = 'Elexys — Belpex Hourly Data', 'Official hourly Belpex prices and market analysis', 'url: "https://www.elexys.be/en/insights/epex-spot"'
+        
+        # Apply updates using regex
+        content = re.sub(old_ttf_pattern, f'                {{ n: "{new_ttf_ref[0]}", d: "{new_ttf_ref[1]}", {new_ttf_ref[2]} }}', content)
+        content = re.sub(old_brent_pattern, f'                {{ n: "{new_brent_ref[0]}", d: "{new_brent_ref[1]}", {new_brent_ref[2]} }}', content)
+        content = re.sub(old_oilprice_pattern, f'                {{ n: "{new_oilprice_ref[0]}", d: "{new_oilprice_ref[1]}", {new_oilprice_ref[2]} }}', content)
+        content = re.sub(old_elexys_pattern, f'                {{ n: "{new_elexys_ref[0]}", d: "{new_elexys_ref[1]}", {new_elexys_ref[2]} }}', content)
+        
+        # Remove outdated geopolitical references with specific dates
+        outdated_patterns = [
+            r'                { n: "De Standaard — Energiecrisis Analyse \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "De Standaard — Benzineprijzen Stijgen \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "De Standaard — VS Dronefabrieken \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "HLN — Trump Briefing \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "CBS News — Iran War Escalation \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "NBC News — Gas Field Damage \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Reuters — Iran War Energy Shock \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "WSJ — Qatar LNG Impact \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Fortune — Oil Price Surge \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Test-Aankoop — Mega Tariefstijging \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Eneco — TTF Volatiliteit \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "FinancialContent — Energy Sector Rotation \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "CNBC — IEA Consumentenadvies \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Trading Economics — TTF Gas \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Trading Economics — Brent Oil \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "CNBC — Brent Oil Analysis \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "EU Energy Live — Belpex \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "EnergyPrices.eu — Belgium \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "TradingPedia — LNG Glut Analysis \(\d{2}/\d{2}/\d{4}\).*?},?\n',
+            r'                { n: "Gas to Power Journal — TTF analysis.*?€\d+.*?},?\n',
+            # Fix for duplicate entries with extra spaces
+            r'                { n: "                { n: "[^"]+".*?} },?\n',
+        ]
+        
+        for pattern in outdated_patterns:
+            content = re.sub(pattern, '', content, flags=re.MULTILINE)
+        
+        logger.info(f"Updated sources section with generic descriptions (no specific prices)")
+        return content
+    
+    def calculate_ttf_change(self, content: str) -> float:
+        """Calculate TTF change vs previous day"""
+        pattern = r'\{ date: "[^"]+", ttf: ([\d.]+), belpex: [\d.]+, brent: [\d.]+, storage: [\d.]+, note: "([^"]*)" \}'
+        entries = re.findall(pattern, content)
+        
+        if len(entries) >= 2:
+            current_ttf = float(entries[-1][0])
+            prev_ttf = float(entries[-2][0])
+            return ((current_ttf - prev_ttf) / prev_ttf) * 100
+        return 0.0  # fallback
+    
+    def calculate_belpex_change(self, content: str) -> float:
+        """Calculate Belpex change vs previous day"""
+        pattern = r'\{ date: "[^"]+", ttf: [\d.]+, belpex: ([\d.]+), brent: [\d.]+, storage: [\d.]+, note: "([^"]*)" \}'
+        entries = re.findall(pattern, content)
+        
+        if len(entries) >= 2:
+            current_belpex = float(entries[-1][0])
+            prev_belpex = float(entries[-2][0])
+            return ((current_belpex - prev_belpex) / prev_belpex) * 100
+        return 0.0  # fallback
     
     def enforce_gasopslag_consistency(self, content: str, market_data: Dict) -> str:
         """Enforce gasopslag consistency across all sections in JSX"""
@@ -441,9 +534,9 @@ class ReportUpdater:
     
     # def update_confirmed_dates (disabled - footer is static)(self, content: str, market_data: Dict) -> str:
         """Update list of confirmed dates for checkmarks in JSX - all API dates are confirmed"""
-        
+
         # Extract all dates from rawData since they come from reliable API sources
-        pattern = r'\{ date: "([^"]+)", ttf: [\d.]+, belpex: [\d.]+, note: "([^"]*)" \}'
+        pattern = r'\{ date: "([^"]+)", ttf: [\d.]+, belpex: [\d.]+, brent: [\d.]+, storage: [\d.]+, note: "([^"]*)" \}'
         entries = re.findall(pattern, content)
         
         if not entries:
@@ -495,6 +588,7 @@ class ReportUpdater:
         
         # CONSISTENCY ENFORCEMENT
         content = self.enforce_gasopslag_consistency(content, market_data)
+        content = self.update_sources_section(content, market_data)  # NEW: Auto-update sources
         # content = self.update_confirmed_dates(content, market_data)  # Disabled - footer is static
         
         # Sla op
@@ -502,6 +596,7 @@ class ReportUpdater:
             f.write(content)
         
         logger.info(f"Successfully updated {self.jsx_path}")
+        logger.info("Updated sources section with current data and removed outdated references")
     
     def run_update(self):
         """Voer volledige update uit"""

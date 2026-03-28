@@ -6,6 +6,43 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 6 — 28 maart 2026
+
+### **🐛 Kritieke Bugfix: report_updater.py Regex Patterns**
+
+**Probleem:** GitHub Actions verzamelde correct data maar updateerde de JSX niet. De rawData array bleef op oude waarden staan.
+
+**Root Causes:**
+1. **Regex Pattern Mismatch**: Pattern zocht naar `];` maar JSX gebruikt `.sort()` na de array
+2. **Ontbrekende velden**: Regex patterns misten `brent` en `storage` velden in entries
+3. **Dubbele "Vandaag" notes**: Meerdere entries hadden "Vandaag" als note
+
+**Fixes:**
+- **Pattern Update**: Regex nu compatible met `.sort()` syntax: `(\]\.sort|\];)`
+- **Volledige velden**: Alle regex patterns bevatten nu `brent` en `storage`
+- **Vandaag Reset**: Automatische reset van vorige "Vandaag" naar lege string
+
+### **Bevestigde Marktdata (27 maart 2026)**
+- **TTF Gas**: €54.43/MWh (OilPriceAPI)
+- **Belpex**: €117.78/MWh (energy-charts.info - daily average)
+- **België gasopslag**: 22.3% (GIE AGSI+ API)
+- **Brent**: $114.27/vat (OilPriceAPI)
+
+### **Technische Wijzigingen**
+- **`scripts/report_updater.py`**: 
+  - `update_jsx_rawdata()`: Regex pattern voor `.sort()` compatibility
+  - `get_previous_values()`: Regex met brent/storage velden
+  - `calculate_ttf_change()`, `calculate_belpex_change()`, `find_ttf_peak()`: Regex updates
+  - Nieuwe feature: Automatische reset van vorige "Vandaag" entries
+- **`data/latest_prices.json`**: Bijgewerkt met correcte 27 maart data
+
+### **Validatie**
+- ✅ rawData array bevat nu 27/03 entry met correcte waarden
+- ✅ 26/03 "Vandaag" note gereset naar lege string
+- ✅ Alle regex patterns getest en gevalideerd
+
+---
+
 ## Update 5 — 27 maart 2026
 
 ### **🔥 Single Source of Truth Architectuur Voltooid**
