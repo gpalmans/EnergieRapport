@@ -53,6 +53,14 @@ const rawData = [
   return dateA.localeCompare(dateB);
 });
 
+// Helper function to check if a date is a weekend
+const isWeekend = (dateStr) => {
+  const [day, month] = dateStr.split('/');
+  const date = new Date(2026, month - 1, day); // month is 1-based in split() result
+  const dayOfWeek = date.getDay();
+  return dayOfWeek === 0 || dayOfWeek === 6; // Sunday = 0, Saturday = 6
+};
+
 // Helper functions to get current data from rawData (Single Source of Truth)
 const getCurrentData = () => {
   const lastEntry = rawData[rawData.length - 1];
@@ -428,7 +436,7 @@ Hormuz crisis dag 21+ · TTF €53.25 (-44.9% vs piek) · Brent $112.57 · Force
                         : r.note.includes("Piek")  ? <span style={BADGE("#f97316")}>Piekprijs</span>
                         : r.note === "IEA"         ? <span style={BADGE("#22c55e")}>IEA</span>
                         : today                    ? <span style={BADGE("#0ea5e9")}>Vandaag</span>
-                        : r.note === "WE"          ? <span style={BADGE("#475569")}>Weekend</span>
+                        : r.note === "WE" || isWeekend(r.date) ? <span style={BADGE("#475569")}>Weekend</span>
                         : <span style={{ color: "#334155" }}>—</span>}
                       </td>
                     </tr>
