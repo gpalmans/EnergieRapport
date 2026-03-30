@@ -253,11 +253,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-<<<<<<< HEAD
-            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $112.57 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
-=======
-            Hormuz crisis dag 21+ · TTF €53.25 (-44.9% vs piek) · Brent $112.57 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 21.8%
->>>>>>> 66d6918 (Complete weekly update 29/03: geopolitieke content, forecast probabilities, PDF checkmarks fix)
+Hormuz crisis dag 21+ · TTF €53.25 (-44.9% vs piek) · Brent $112.57 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 21.8%
           </div>
         </div>
       </div>
