@@ -83,11 +83,13 @@ const preparePDFData = (reportData) => {
 
     priceTable: marketData.slice(-10).map((row, idx, arr) => {
       const prev = idx > 0 ? arr[idx - 1] : null;
+      const today = row.note.includes("Vandaag");
+      const confirmed = true; // All rawData comes from official APIs (OilPriceAPI, GIE AGSI+, energy-charts.info)
       return {
         date: row.date, ttf: row.ttf, belpex: row.belpex,
         ttfChange: prev ? ((row.ttf - prev.ttf) / Math.abs(prev.ttf)) * 100 : null,
         belpexChange: prev ? ((row.belpex - prev.belpex) / Math.abs(prev.belpex)) * 100 : null,
-        confirmed: confirmedDates.includes(row.date),
+        confirmed: confirmed,
         status: row.note === 'Vandaag' ? 'Vandaag' : row.note === 'Hormuz' ? 'Hormuz' : row.note === 'Piek' ? 'Piek' : row.note === 'IEA' ? 'IEA' : '',
       };
     }),

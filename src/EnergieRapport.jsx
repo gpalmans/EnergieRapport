@@ -253,7 +253,11 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
+<<<<<<< HEAD
             Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $112.57 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
+=======
+            Hormuz crisis dag 21+ · TTF €53.25 (-44.9% vs piek) · Brent $112.57 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 21.8%
+>>>>>>> 66d6918 (Complete weekly update 29/03: geopolitieke content, forecast probabilities, PDF checkmarks fix)
           </div>
         </div>
       </div>
@@ -473,10 +477,10 @@ export default function EnergieRapport() {
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>⚔️ Geopolitieke Crisissituatie</h3>
             {[
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
-              ["Hormuz Crisis Volatiliteit", "#f97316", "Aanhoudende onrust in het Midden-Oosten veroorzaakt extreme schommelingen in TTF-prijzen: €53.25, met dagelijkse variaties van 10-15%. Gasunie adviseert Belgische bedrijven en huishoudens om een strategische noodvoorraad aan te leggen voor de komende winter. Termijnprijzen voor elektriciteit volgen de sterke stijging van gasprijzen, wat duidt op aanhoudende marktonzekerheid en risicopremies. Zie KPI sectie voor actuele prijzen."],
+["Hormuz Crisis Tijdsdruk", "#f97316", "Kritieke deadline: Straat van Hormuz moet heropend worden binnen 1-3 weken (mid-april). Productie gereduceerd met 8 mb/d crude + 2 mb/d condensates. Stopgap measures verliezen effectiviteit begin-mid april, wat kan leiden tot dramatische prijsstijgingen. TTF noteert momenteel €53.25 met extreme volatiliteit. Gasunie adviseert strategische noodvoorraad. Zie KPI sectie voor actuele prijzen."],
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
-              ["Brent Prijsstijging", "#8b5cf6", "Brent crude toont optimisme over mogelijke Iran de-escalatie via diplomatieke kanalen. De stijging volgt op een scherpe daling van -11% op maandag, wat marktscepsis toont over de duurzaamheid van vrede. Handelaren prijzen een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. Zie KPI sectie voor actuele prijzen."],
+              ["Brent Prijsstijging", "#8b5cf6", "Brent crude noteert $112.57/bbl, gestegen met $20 sinds 28 februari. De markt prijst een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. IEA reserves hebben beperkte impact op de onderliggende verstoring. Zie KPI sectie voor actuele prijzen."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -488,7 +492,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🛢️ IEA Strategische Oliereserves</h3>
             <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
-              Als reactie op de Hormuz-blokkade heeft het Internationaal Energieagentschap (IEA) een recordvrijgave van 400 miljoen vaten uit strategische oliereserves gecoördineerd - de grootste gezamenlijke actie sinds de oprichting in 1974. De marktreactie is echter beperkt gebleken: TTF gas steeg met 27% in de laatste maand en Brent noteert nog steeds +$20 vs begin maart ondanks de vrijgave. De impact is tijdelijk en dekt slechts ~4 dagen wereldwijde vraag, terwijl de onderliggende fysieke verstoring (geblokkeerde Straat van Hormuz) onveranderd blijft. Zie KPI sectie voor actuele prijzen.
+              Als reactie op de Hormuz-blokkade heeft het Internationaal Energieagentschap (IEA) een recordvrijgave van 400 miljoen vaten uit strategische oliereserves gecoördineerd, maar dit is een 'stop-gap measure' zonder structurele oplossing. De marktreactie blijft beperkt: Brent steeg met $20 naar $92/bbl, maar de onderliggende verstoring blijft. Wereldwijde inventarissen staan op 8.2 miljard vaten (hoogste sinds 2021), maar IEA heeft de globale olie vraaggroei voor 2026 verlaagd met 210 kb/d naar 640 kb/d door demand destruction. De 400 miljoen vaten dekken slechts ~4 dagen wereldwijde vraag. Zie KPI sectie voor actuele prijzen.
             </p>
             <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
               {[
@@ -516,7 +520,7 @@ export default function EnergieRapport() {
             <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
               In België is gas de marginale producent in <strong style={{ color: "#f8fafc" }}>~87% van de uren</strong> (CREG-data 2021-2024). 
               Dit betekent: zelfs als 80% van de elektriciteit uit kern en hernieuwbaar komt, bepaalt de gasprijs de Belpex-prijs zodra gascentrales nodig zijn voor de laatste 20%. 
-              Resultaat: <strong style={{ color: "#f8fafc" }}>TTF stijgt +13.5% → Belpex stijgt +25%</strong> (versterkt effect door grid congestion en nucleaire beperkingen).
+              Resultaat: <strong style={{ color: "#f8fafc" }}>TTF stijgt +13.5% → Belpex stijgt +25%</strong> (versterkt effect door grid congestion en nucleaire beperkingen). <br></br><strong style={{ color: "#f59e0b" }}>Huidige uitzondering:</strong> TTF +35.8% door supply shock, Belpex -38.7% na extreme piek-normalisatie.
             </p>
             <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
               <strong style={{ color: "#f8fafc" }}>Waarom gas zo vaak marginaal is:</strong> Kern draait continu (baseload), wind/zon zijn variabel, gas vult de gaten. 
@@ -560,16 +564,16 @@ export default function EnergieRapport() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
           {[
             {
-              t: "⬇ Bearish (Ontspanning)", p: "20%", c: "#22c55e",
+              t: "⬇ Bearish (Ontspanning)", p: "15%", c: "#22c55e",
               ttf: "€30–40", belpex: "€50–65",
               items: ["Gasvelden herstellen binnen 2-3 weken","Hormuz gedeeltelijk open","Diplomatieke de-escalatie","Mild voorjaar verlaagt vraag"],
-              note: "Risico: schade gasvelden beperkt herstel",
+              note: "Risico: tijdsdruk mid-april verlaagt kans",
             },
             {
-              t: "⟶ Basis (Prolonged crisis)", p: "55%", c: "#0ea5e9",
+              t: "⟶ Basis (Prolonged crisis)", p: "60%", c: "#0ea5e9",
               ttf: "€40–58", belpex: "€70–85",
               items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","Belgische opslag onder druk"],
-              note: "Meest waarschijnlijk scenario",
+              note: "Meest waarschijnlijk scenario - IEA demand destruction zichtbaar",
             },
             {
               t: "⬆ Bullish (Escalatie)", p: "25%", c: "#ef4444",
