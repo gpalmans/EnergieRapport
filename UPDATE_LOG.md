@@ -6,6 +6,42 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 7 — 29 maart 2026
+
+### **🔄 Volledige Wekelijkse Update**
+
+**Bevestigde Marktdata (29 maart 2026):**
+- **TTF Gas**: €53.25/MWh (OilPriceAPI - estimate na timeout)
+- **Belpex**: €64.84/MWh (energy-charts.info - daily average)
+- **België gasopslag**: 21.8% (GIE AGSI+ API)
+- **Brent**: $112.57/vat (OilPriceAPI)
+
+**Significante Marktbewegingen:**
+- **Belpex Daling**: €117.78 → €64.84 (-44.9%!) - enorme correctie na vorige piek
+- **TTF Stabilisatie**: €54.43 → €53.25 (-2.2%) - lichte daling
+- **Storage Afname**: 22.3% → 21.8% (-0.5%) - verder dalend
+- **Brent Stabiliteit**: $114.27 → $112.57 (-1.5%) - lichte daling
+
+**Geopolitieke Context:**
+- Hormuz-crisis blijft dominant factor
+- IEA reserves vrijgave heeft beperkte impact
+- Mega tariefstijgingen in België (+14% gas, +12% elektriciteit)
+- Energy sector rotation (+3% in maart)
+
+**Technische Updates:**
+- rawData uitgebreid met 28/03 en 29/03 entries
+- Alle datapunten automatisch als bevestigd gemarkeerd (✓)
+- Geopolitieke secties geactualiseerd met actuele prijzen
+- Forecast sectie behouden - scenario's nog relevant
+
+**Validatie:**
+- ✅ Single Source of Truth architectuur werkt correct
+- ✅ Alle KPI waarden enkel op Analyse pagina
+- ✅ rawData array bevat nu 34 datapunten (17/02 - 29/03)
+- ✅ Geen hardcoded waardes in geopolitieke content
+
+---
+
 ## Update 6 — 28 maart 2026
 
 ### **🐛 Kritieke Bugfix: report_updater.py Regex Patterns**
