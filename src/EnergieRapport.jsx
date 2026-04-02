@@ -115,28 +115,37 @@ const chartData = addTrendlines(marketData, {
 });
 
 const forecastBase = [
-  { date: "24/03", ttf: 53.25, belpex: 72.78 },
-  { date: "27/03", ttf: 52,    belpex: 75   },
-  { date: "03/04", ttf: 50,    belpex: 78   },
-  { date: "10/04", ttf: 48,    belpex: 70   },
-  { date: "24/04", ttf: 45,    belpex: 64   },
-  { date: "08/05", ttf: 42,    belpex: 60   },
+  { date: "01/04", ttf: 48.00, belpex: 141.65 },
+  { date: "08/04", ttf: 46,    belpex: 120  },
+  { date: "15/04", ttf: 44,    belpex: 105  },
+  { date: "22/04", ttf: 42,    belpex: 95   },
+  { date: "29/04", ttf: 40,    belpex: 88   },
+  { date: "06/05", ttf: 38,    belpex: 82   },
+  { date: "13/05", ttf: 36,    belpex: 75   },
+  { date: "20/05", ttf: 35,    belpex: 70   },
+  { date: "27/05", ttf: 34,    belpex: 65   },
 ];
 const forecastBull = [
-  { date: "24/03", ttf: 53.25, belpex: 72.78 },
-  { date: "27/03", ttf: 58,    belpex: 85  },
-  { date: "03/04", ttf: 62,    belpex: 80  },
-  { date: "10/04", ttf: 60,    belpex: 75  },
-  { date: "24/04", ttf: 58,    belpex: 70  },
-  { date: "08/05", ttf: 55,    belpex: 65  },
+  { date: "01/04", ttf: 48.00, belpex: 141.65 },
+  { date: "08/04", ttf: 56,    belpex: 165  },
+  { date: "15/04", ttf: 62,    belpex: 185  },
+  { date: "22/04", ttf: 68,    belpex: 210  },
+  { date: "29/04", ttf: 72,    belpex: 240  },
+  { date: "06/05", ttf: 78,    belpex: 220 },
+  { date: "13/05", ttf: 82,    belpex: 200  },
+  { date: "20/05", ttf: 85,    belpex: 185  },
+  { date: "27/05", ttf: 88,    belpex: 175  },
 ];
 const forecastBear = [
-  { date: "24/03", ttf: 53.25, belpex: 72.78 },
-  { date: "27/03", ttf: 48,    belpex: 68   },
-  { date: "03/04", ttf: 44,    belpex: 65   },
-  { date: "10/04", ttf: 38,    belpex: 58   },
-  { date: "24/04", ttf: 34,    belpex: 54   },
-  { date: "08/05", ttf: 30,    belpex: 50   },
+  { date: "01/04", ttf: 48.00, belpex: 141.65 },
+  { date: "08/04", ttf: 42,    belpex: 95   },
+  { date: "15/04", ttf: 38,    belpex: 75   },
+  { date: "22/04", ttf: 35,    belpex: 60   },
+  { date: "29/04", ttf: 32,    belpex: 50   },
+  { date: "06/05", ttf: 30,    belpex: 42   },
+  { date: "13/05", ttf: 28,    belpex: 38   },
+  { date: "20/05", ttf: 26,    belpex: 35   },
+  { date: "27/05", ttf: 24,    belpex: 32   },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -488,6 +497,8 @@ export default function EnergieRapport() {
               ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
               ["Brent Prijsstijging", "#8b5cf6", "Brent crude noteert significante stijging sinds 28 februari door geopolitieke spanningen. De markt prijst een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. IEA reserves hebben beperkte impact op de onderliggende verstoring."],
+              ["Politieke Budgetcrisis", "#dc2626", "Premier De Wever: 'De staat verdient niet aan energiecrisis, ze scheurt er haar broek aan.' Gouverneur Wunsch waarschuwt: 'Geen middelen meer om schok energiecrisis volledig op te vangen.' De terughoudendheid van de regering voor steunmaatregelen creëert marktonzekerheid en speculatie op hogere prijzen. MR dringt aan op omgekeerde cliquet, maar De Wever wijst op budgettaire tekorten en indexatielasten."],
+              ["Omgekeerde Cliquet Voorstel", "#f59e0b", "MR-voorzitter Bouchez pleit voor automatisch accijnsdaling bij brandstofprijzen boven €2/liter. 'Omgekeerde cliquet' systeem zou consumenten direct verlichten bij extreme prijsstijgingen. De overheid profiteert van hogere btw-inkomsten, maar dreigt dossiers te blokkeren als regering niet ingrijpt. Les Engagés steunen het voorstel en eisen actie."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
                 <span style={BADGE(color)}>{titel}</span>
@@ -553,17 +564,33 @@ export default function EnergieRapport() {
       {/* ── FORECAST ── */}
       {tab === "forecast" && (<>
         <div style={SECTION}>
-          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>📈 Drie Scenario's — TTF Gas-forecast (mrt–mei 2026)</h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>📈 TTF Gas Forecast (apr–mei 2026)</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <LineChart margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-              <YAxis domain={[20, 90]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
+              <YAxis domain={[20, 100]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
-              <Line data={forecastBull} type="monotone" dataKey="ttf" name="⬆ Bullish" stroke="#ef4444" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: "#ef4444" }} />
+              <Line data={forecastBull} type="monotone" dataKey="ttf" name="⬆ Bullish" stroke="#ef4444" strokeWidth={2} dot={{ r: 3, fill: "#ef4444" }} />
               <Line data={forecastBase} type="monotone" dataKey="ttf" name="⟶ Basis"   stroke="#0ea5e9" strokeWidth={2.5} dot={{ r: 3, fill: "#0ea5e9" }} />
-              <Line data={forecastBear} type="monotone" dataKey="ttf" name="⬇ Bearish" stroke="#22c55e" strokeWidth={2} strokeDasharray="6 3" dot={{ r: 3, fill: "#22c55e" }} />
+              <Line data={forecastBear} type="monotone" dataKey="ttf" name="⬇ Bearish" stroke="#22c55e" strokeWidth={2} dot={{ r: 3, fill: "#22c55e" }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div style={SECTION}>
+          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>⚡ Belpex Elektriciteit Forecast (apr–mei 2026)</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
+              <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} tick={{ fill: "#64748b", fontSize: 11 }} />
+              <YAxis domain={[20, 250]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
+              <Tooltip content={<Tip />} />
+              <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
+              <Line data={forecastBull} type="monotone" dataKey="belpex" name="⬆ Bullish" stroke="#dc2626" strokeWidth={2.5} dot={{ r: 3, fill: "#dc2626" }} />
+              <Line data={forecastBase} type="monotone" dataKey="belpex" name="⟶ Basis" stroke="#0ea5e9" strokeWidth={3} dot={{ r: 4, fill: "#0ea5e9" }} />
+              <Line data={forecastBear} type="monotone" dataKey="belpex" name="⬇ Bearish" stroke="#10b981" strokeWidth={2} dot={{ r: 3, fill: "#10b981" }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -571,22 +598,22 @@ export default function EnergieRapport() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
           {[
             {
-              t: "⬇ Bearish (Ontspanning)", p: "15%", c: "#22c55e",
-              ttf: "€30–40", belpex: "€50–65",
+              t: "⬇ Bearish (Ontspanning)", p: "20%", c: "#22c55e",
+              ttf: "€35–45", belpex: "€70–100",
               items: ["Gasvelden herstellen binnen 2-3 weken","Hormuz gedeeltelijk open","Diplomatieke de-escalatie","Mild voorjaar verlaagt vraag"],
               note: "Risico: tijdsdruk mid-april verlaagt kans",
             },
             {
-              t: "⟶ Basis (Prolonged crisis)", p: "60%", c: "#0ea5e9",
-              ttf: "€40–58", belpex: "€70–85",
-              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","Belgische opslag onder druk"],
+              t: "⟶ Basis (Prolonged crisis)", p: "50%", c: "#0ea5e9",
+              ttf: "€45–65", belpex: "€90–130",
+              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","Politieke budgetcrisis beperkt steun"],
               note: "Meest waarschijnlijk scenario - IEA demand destruction zichtbaar",
             },
             {
-              t: "⬆ Bullish (Escalatie)", p: "25%", c: "#ef4444",
-              ttf: "€58–75", belpex: "€85–110",
+              t: "⬆ Bullish (Escalatie)", p: "30%", c: "#ef4444",
+              ttf: "€65–85", belpex: "€120–180",
               items: ["Nieuwe aanvallen op energie-infra","Hormuz gesloten tot zomer","Qatar LNG langdurig stil","Koud voorjaar + structurele schade"],
-              note: "Potentieel: energiecrisis winter 2026–27",
+              note: "Potentieel: energiecrisis winter 2026–27 + politieke impasse",
             },
           ].map((s, i) => (
             <div key={i} style={{ background: "#1e293b", border: `1px solid ${s.c}44`, borderRadius: 12, padding: "16px 18px" }}>
