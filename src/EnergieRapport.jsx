@@ -341,7 +341,7 @@ export default function EnergieRapport() {
             `$${currentData.currentBrent.toFixed(2)}`, 
             "/vat", 
             brentChangeText, 
-            "#ef4444"
+            brentChange !== null ? (brentChange > 0 ? "#ef4444" : "#22c55e") : "#94a3b8"
           ],
         ].map(([label, val, sub, note, c], i) => (
           <div key={i} style={{ background: "#1e293b", border: `1px solid ${c}44`, borderRadius: 10, padding: "13px 15px" }}>
