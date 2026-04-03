@@ -499,6 +499,7 @@ export default function EnergieRapport() {
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
               ["Brent Prijsstijging", "#8b5cf6", "Brent crude noteert significante stijging sinds 28 februari door geopolitieke spanningen. De markt prijst een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. IEA reserves hebben beperkte impact op de onderliggende verstoring."],
               ["Politieke Budgetcrisis", "#dc2626", "Premier De Wever: 'De staat verdient niet aan energiecrisis, ze scheurt er haar broek aan.' Gouverneur Wunsch waarschuwt: 'Geen middelen meer om schok energiecrisis volledig op te vangen.' De terughoudendheid van de regering voor steunmaatregelen creëert marktonzekerheid en speculatie op hogere prijzen. MR dringt aan op omgekeerde cliquet, maar De Wever wijst op budgettaire tekorten en indexatielasten."],
+              ["EU Langdurige Energieschok", "#b91c1c", "EU Energy Commissioner Dan Jørgensen (Financial Times): 'This will be a long crisis... energy prices will be higher for a very long time.' EU overweegt brandstof rantsoenering en extra noodreserves. 'Critical products' worden komende weken nog erger. De waarschuwing bevestigt structurele impact Midden-Oosten conflict op Europese energieprijzen tot ver in 2026-27."],
               ["Omgekeerde Cliquet Voorstel", "#f59e0b", "MR-voorzitter Bouchez pleit voor automatisch accijnsdaling bij brandstofprijzen boven €2/liter. 'Omgekeerde cliquet' systeem zou consumenten direct verlichten bij extreme prijsstijgingen. De overheid profiteert van hogere btw-inkomsten, maar dreigt dossiers te blokkeren als regering niet ingrijpt. Les Engagés steunen het voorstel en eisen actie."],
             ].map(([titel, color, tekst]) => (
               <div key={titel} style={{ marginBottom: 14 }}>
@@ -599,22 +600,22 @@ export default function EnergieRapport() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
           {[
             {
-              t: "⬇ Bearish (Ontspanning)", p: "20%", c: "#22c55e",
+              t: "⬇ Bearish (Ontspanning)", p: "15%", c: "#22c55e",
               ttf: "€35–45", belpex: "€70–100",
               items: ["Gasvelden herstellen binnen 2-3 weken","Hormuz gedeeltelijk open","Diplomatieke de-escalatie","Mild voorjaar verlaagt vraag"],
-              note: "Risico: tijdsdruk mid-april verlaagt kans",
+              note: "Risico: EU waarschuwing voor langdurige crisis verlaagt kans",
             },
             {
-              t: "⟶ Basis (Prolonged crisis)", p: "50%", c: "#0ea5e9",
+              t: "⟶ Basis (Prolonged crisis)", p: "45%", c: "#0ea5e9",
               ttf: "€45–65", belpex: "€90–130",
-              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","Politieke budgetcrisis beperkt steun"],
-              note: "Meest waarschijnlijk scenario - IEA demand destruction zichtbaar",
+              items: ["Gasvelden deels buiten werking 3-5 maanden","Hormuz beperkt open","Qatar LNG -17% capaciteit","EU brandstof rantsoenering mogelijk"],
+              note: "Meest waarschijnlijk scenario - EU: 'energy prices higher for very long time'",
             },
             {
-              t: "⬆ Bullish (Escalatie)", p: "30%", c: "#ef4444",
+              t: "⬆ Bullish (Escalatie)", p: "40%", c: "#ef4444",
               ttf: "€65–85", belpex: "€120–180",
-              items: ["Nieuwe aanvallen op energie-infra","Hormuz gesloten tot zomer","Qatar LNG langdurig stil","Koud voorjaar + structurele schade"],
-              note: "Potentieel: energiecrisis winter 2026–27 + politieke impasse",
+              items: ["Nieuwe aanvallen op energie-infra","Hormuz gesloten tot zomer","Qatar LNG langdurig stil","EU noodreserves uitgeput","Brandstof rantsoenering actief"],
+              note: "EU waarschuwing: 'critical products' worden komende weken nog erger",
             },
           ].map((s, i) => (
             <div key={i} style={{ background: "#1e293b", border: `1px solid ${s.c}44`, borderRadius: 12, padding: "16px 18px" }}>
@@ -641,7 +642,16 @@ export default function EnergieRapport() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
             {[{
               icon: "🔴",
-              title: "1. LNG-markt krapper dan verwacht",
+              title: "1. EU Brandstof Rantsoenering & Noodreserves",
+              impact: "TTF: +15% tot +25% · Belpex: +10% tot +20%",
+              why: "EU Energy Commissioner Dan Jørgensen waarschuwt voor 'langdurige energieschok' en overweegt brandstof rantsoenering. 'Critical products' worden komende weken nog erger. Extra noodreserves vrijgeven kan korte termijn verlichting brengen maar beperkt structureel probleem.",
+              monitor: "Volg EU Energy Commissioner verklaringen, brandstof rantsoeneringsplannen, noodreserve vrijgaves en 'critical products' monitoring.",
+              border: "#ef4444",
+              impactColor: "#fca5a5",
+            },
+            {
+              icon: "🔴",
+              title: "2. LNG-markt krapper dan verwacht",
               impact: "TTF: +12% tot +22% · Belpex: +8% tot +16%",
               why: "De verwachte LNG-aanbodgolf voor 2026 is door schade aan exportcapaciteit en transportstress minder prijsdrukkend dan eerder gedacht. Europa en Azië concurreren opnieuw voor een beperkter aantal cargo's, waardoor de marginale gasprijs hoger blijft dan in een normaal lentescenario.",
               monitor: "Volg Qatar LNG-export, spot-LNG vrachttarieven, Aziatische LNG-biedingen en signalen dat extra volumes uit de VS of Mozambique vertragen.",
@@ -650,7 +660,7 @@ export default function EnergieRapport() {
             },
             {
               icon: "🔴",
-              title: "2. Hersteltempo South Pars en Ras Laffan",
+              title: "3. Hersteltempo South Pars en Ras Laffan",
               impact: "TTF: +10% tot +18% · Belpex: +6% tot +14%",
               why: "De fysieke schade aan South Pars en Ras Laffan blijft de belangrijkste directe aanbodschok voor gas. Zolang herstel 3-5 maanden duurt, moet Europa duurdere alternatieve moleculen aantrekken, wat de TTF-curve hoger houdt en via merit order doorwerkt in de elektriciteitsprijs.",
               monitor: "Volg QatarEnergy updates, heropstart van installaties, force-majeure berichten en concrete meldingen over exportcapaciteit die opnieuw beschikbaar komt.",
@@ -659,7 +669,7 @@ export default function EnergieRapport() {
             },
             {
               icon: "🟡",
-              title: "3. EU-gasopslag tijdens injectieseizoen",
+              title: "4. EU-gasopslag tijdens injectieseizoen",
               impact: "TTF: +8% tot +15% · Belpex: +4% tot +10%",
               why: "Met opslag rond 26% moet Europa uitzonderlijk veel volume injecteren tussen april en oktober om de 90%-doelstelling te halen. Dat verhoogt de koopdruk op LNG en spotgas, zeker zolang grote landen zoals Duitsland, Frankrijk en Nederland onder hun normale seizoenspad blijven.",
               monitor: "Check wekelijks GIE AGSI+, vooral of de vulgraad eind april boven 35-40% uitkomt en of de injectiesnelheid versnelt of achterblijft.",
@@ -668,7 +678,7 @@ export default function EnergieRapport() {
             },
             {
               icon: "🟡",
-              title: "4. Diplomatie rond Hormuz en regionale escalatie",
+              title: "5. Diplomatie rond Hormuz en regionale escalatie",
               impact: "TTF: -20% tot +15% · Belpex: -12% tot +10%",
               why: "Dit is de factor met de grootste tweezijdige impact: de-escalatie kan de geopolitieke premie snel uitprijzen, terwijl nieuwe aanvallen ze meteen opnieuw opblazen. De markt reageert hier niet alleen op fysieke doorstroming, maar vooral op verwachtingen over beschikbaarheid, verzekeringskosten en risico-opslagen.",
               monitor: "Volg officiële verklaringen uit Washington, Teheran, Doha en Riyad, plus berichten over scheepvaartveiligheid en tankerdoorvoer door Hormuz.",
@@ -677,7 +687,7 @@ export default function EnergieRapport() {
             },
             {
               icon: "🟢",
-              title: "5. IEA-reserves en olie-interventies",
+              title: "6. IEA-reserves en olie-interventies",
               impact: "TTF: -3% tot +2% · Belpex: -2% tot +2%",
               why: "IEA-reserves werken vooral via olie en sentiment, niet via directe gasbeschikbaarheid. Ze kunnen paniek in Brent en macro-inflatieverwachtingen afremmen, maar lossen de fundamentele LNG-krapte niet op en hebben daarom slechts een beperkte doorwerking op TTF en Belpex.",
               monitor: "Let op aankondigingen van extra vrijgaven, Brent boven $120-130 en signalen dat landen minder bereid zijn nog meer reservevolume in te zetten.",
@@ -686,7 +696,7 @@ export default function EnergieRapport() {
             },
             {
               icon: "🟢",
-              title: "6. Doorrekening naar Belgische consumentenprijzen",
+              title: "7. Doorrekening naar Belgische consumentenprijzen",
               impact: "Groothandel: 0% tot +3% · Eindfactuur variabel: +15% tot +25%",
               why: "Deze factor verandert de groothandelsprijs nauwelijks, maar wel de timing en intensiteit waarmee gezinnen de schok voelen. Leveranciers verwerken de huidige risicopremie in variabele contracten met vertraging en bouwen die bij vaste contracten meteen in voor 12-18 maanden.",
               monitor: "Volg VREG-tarieven, leveranciersupdates, indexatieformules en of nieuwe vaste contracten nog extra geopolitieke premie bevatten tegenover variabele formules.",
