@@ -60,7 +60,8 @@ const rawData = [
   { date: "09/04", ttf: 45.42, belpex: 78.70, brent: 96.20, storage: 25.1, note: "" },
   { date: "10/04", ttf: 43.73, belpex: 113.93, brent: 94.33, storage: 25.0, note: "" },
   { date: "11/04", ttf: 43.63, belpex: 48.76, brent: 95.20, storage: 24.6, note: "" },
-  { date: "12/04", ttf: 43.63, belpex: 67.14, brent: 95.20, storage: 24.5, note: "Vandaag" }
+  { date: "12/04", ttf: 43.63, belpex: 67.14, brent: 95.20, storage: 24.5, note: "" },
+  { date: "13/04", ttf: 46.27, belpex: 128.43, brent: 97.91, storage: 24.4, note: "Vandaag" }
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -268,7 +269,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 12 APRIL 2026 · 22:00 CET
+          MARKTANALYSE — 13 APRIL 2026 · 22:09 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -284,7 +285,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €43.63 (-11.4% vs piek) · Brent $95.20 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 24%
+            Hormuz crisis dag 21+ · TTF €46.27 (-11.4% vs piek) · Brent $97.91 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 24%
           </div>
         </div>
       </div>
@@ -480,7 +481,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (12 apr 2026)", "~24%",          "#ef4444"],
+              ["BE-gemiddelde (13 apr 2026)", "~24%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -896,7 +897,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €43.63/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €46.27/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
@@ -1011,7 +1012,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-Opgesteld: 12 april 2026 · 22:00 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+Opgesteld: 13 april 2026 · 22:09 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
