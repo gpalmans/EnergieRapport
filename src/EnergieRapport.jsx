@@ -74,7 +74,8 @@ const rawData = [
   { date: "23/04", ttf: 44.90, belpex: 60.99, brent: 105.81, storage: 23.9, note: "" },
   { date: "24/04", ttf: 45.10, belpex: 72.78, brent: 105.97, storage: 23.4, note: "" },
   { date: "25/04", ttf: 44.86, belpex: 29.17, brent: 105.33, storage: 23.4, note: "" },
-  { date: "26/04", ttf: 53.25, belpex: 16.16, brent: 101.55, storage: 26.0, note: "Vandaag" }
+  { date: "26/04", ttf: 53.25, belpex: 16.16, brent: 101.55, storage: 26.0, note: "" },
+  { date: "27/04", ttf: 53.25, belpex: 95.47, brent: 101.55, storage: 24.1, note: "Vandaag" }
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -282,7 +283,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 26 APRIL 2026 · 22:04 CET
+          MARKTANALYSE — 27 APRIL 2026 · 22:26 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -298,7 +299,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $101.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 26%
+            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $101.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 24%
           </div>
         </div>
       </div>
@@ -494,12 +495,12 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (26 apr 2026)", "~26%",          "#ef4444"],
+              ["BE-gemiddelde (27 apr 2026)", "~24%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
               ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["Nog te vullen (apr–okt)",    "~64 pct-punten", "#f97316"],
+              ["Nog te vullen (apr–okt)",    "~66 pct-punten", "#f97316"],
             ].map(([l, v, c]) => (
               <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
@@ -519,7 +520,7 @@ export default function EnergieRapport() {
             {[
               ["Mega Tariefstijging België", "#ef4444", "Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het 'gevaarlijk precedent' voor consumenten. De stijging volgt direct op Midden-Oosten escalatie en toont de onmiddellijke impact van geopolitieke spanningen op Belgische huishoudens. Analisten verwachten dat andere leveranciers zullen volgen, wat verdere prijsstijgingen in Q2 2026 kan veroorzaken."],
 ["Hormuz Crisis Tijdsdruk", "#f97316", "Kritieke deadline: Straat van Hormuz moet heropend worden binnen 1-3 weken (mid-april). Productie gereduceerd met 8 mb/d crude + 2 mb/d condensates. Stopgap measures verliezen effectiviteit begin-mid april, wat kan leiden tot dramatische prijsstijgingen. TTF notert momenteel extreme volatiliteit met dagelijkse variaties van 10-15%. Gasunie adviseert strategische noodvoorraad."],
-              ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +5% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
+              ["Energy Sector Rotation", "#eab308", "Beleggers massaal naar energie sectoren: Energy Select Sector SPDR stijgt +3% in maart door geopolitieke spanningen. Deze 'great rotation' vindt plaats terwijl rentegevoelige sectoren zoals technologie en vastgoed dalen, wat beleggersvertrouwen in energie toont ondanks de volatiliteit. De trend suggereert dat de markt verwacht dat hoge energieprijzen structureel blijven tot minstens Q3 2026."],
               ["IEA Consumentenadvies", "#06b6d4", "Het Internationaal Energieagentschap (IEA) adviseert Europeanen dringend om energieverbruik te verminderen: werk thuis indien mogelijk, rij langzamer, en gebruik geen gas kokers voor koken. Dit unieke advies is gericht op het stabiliseren van de markt tijdens het Midden-Oosten conflict via vraagreductie. De maatregel heeft beperkt succes gezien de structurele supply verstoringen, maar toont de ernst van de situatie."],
               ["Brent Prijsstijging", "#8b5cf6", "Brent crude noteert significante stijging sinds 28 februari door geopolitieke spanningen. De markt prijst een risicopremie in van 15-20% voor het geval de diplomatie mislukt en de Hormuz-blokkade wordt verlengd tot zomer 2026. IEA reserves hebben beperkte impact op de onderliggende verstoring."],
               ["Politieke Budgetcrisis", "#dc2626", "Premier De Wever: 'De staat verdient niet aan energiecrisis, ze scheurt er haar broek aan.' Gouverneur Wunsch waarschuwt: 'Geen middelen meer om schok energiecrisis volledig op te vangen.' De terughoudendheid van de regering voor steunmaatregelen creëert marktonzekerheid en speculatie op hogere prijzen. MR dringt aan op omgekeerde cliquet, maar De Wever wijst op budgettaire tekorten en indexatielasten."],
@@ -1025,7 +1026,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-Opgesteld: 26 april 2026 · 22:04 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+Opgesteld: 27 april 2026 · 22:26 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
