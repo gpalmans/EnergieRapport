@@ -77,7 +77,8 @@ const rawData = [
   { date: "26/04", ttf: 53.25, belpex: 16.16, brent: 101.55, storage: 26.0, note: "" },
   { date: "27/04", ttf: 53.25, belpex: 95.47, brent: 101.55, storage: 24.1, note: "" },
   { date: "28/04", ttf: 53.25, belpex: 61.43, brent: 101.55, storage: 24.6, note: "" },
-  { date: "29/04", ttf: 53.25, belpex: 51.68, brent: 101.55, storage: 24.6, note: "Vandaag" }
+  { date: "29/04", ttf: 53.25, belpex: 51.68, brent: 101.55, storage: 24.6, note: "" },
+  { date: "30/04", ttf: 53.25, belpex: 57.46, brent: 101.55, storage: 24.7, note: "Vandaag" }
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -285,7 +286,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 29 APRIL 2026 · 22:33 CET
+          MARKTANALYSE — 30 APRIL 2026 · 22:29 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -497,7 +498,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (29 apr 2026)", "~25%",          "#ef4444"],
+              ["BE-gemiddelde (30 apr 2026)", "~25%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -1028,7 +1029,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-Opgesteld: 29 april 2026 · 22:33 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+Opgesteld: 30 april 2026 · 22:29 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
