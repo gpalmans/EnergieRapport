@@ -98,7 +98,8 @@ const rawData = [
   { date: "17/05", ttf: 53.25, belpex: 80.94, brent: 101.55, storage: 22.6, note: "" },
   { date: "18/05", ttf: 53.25, belpex: 133.63, brent: 101.55, storage: 22.4, note: "" },
   { date: "19/05", ttf: 53.25, belpex: 110.91, brent: 101.55, storage: 22.2, note: "" },
-  { date: "20/05", ttf: 53.25, belpex: 92.80, brent: 101.55, storage: 21.6, note: "Vandaag" }
+  { date: "20/05", ttf: 53.25, belpex: 92.80, brent: 101.55, storage: 21.6, note: "" },
+  { date: "21/05", ttf: 53.25, belpex: 106.59, brent: 101.55, storage: 21.0, note: "Vandaag" }
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -306,7 +307,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 20 MEI 2026 · 22:54 CET
+          MARKTANALYSE — 21 MEI 2026 · 22:49 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -322,7 +323,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $101.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
+            Hormuz crisis dag 21+ · TTF €53.25 (-11.4% vs piek) · Brent $101.55 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 21%
           </div>
         </div>
       </div>
@@ -518,12 +519,12 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (20 mei 2026)", "~22%",          "#ef4444"],
+              ["BE-gemiddelde (21 mei 2026)", "~21%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
               ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["Nog te vullen (apr–okt)",    "~68 pct-punten", "#f97316"],
+              ["Nog te vullen (apr–okt)",    "~69 pct-punten", "#f97316"],
             ].map(([l, v, c]) => (
               <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
@@ -1049,7 +1050,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-Opgesteld: 20 mei 2026 · 22:54 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+Opgesteld: 21 mei 2026 · 22:49 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
