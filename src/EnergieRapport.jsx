@@ -111,7 +111,8 @@ const rawData = [
   { date: "30/05", ttf: 53.25, belpex: 82.62, brent: 101.55, storage: 21.3, note: "" },
   { date: "31/05", ttf: 53.25, belpex: 83.22, brent: 101.55, storage: 21.6, note: "" },
   { date: "01/06", ttf: 49.16, belpex: 131.67, brent: 95.25, storage: 22.0, note: "" },
-  { date: "02/06", ttf: 47.55, belpex: 126.16, brent: 95.94, storage: 22.1, note: "Vandaag" }
+  { date: "02/06", ttf: 47.55, belpex: 126.16, brent: 95.94, storage: 22.1, note: "" },
+  { date: "03/06", ttf: 49.46, belpex: 90.82, brent: 97.39, storage: 22.0, note: "Vandaag" }
 ].sort((a, b) => {
   const dateA = a.date.split('/').reverse().join('');
   const dateB = b.date.split('/').reverse().join('');
@@ -319,7 +320,7 @@ export default function EnergieRapport() {
       {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ color: "#0ea5e9", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8, fontFamily: "monospace" }}>
-          MARKTANALYSE — 02 JUNI 2026 · 23:16 CET
+          MARKTANALYSE — 03 JUNI 2026 · 23:18 CET
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px", color: "#f8fafc" }}>
           Vlaamse Energieprijzen: Analyse & Forecast
@@ -335,7 +336,7 @@ export default function EnergieRapport() {
         <div>
           <div style={{ fontWeight: 700, color: "#fca5a5", marginBottom: 2 }}>KRITIEKE MARKTSITUATIE</div>
           <div style={{ fontSize: 13, color: "#fca5a5" }}>
-            Hormuz crisis dag 21+ · TTF €47.55 (-11.4% vs piek) · Brent $95.94 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
+            Hormuz crisis dag 21+ · TTF €49.46 (-11.4% vs piek) · Brent $97.39 · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves 22%
           </div>
         </div>
       </div>
@@ -531,7 +532,7 @@ export default function EnergieRapport() {
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Europese Gasvoorraden</h3>
             {[
-              ["BE-gemiddelde (2 jun 2026)", "~22%",          "#ef4444"],
+              ["BE-gemiddelde (3 jun 2026)", "~22%",          "#ef4444"],
               ["Laagste seizoenspeil",       "in jaren",       "#ef4444"],
               ["Einde 2025",                 "~61%",           "#eab308"],
               ["Einde 2024",                 "~72%",           "#22c55e"],
@@ -947,7 +948,7 @@ export default function EnergieRapport() {
           <h2 style={{ margin: "0 0 16px", color: "#60a5fa", fontSize: 18, fontWeight: 700 }}>🎯 KERNBOODSCHAP: Weloverwogen keuzen duren langer dan een nieuwscyclus</h2>
           
           <p style={{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", margin: "0 0 14px", fontWeight: 500 }}>
-            TTF daalde vandaag naar €47.55/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
+            TTF daalde vandaag naar €49.46/MWh (-12.1%), wat duidt op marktverlichting na de piek van €60.60. Echter, de structurele LNG-disruptie blijft van kracht (Rabobank: Q2 2026 TTF €61/MWh). Wie nu vastlegt op €53.25 betaalt waarschijnlijk méér dan het gemiddelde over de komende 12-18 maanden.
           </p>
           
           <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px 20px", marginBottom: 14, border: "1px solid #1e3a8a" }}>
@@ -1062,7 +1063,7 @@ export default function EnergieRapport() {
         </div>
         <div style={{ marginTop: 8 }}>
           GIE AGSI+ · ENTSO-E · Reuters · Bloomberg · Xinhua · Wall Street Journal · IEA.org · EPEX SPOT · VREG · CREG<br />
-Opgesteld: 2 juni 2026 · 23:16 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
+Opgesteld: 3 juni 2026 · 23:18 · Niet-officieel advies — raadpleeg VREG of een erkend energieadviseur voor definitieve beslissingen
         </div>
       </div>
       {/* Cloudflare Web Analytics */}
