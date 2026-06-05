@@ -146,7 +146,7 @@ is Claude API configuratie vereist.*"""
         }
         
         os.makedirs('data', exist_ok=True)
-        with open('data/ai_analysis.json', 'w') as f:
+        with open('data/ai_analysis.json', 'w', encoding='utf-8') as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
         
         logger.info("AI analysis saved")

@@ -175,139 +175,186 @@ class EnergyDataCollector:
             self._fallback_value('brent')
             return False
 
+    # Maximum age in seconds before a /latest price is considered stale
+    MAX_PRICE_AGE_SECONDS = 6 * 3600  # 6 hours
+
     def _collect_ttf_via_oilpriceapi(self) -> bool:
-        """Collect TTF gas price via OilPriceAPI"""
+        """Collect TTF gas price via OilPriceAPI with freshness check + Tavily fallback."""
         api_key = os.getenv('OIL_PRICE_API_KEY')
         if not api_key:
-            logger.warning("OIL_PRICE_API_KEY not set - using fallback for TTF")
-            self._fallback_value('ttf')
-            return False
+            logger.warning("OIL_PRICE_API_KEY not set - trying Tavily for TTF")
+            return self._collect_ttf_via_tavily()
 
         try:
-            # Request specific TTF commodity
             url = "https://api.oilpriceapi.com/v1/prices/latest"
             headers = {
                 'Authorization': f'Token {api_key}',
                 'Content-Type': 'application/json'
             }
-            params = {
-                'by_code': 'DUTCH_TTF_EUR'
-            }
-            
-            logger.info(f"   Requesting TTF price from OilPriceAPI...")
-            logger.info(f"   URL: {url}?by_code=DUTCH_TTF_EUR")
-            response = self.session.get(url, headers=headers, params=params, timeout=30)
+
+            logger.info("   Requesting TTF price from OilPriceAPI...")
+            response = self.session.get(url, headers=headers,
+                                        params={'by_code': 'DUTCH_TTF_EUR'}, timeout=30)
             response.raise_for_status()
-            
             data = response.json()
-            
-            # Check for API error
+
             if data.get('status') != 'success':
                 logger.warning(f"   OilPriceAPI error: {data.get('message', 'Unknown error')}")
-                self._fallback_value('ttf')
-                return False
-            
-            # Extract price data
-            if data and 'data' in data:
-                price_data = data['data']
-                
-                if isinstance(price_data, dict):
-                    code = price_data.get('code', '').upper()
-                    price = price_data.get('price', 0)
-                    currency = price_data.get('currency', '')
-                    
-                    logger.info(f"   Found TTF price: {price} {currency}")
-                    
-                    # Validate and store TTF
-                    if 15 < price < 300:
-                        self.data['ttf'] = round(price, 2)
-                        self.data['sources']['ttf'] = ['OilPriceAPI (Dutch TTF)']
-                        self.data['validation']['ttf'] = ''
-                        self.data['collection_status']['ttf'] = 'Live (OilPriceAPI)'
-                        logger.info(f"   TTF: €{price:.2f}/MWh (OilPriceAPI)")
-                        return True
-                    else:
-                        logger.warning(f"   TTF value invalid: {price}")
-            else:
-                logger.warning("   No data returned from OilPriceAPI")
-            
+                return self._collect_ttf_via_tavily()
+
+            price_data = data.get('data', {})
+            if not isinstance(price_data, dict):
+                logger.warning("   Unexpected OilPriceAPI response format")
+                return self._collect_ttf_via_tavily()
+
+            price     = price_data.get('price', 0)
+            currency  = price_data.get('currency', '')
+            age_secs  = price_data.get('freshness', {}).get('age_seconds', 0)
+
+            logger.info(f"   Found TTF price: {price} {currency} (age: {age_secs}s)")
+
+            # Reject stale prices — this was the root cause of the April–May €53.25 issue:
+            # OilPriceAPI served a cached value up to 24h old that silently passed validation.
+            if age_secs > self.MAX_PRICE_AGE_SECONDS:
+                logger.warning(
+                    f"   OilPriceAPI price is stale ({age_secs}s > {self.MAX_PRICE_AGE_SECONDS}s) "
+                    f"— falling back to Tavily"
+                )
+                return self._collect_ttf_via_tavily()
+
+            if not (15 < price < 300):
+                logger.warning(f"   TTF value out of range: {price}")
+                return self._collect_ttf_via_tavily()
+
+            self.data['ttf'] = round(price, 2)
+            self.data['sources']['ttf'] = ['OilPriceAPI (Dutch TTF)']
+            self.data['validation']['ttf'] = f'fresh ({age_secs}s old)'
+            self.data['collection_status']['ttf'] = 'Live (OilPriceAPI)'
+            logger.info(f"   TTF: €{price:.2f}/MWh (OilPriceAPI, {age_secs}s old)")
+            return True
+
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"   OilPriceAPI request error: {e} — trying Tavily")
+            return self._collect_ttf_via_tavily()
+        except Exception as e:
+            logger.warning(f"   OilPriceAPI error: {e} — trying Tavily")
+            return self._collect_ttf_via_tavily()
+
+    def _collect_ttf_via_tavily(self) -> bool:
+        """Fallback: collect TTF price via Tavily web search."""
+        if not self.tavily_client:
+            logger.warning("   Tavily not available — using stored fallback for TTF")
             self._fallback_value('ttf')
             return False
 
-        except requests.exceptions.RequestException as e:
-            logger.warning(f"   OilPriceAPI request error: {e}")
+        try:
+            query = f"TTF natural gas spot price today EUR MWh {datetime.now().strftime('%d %B %Y')}"
+            logger.info(f"   Tavily TTF search: {query}")
+            result = self.tavily_client.search(query, search_depth="basic", max_results=5)
+
+            extracted = self._extract_price_from_tavily(result, 'ttf')
+            if extracted and 15 < extracted['value'] < 300:
+                self.data['ttf'] = round(extracted['value'], 2)
+                self.data['sources']['ttf'] = [f"Tavily ({extracted['source']})"]
+                self.data['validation']['ttf'] = 'Tavily fallback'
+                self.data['collection_status']['ttf'] = 'Live (Tavily fallback)'
+                logger.info(f"   TTF: €{extracted['value']:.2f}/MWh (Tavily)")
+                return True
+
+            logger.warning("   Tavily could not extract a valid TTF price")
             self._fallback_value('ttf')
             return False
+
         except Exception as e:
-            logger.warning(f"   OilPriceAPI error: {e}")
+            logger.warning(f"   Tavily TTF error: {e}")
             self._fallback_value('ttf')
             return False
 
     def _collect_brent_via_oilpriceapi(self) -> bool:
-        """Collect Brent oil price via OilPriceAPI"""
+        """Collect Brent oil price via OilPriceAPI with freshness check + Tavily fallback."""
         api_key = os.getenv('OIL_PRICE_API_KEY')
         if not api_key:
-            logger.warning("OIL_PRICE_API_KEY not set - using fallback for Brent")
-            self._fallback_value('brent')
-            return False
+            logger.warning("OIL_PRICE_API_KEY not set - trying Tavily for Brent")
+            return self._collect_brent_via_tavily()
 
         try:
-            # Request specific Brent commodity
             url = "https://api.oilpriceapi.com/v1/prices/latest"
             headers = {
                 'Authorization': f'Token {api_key}',
                 'Content-Type': 'application/json'
             }
-            params = {
-                'by_code': 'BRENT_CRUDE_USD'
-            }
-            
-            logger.info(f"   Requesting Brent price from OilPriceAPI...")
-            logger.info(f"   URL: {url}?by_code=BRENT_CRUDE_USD")
-            response = self.session.get(url, headers=headers, params=params, timeout=30)
+
+            logger.info("   Requesting Brent price from OilPriceAPI...")
+            response = self.session.get(url, headers=headers,
+                                        params={'by_code': 'BRENT_CRUDE_USD'}, timeout=30)
             response.raise_for_status()
-            
             data = response.json()
-            
-            # Check for API error
+
             if data.get('status') != 'success':
                 logger.warning(f"   OilPriceAPI error: {data.get('message', 'Unknown error')}")
-                self._fallback_value('brent')
-                return False
-            
-            # Extract price data
-            if data and 'data' in data:
-                price_data = data['data']
-                
-                if isinstance(price_data, dict):
-                    code = price_data.get('code', '').upper()
-                    price = price_data.get('price', 0)
-                    currency = price_data.get('currency', '')
-                    
-                    logger.info(f"   Found Brent price: {price} {currency}")
-                    
-                    # Validate and store Brent
-                    if 30 < price < 250:
-                        self.data['brent'] = round(price, 2)
-                        self.data['sources']['brent'] = ['OilPriceAPI']
-                        self.data['validation']['brent'] = ''
-                        self.data['collection_status']['brent'] = 'Live (OilPriceAPI)'
-                        logger.info(f"   Brent: ${price:.2f}/barrel (OilPriceAPI)")
-                        return True
-                    else:
-                        logger.warning(f"   Brent value invalid: {price}")
-            else:
-                logger.warning("   No data returned from OilPriceAPI")
-            
+                return self._collect_brent_via_tavily()
+
+            price_data = data.get('data', {})
+            if not isinstance(price_data, dict):
+                return self._collect_brent_via_tavily()
+
+            price    = price_data.get('price', 0)
+            currency = price_data.get('currency', '')
+            age_secs = price_data.get('freshness', {}).get('age_seconds', 0)
+
+            logger.info(f"   Found Brent price: {price} {currency} (age: {age_secs}s)")
+
+            if age_secs > self.MAX_PRICE_AGE_SECONDS:
+                logger.warning(
+                    f"   OilPriceAPI Brent is stale ({age_secs}s) — falling back to Tavily"
+                )
+                return self._collect_brent_via_tavily()
+
+            if not (30 < price < 250):
+                logger.warning(f"   Brent value out of range: {price}")
+                return self._collect_brent_via_tavily()
+
+            self.data['brent'] = round(price, 2)
+            self.data['sources']['brent'] = ['OilPriceAPI']
+            self.data['validation']['brent'] = f'fresh ({age_secs}s old)'
+            self.data['collection_status']['brent'] = 'Live (OilPriceAPI)'
+            logger.info(f"   Brent: ${price:.2f}/barrel (OilPriceAPI, {age_secs}s old)")
+            return True
+
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"   OilPriceAPI request error: {e} — trying Tavily")
+            return self._collect_brent_via_tavily()
+        except Exception as e:
+            logger.warning(f"   OilPriceAPI error: {e} — trying Tavily")
+            return self._collect_brent_via_tavily()
+
+    def _collect_brent_via_tavily(self) -> bool:
+        """Fallback: collect Brent price via Tavily web search."""
+        if not self.tavily_client:
+            logger.warning("   Tavily not available — using stored fallback for Brent")
             self._fallback_value('brent')
             return False
 
-        except requests.exceptions.RequestException as e:
-            logger.warning(f"   OilPriceAPI request error: {e}")
+        try:
+            query = f"Brent crude oil price today USD barrel {datetime.now().strftime('%d %B %Y')}"
+            logger.info(f"   Tavily Brent search: {query}")
+            result = self.tavily_client.search(query, search_depth="basic", max_results=5)
+
+            extracted = self._extract_price_from_tavily(result, 'brent')
+            if extracted and 30 < extracted['value'] < 250:
+                self.data['brent'] = round(extracted['value'], 2)
+                self.data['sources']['brent'] = [f"Tavily ({extracted['source']})"]
+                self.data['validation']['brent'] = 'Tavily fallback'
+                self.data['collection_status']['brent'] = 'Live (Tavily fallback)'
+                logger.info(f"   Brent: ${extracted['value']:.2f}/barrel (Tavily)")
+                return True
+
+            logger.warning("   Tavily could not extract a valid Brent price")
             self._fallback_value('brent')
             return False
+
         except Exception as e:
-            logger.warning(f"   OilPriceAPI error: {e}")
+            logger.warning(f"   Tavily Brent error: {e}")
             self._fallback_value('brent')
             return False
 
