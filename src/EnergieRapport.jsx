@@ -510,6 +510,25 @@ export default function EnergieRapport() {
               );
             })()}
 
+            {/* Maandmijlpalen */}
+            {[
+              ["Huidig (5 jun)",  "21.9%", 21.9, "#ef4444", "⚠️ Kritiek — record laag"],
+              ["Doel eind juni",  "35%",   35,   "#eab308", "Minimaal nodig"],
+              ["Doel eind juli",  "55%",   55,   "#f97316", "Op schema = urgent"],
+              ["Doel eind aug.",  "72%",   72,   "#0ea5e9", "Winterbuffer opbouwen"],
+              ["Doel eind sept.", "83%",   83,   "#0ea5e9", "Veiligheidsmarge"],
+              ["Doel 1 november", "90%",   90,   "#22c55e", "EU-doelstelling"],
+            ].map(([label, val, num, color, status]) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 12 }}>
+                <span style={{ color: "#94a3b8", width: 130, flexShrink: 0 }}>{label}</span>
+                <div style={{ flex: 1, margin: "0 10px", background: "#0f172a", borderRadius: 4, height: 6 }}>
+                  <div style={{ width: `${num}%`, height: "100%", background: color, borderRadius: 4, opacity: 0.75 }} />
+                </div>
+                <span style={{ color, fontWeight: 700, width: 40, textAlign: "right", flexShrink: 0 }}>{val}</span>
+                <span style={{ color: "#475569", fontSize: 11, width: 155, textAlign: "right", flexShrink: 0 }}>{status}</span>
+              </div>
+            ))}
+
             {/* Injectietempo */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "12px 0" }}>
               <div style={{ background: "#7c131322", border: "1px solid #ef444444", borderRadius: 8, padding: "9px 12px" }}>
