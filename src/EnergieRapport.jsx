@@ -471,25 +471,64 @@ export default function EnergieRapport() {
       {tab === "context" && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
           <div style={SECTION}>
-            <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🏭 Belgische & Europese Gasvoorraden</h3>
+            <h3 style={{ margin: "0 0 4px", color: "#f8fafc", fontSize: 15 }}>🏭 Belgische & Europese Gasvoorraden — Injectieseizoen 2026</h3>
+            <p style={{ fontSize: 11, color: "#64748b", marginTop: 0, marginBottom: 12 }}>Bron: GIE AGSI+ API · update elke dinsdag · doel: 90% tegen 1 november · <a href="https://agsi.gie.eu" target="_blank" rel="noopener noreferrer" style={{ color: "#475569" }}>agsi.gie.eu</a></p>
+
+            {/* BE vs EU vergelijking */}
             {[
-              ["BE-gemiddelde (5 jun 2026)", "~22%",          "#ef4444"],
-              ["EU-gemiddelde (jun 2026)",   "~55–60%",        "#eab308"],
-              ["Einde 2025",                 "~61%",           "#eab308"],
-              ["Einde 2024",                 "~72%",           "#22c55e"],
-              ["EU-doelstelling (1 nov)",    "90%",            "#0ea5e9"],
-              ["BE nog te vullen (jun–okt)", "~68 pct-punten", "#f97316"],
+              ["BE huidig (5 jun 2026)",     "~22%",          "#ef4444"],
+              ["EU-gemiddelde (jun 2026)",    "~57%",          "#eab308"],
+              ["Einde 2025 (EU)",             "~61%",          "#eab308"],
+              ["Einde 2024 (EU)",             "~72%",          "#22c55e"],
+              ["EU-doelstelling (1 nov)",     "90%",           "#0ea5e9"],
+              ["BE nog te vullen (jun–okt)",  "~68 pct-punten","#f97316"],
             ].map(([l, v, c]) => (
-              <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
+              <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #1e293b", fontSize: 13 }}>
                 <span style={{ color: "#94a3b8" }}>{l}</span>
                 <span style={{ color: c, fontWeight: 700 }}>{v}</span>
               </div>
             ))}
-            <div style={{ marginTop: 14, padding: "10px 14px", background: "#7c131322", borderRadius: 8, fontSize: 12, color: "#fca5a5", lineHeight: 1.6 }}>
-              ⚠️ Qatar LNG: 17% exportcapaciteit beschadigd — herstel duurt 3 tot 5 jaar (NYTimes, mei 2026). Zelfs na heropening Hormuz blijft LNG-aanbod structureel beperkt.
+
+            {/* Voortgangsbalk */}
+            {(() => {
+              const current = 21.9, target = 90;
+              const pct = Math.round((current / target) * 100);
+              return (
+                <div style={{ margin: "14px 0 4px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#94a3b8", marginBottom: 5 }}>
+                    <span>BE huidig: <strong style={{ color: "#ef4444" }}>{current}%</strong></span>
+                    <span><strong style={{ color: "#f97316" }}>{pct}%</strong> van doel bereikt</span>
+                    <span>Doel 1 nov: <strong style={{ color: "#0ea5e9" }}>{target}%</strong></span>
+                  </div>
+                  <div style={{ background: "#1e293b", borderRadius: 6, height: 12, overflow: "hidden" }}>
+                    <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, #ef4444, #f97316)", borderRadius: 6 }} />
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#475569", marginTop: 3 }}>
+                    <span>0%</span><span style={{ color: "#eab308" }}>35% (eind jun)</span><span style={{ color: "#f97316" }}>72% (eind aug)</span><span style={{ color: "#0ea5e9" }}>90% (1 nov)</span>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Injectietempo */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "12px 0" }}>
+              <div style={{ background: "#7c131322", border: "1px solid #ef444444", borderRadius: 8, padding: "9px 12px" }}>
+                <div style={{ fontSize: 10, color: "#64748b", marginBottom: 3 }}>VEREIST TEMPO (jun → nov)</div>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#ef4444" }}>~3.2 pct/week</div>
+                <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 2 }}>68 pct-punten in ~21 weken</div>
+              </div>
+              <div style={{ background: "#172554", border: "1px solid #0ea5e944", borderRadius: 8, padding: "9px 12px" }}>
+                <div style={{ fontSize: 10, color: "#64748b", marginBottom: 3 }}>ACHTERSTAND OP EU</div>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#f97316" }}>~35 pct-punten</div>
+                <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 2 }}>BE 22% vs EU ~57%</div>
+              </div>
             </div>
-            <div style={{ marginTop: 12, padding: "10px 14px", background: "#172554", borderRadius: 8, fontSize: 12, color: "#93c5fd", lineHeight: 1.6 }}>
-              <strong style={{ color: "#60a5fa" }}>Waarom België achterblijft:</strong> België heeft relatief weinig ondergrondse gasopslagcapaciteit vergeleken met grote EU-landen. Met slechts 21.9% vulgraad eind mei moet België agressief injecteren om wintervoorraden op peil te krijgen. De EU-doelstelling is 90% tegen 1 november — dat vergt ~68 procentpunten extra in 5 maanden. Dit verhoogt de competitie voor LNG-cargos en houdt de TTF-forward-curve ondersteund. Herstel boven 40% eind juli zou een positief seizoenssignaal zijn.
+
+            <div style={{ padding: "10px 14px", background: "#7c131322", borderRadius: 8, fontSize: 12, color: "#fca5a5", lineHeight: 1.6 }}>
+              ⚠️ Qatar LNG: 17% exportcapaciteit beschadigd — herstel duurt 3 tot 5 jaar (NYTimes, mei 2026). Dit houdt de concurrentie voor LNG-cargos hoog en maakt agressieve injectie duurder.
+            </div>
+            <div style={{ marginTop: 10, padding: "10px 14px", background: "#172554", borderRadius: 8, fontSize: 12, color: "#93c5fd", lineHeight: 1.6 }}>
+              <strong style={{ color: "#60a5fa" }}>Impact op uw factuur:</strong> Als België het injectiedoel niet haalt, stijgt de nervositeit op de gasmarkt al in augustus — ruim vóór de winter. Dat vertaalt zich in hogere TTF-futures en duurdere variabele contracten voor het najaar. Herstel boven 40% eind juni is het eerste positieve signaal om te volgen.
             </div>
           </div>
 
@@ -514,75 +553,6 @@ export default function EnergieRapport() {
             ))}
           </div>
 
-          <div style={SECTION}>
-            <h3 style={{ margin: "0 0 4px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Gasopslagmonitor — Injectieseizoen 2026</h3>
-            <p style={{ fontSize: 11, color: "#64748b", marginTop: 0, marginBottom: 14 }}>Bron: GIE AGSI+ API · update elke dinsdag · doel: 90% tegen 1 november</p>
-
-            {/* Voortgangsbalk */}
-            {(() => {
-              const current = 21.9;
-              const target  = 90;
-              const pct     = Math.round((current / target) * 100);
-              return (
-                <div style={{ marginBottom: 16 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#94a3b8", marginBottom: 6 }}>
-                    <span>Huidig: <strong style={{ color: "#ef4444" }}>{current}%</strong></span>
-                    <span>Doel 1 nov: <strong style={{ color: "#0ea5e9" }}>{target}%</strong></span>
-                    <span>Voortgang: <strong style={{ color: "#f97316" }}>{pct}% van doel</strong></span>
-                  </div>
-                  <div style={{ background: "#1e293b", borderRadius: 6, height: 14, overflow: "hidden" }}>
-                    <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, #ef4444, #f97316)", borderRadius: 6, transition: "width 0.5s" }} />
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#475569", marginTop: 4 }}>
-                    <span>0%</span>
-                    <span style={{ color: "#eab308" }}>35% (eind jun)</span>
-                    <span style={{ color: "#f97316" }}>60% (eind aug)</span>
-                    <span style={{ color: "#0ea5e9" }}>90% (1 nov)</span>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Maandmijlpalen */}
-            {[
-              ["Huidig (5 jun)",   "21.9%", 21.9,  "#ef4444", "⚠️ Kritiek — record laag"],
-              ["Doel eind juni",   "35%",   35,    "#eab308", "Minimaal nodig"],
-              ["Doel eind juli",   "55%",   55,    "#f97316", "Op schema = urgent"],
-              ["Doel eind aug.",   "72%",   72,    "#0ea5e9", "Winterbuffer opbouwen"],
-              ["Doel eind sept.",  "83%",   83,    "#0ea5e9", "Veiligheidsmarge"],
-              ["Doel 1 november",  "90%",   90,    "#22c55e", "EU-doelstelling"],
-            ].map(([label, val, num, color, status]) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 12 }}>
-                <span style={{ color: "#94a3b8", width: 130 }}>{label}</span>
-                <div style={{ flex: 1, margin: "0 12px", background: "#0f172a", borderRadius: 4, height: 6 }}>
-                  <div style={{ width: `${num}%`, height: "100%", background: color, borderRadius: 4, opacity: 0.7 }} />
-                </div>
-                <span style={{ color, fontWeight: 700, width: 38, textAlign: "right" }}>{val}</span>
-                <span style={{ color: "#475569", fontSize: 11, width: 160, textAlign: "right" }}>{status}</span>
-              </div>
-            ))}
-
-            {/* Injectietempo */}
-            <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <div style={{ background: "#7c131322", border: "1px solid #ef444444", borderRadius: 8, padding: "10px 14px" }}>
-                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>VEREIST TEMPO (jun → nov)</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: "#ef4444" }}>~3.2 pct/week</div>
-                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 3 }}>68 pct-punten in ~21 weken</div>
-              </div>
-              <div style={{ background: "#172554", border: "1px solid #0ea5e944", borderRadius: 8, padding: "10px 14px" }}>
-                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>EU-GEMIDDELDE (jun 2026)</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: "#0ea5e9" }}>~57%</div>
-                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 3 }}>België loopt ~35 pct achter op EU</div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 12, padding: "10px 14px", background: "#172554", borderRadius: 8, fontSize: 12, color: "#93c5fd", lineHeight: 1.6 }}>
-              <strong style={{ color: "#60a5fa" }}>Impact op uw energiefactuur:</strong> Als België het injectiedoel niet haalt, stijgt de nervositeit op de gasmarkt al in augustus — ruim vóór de winter. Dat vertaalt zich in hogere TTF-futures en duurdere variabele contracten voor het najaar. Herstel boven 40% eind juni zou een eerste positief signaal zijn.
-            </div>
-            <p style={{ fontSize: 11, color: "#475569", margin: "10px 0 0" }}>
-              Live data: <a href="https://agsi.gie.eu" target="_blank" rel="noopener noreferrer" style={{ color: "#475569" }}>agsi.gie.eu</a> · wekelijkse update elke dinsdag
-            </p>
-          </div>
 
           <div style={SECTION}>
             <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Energiemix — Waarom Gasprijzen de Elektriciteitsprijs Bepalen</h3>
