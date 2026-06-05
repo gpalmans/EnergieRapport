@@ -515,25 +515,73 @@ export default function EnergieRapport() {
           </div>
 
           <div style={SECTION}>
-            <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 15 }}>🛢️ IEA Strategische Reserves — Status na Hormuz</h3>
-            <p style={{ marginTop: 0, fontSize: 13, color: "#94a3b8", lineHeight: 1.7, marginBottom: 12 }}>
-              De IEA-recordvrijgave van 400 miljoen vaten (11 maart 2026) heeft haar primaire doel bereikt: Brent daalde van $115+ naar $95.36/vat. Het vrijgaveproces is voltooid. IEA-landen kopen nu gradueel reserves terug aan lagere prijzen om de strategische voorraden te herstellen. Voor gas heeft de vrijgave echter geen directe impact gehad — de Qatar LNG-schade is een aparte structurele supply-disruption die niet via oliereserves opgelost kan worden.
-            </p>
-            <div style={{ background: "#172554", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
-              {[
-                ["Volume",          "400 mln vaten (recordvrijgave, voltooid)"],
-                ["% totale res.",   "~33% van 1.2 mld noodvoorraad"],
-                ["Status jun 2026", "Vrijgave voltooid; terugkoop-fase gestart"],
-                ["Impact op Brent", "Brent: $115 → $95.36 (−17%) mede dankzij IEA + OPEC+"],
-                ["Impact op gas",   "Beperkt: Qatar LNG-schade vraagt structurele oplossing"],
-              ].map(([k, v]) => (
-                <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #1e3a5f", fontSize: 12 }}>
-                  <span style={{ color: "#94a3b8" }}>{k}</span>
-                  <span style={{ color: "#60a5fa", fontWeight: 600 }}>{v}</span>
+            <h3 style={{ margin: "0 0 4px", color: "#f8fafc", fontSize: 15 }}>🇧🇪 Belgische Gasopslagmonitor — Injectieseizoen 2026</h3>
+            <p style={{ fontSize: 11, color: "#64748b", marginTop: 0, marginBottom: 14 }}>Bron: GIE AGSI+ API · update elke dinsdag · doel: 90% tegen 1 november</p>
+
+            {/* Voortgangsbalk */}
+            {(() => {
+              const current = 21.9;
+              const target  = 90;
+              const pct     = Math.round((current / target) * 100);
+              return (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#94a3b8", marginBottom: 6 }}>
+                    <span>Huidig: <strong style={{ color: "#ef4444" }}>{current}%</strong></span>
+                    <span>Doel 1 nov: <strong style={{ color: "#0ea5e9" }}>{target}%</strong></span>
+                    <span>Voortgang: <strong style={{ color: "#f97316" }}>{pct}% van doel</strong></span>
+                  </div>
+                  <div style={{ background: "#1e293b", borderRadius: 6, height: 14, overflow: "hidden" }}>
+                    <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, #ef4444, #f97316)", borderRadius: 6, transition: "width 0.5s" }} />
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#475569", marginTop: 4 }}>
+                    <span>0%</span>
+                    <span style={{ color: "#eab308" }}>35% (eind jun)</span>
+                    <span style={{ color: "#f97316" }}>60% (eind aug)</span>
+                    <span style={{ color: "#0ea5e9" }}>90% (1 nov)</span>
+                  </div>
                 </div>
-              ))}
+              );
+            })()}
+
+            {/* Maandmijlpalen */}
+            {[
+              ["Huidig (5 jun)",   "21.9%", 21.9,  "#ef4444", "⚠️ Kritiek — record laag"],
+              ["Doel eind juni",   "35%",   35,    "#eab308", "Minimaal nodig"],
+              ["Doel eind juli",   "55%",   55,    "#f97316", "Op schema = urgent"],
+              ["Doel eind aug.",   "72%",   72,    "#0ea5e9", "Winterbuffer opbouwen"],
+              ["Doel eind sept.",  "83%",   83,    "#0ea5e9", "Veiligheidsmarge"],
+              ["Doel 1 november",  "90%",   90,    "#22c55e", "EU-doelstelling"],
+            ].map(([label, val, num, color, status]) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #1e293b", fontSize: 12 }}>
+                <span style={{ color: "#94a3b8", width: 130 }}>{label}</span>
+                <div style={{ flex: 1, margin: "0 12px", background: "#0f172a", borderRadius: 4, height: 6 }}>
+                  <div style={{ width: `${num}%`, height: "100%", background: color, borderRadius: 4, opacity: 0.7 }} />
+                </div>
+                <span style={{ color, fontWeight: 700, width: 38, textAlign: "right" }}>{val}</span>
+                <span style={{ color: "#475569", fontSize: 11, width: 160, textAlign: "right" }}>{status}</span>
+              </div>
+            ))}
+
+            {/* Injectietempo */}
+            <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <div style={{ background: "#7c131322", border: "1px solid #ef444444", borderRadius: 8, padding: "10px 14px" }}>
+                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>VEREIST TEMPO (jun → nov)</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#ef4444" }}>~3.2 pct/week</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 3 }}>68 pct-punten in ~21 weken</div>
+              </div>
+              <div style={{ background: "#172554", border: "1px solid #0ea5e944", borderRadius: 8, padding: "10px 14px" }}>
+                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>EU-GEMIDDELDE (jun 2026)</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#0ea5e9" }}>~57%</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 3 }}>België loopt ~35 pct achter op EU</div>
+              </div>
             </div>
-            <p style={{ fontSize: 11, color: "#475569", margin: 0 }}>Bronnen: IEA.org, Reuters OPEC+ (03/05/2026), AGSI GIE API (05/06/2026)</p>
+
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "#172554", borderRadius: 8, fontSize: 12, color: "#93c5fd", lineHeight: 1.6 }}>
+              <strong style={{ color: "#60a5fa" }}>Impact op uw energiefactuur:</strong> Als België het injectiedoel niet haalt, stijgt de nervositeit op de gasmarkt al in augustus — ruim vóór de winter. Dat vertaalt zich in hogere TTF-futures en duurdere variabele contracten voor het najaar. Herstel boven 40% eind juni zou een eerste positief signaal zijn.
+            </div>
+            <p style={{ fontSize: 11, color: "#475569", margin: "10px 0 0" }}>
+              Live data: <a href="https://agsi.gie.eu" target="_blank" rel="noopener noreferrer" style={{ color: "#475569" }}>agsi.gie.eu</a> · wekelijkse update elke dinsdag
+            </p>
           </div>
 
           <div style={SECTION}>
@@ -853,7 +901,7 @@ export default function EnergieRapport() {
               <ul style={{ margin: 0, padding: "0 0 0 16px", fontSize: 13, color: "#94a3b8", lineHeight: 2 }}>
                 <li>U <strong style={{ color: "#f8fafc" }}>zonnepanelen of een batterij</strong> heeft (variabel maximaliseert uw voordeel)</li>
                 <li>U de beslissing neemt <strong style={{ color: "#f8fafc" }}>puur door de nieuwscyclus</strong>, niet door uw verbruiksprofiel</li>
-                <li>De aangeboden prijs <strong style={{ color: "#f8fafc" }}>méér dan 15% boven</strong> het pre-crisis niveau ligt</li>
+                <li>Vast tarief <strong style={{ color: "#f8fafc" }}>meer dan 10% duurder</strong> is dan een vergelijkbaar variabel aanbod (huidig: ~27% — ruim boven de drempel)</li>
                 <li>U de <strong style={{ color: "#f8fafc" }}>bijzondere voorwaarden</strong> (premies, loyaliteitsvoordelen) niet gelezen heeft</li>
               </ul>
             </div>
@@ -862,7 +910,10 @@ export default function EnergieRapport() {
 
         {/* DECISION MATRIX */}
         <div style={SECTION}>
-          <h3 style={{ margin: "0 0 12px", color: "#f8fafc", fontSize: 15 }}>📋 Adviesmatrix per Profiel</h3>
+          <h3 style={{ margin: "0 0 4px", color: "#f8fafc", fontSize: 15 }}>📋 Adviesmatrix per Profiel — Juni 2026</h3>
+          <p style={{ fontSize: 12, color: "#64748b", marginTop: 0, marginBottom: 14 }}>
+            Context: vast tarief gemiddeld <strong style={{ color: "#f97316" }}>27% duurder</strong> dan variabel (VRT, jun 2026) · TTF €48.85 · Qatar LNG-schade structureel (3–5 jaar)
+          </p>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
               <thead>
@@ -874,17 +925,36 @@ export default function EnergieRapport() {
               </thead>
               <tbody>
                 {[
-                  ["Gezin, krappe begroting",   "⚖️ Vast — maar wacht 4–6 wk",     "Zekerheid primeert; wacht tot gasveld-impact duidelijk is voor weloverwogen keuze", "Lees bijzondere voorwaarden; ken uw welkomstpremie-condities"],
-                  ["Gemiddeld gezin",            "⬇ Variabel — blijf rationeel",    "Verhoogd niveau door gasveld schade (2-5 mnd), daarna structureel bearish; variabel profiteert van normalisatie",             "Herbekijk jaarlijks; geen reden tot haastbeslissing nu"],
-                  ["Hoog verbruik (WP/EV)",      "⚖️ Vast — na weloverwogen keuze", "Hogere blootstelling aan schokken; vast geeft stabiele maandkost bij hoog verbruik",       "Koppel aan laadoptimalisatie op daluren; evalueer na 12 mnd"],
-                  ["Zonnepanelen + batterij",    "⬇ Variabel of dynamisch",         "Hernieuwbaar profiteert maximaal van daluurprijzen en teruglevering",                        "Monitor dag-ahead via leveranciers-app of Fluvius"],
-                  ["KMO / kleine zelfstandige",  "⚖️ Vast — voor budgetstabiliteit","KMO heeft zelfde wettelijk overstaprecht; vast geeft voorspelbare kostenstructuur",          "Lees loyaliteitsclausules; plan herziening na 12 maanden"],
+                  ["Gezin, krappe begroting",
+                   "⬇ Variabel — met maandelijkse check",
+                   "Vast is nu 27% duurder: dat is financieel onverantwoord bij een krap budget. Variabel daalt mee als TTF normaliseert. Maandelijks controleren via VREG-vergelijker.",
+                   "Stel een prijsalert in (bijv. TTF > €55 gedurende 3 weken) als trigger om vast te overwegen"],
+                  ["Gemiddeld gezin",
+                   "⬇ Variabel — 12 mnd horizon",
+                   "Qatar LNG-schade duurt 3–5 jaar maar marktnormalisatie is al bezig (TTF van €62 naar €48). Variabel profiteert van verdere daling; vast legt u vast op huidige risicopremie.",
+                   "Herbekijk jaarlijks in mei/juni; geen reden tot haastbeslissing"],
+                  ["Hoog verbruik (WP/EV)",
+                   "⚖️ Variabel of vast — afh. van budgetruimte",
+                   "Hoger verbruik = hogere blootstelling aan schommelingen. Vast geeft voorspelbaarheid maar kost nu 27% meer. Variabel is rationeler tenzij u de rust van vaste kosten verkiest.",
+                   "Koppel laadschema aan daluurprijzen (00:00–06:00); evalueer contract na 12 maanden"],
+                  ["Zonnepanelen + batterij",
+                   "⬇ Dynamisch tarief",
+                   "Dynamische tarieven (Frank Energie, Bolt) maximaliseren teruglevering bij negatieve prijzen en goedkoop laden bij overschot. Vast of gewoon variabel laat dit voordeel onbenut.",
+                   "Monitor dag-ahead via leveranciers-app of Fluvius; controleer teruglevering-vergoeding in contract"],
+                  ["Huurder zonder zonnepanelen",
+                   "⬇ Variabel — standaard keuze",
+                   "Geen zonnepanelen → geen dynamisch voordeel. Variabel is 27% goedkoper dan vast en volgt de normaliserende markt. Geen aanleiding om de risicopremie van leverancier te betalen.",
+                   "Vergelijk minstens 1× per jaar via VREG; let op indexatieformule (gas- of elektriciteitsbased)"],
+                  ["KMO / kleine zelfstandige",
+                   "⚖️ Vast — indien budgetstabiliteit noodzaak",
+                   "KMO's moeten offertes maken op basis van vaste kostenstructuur. Vast geeft zekerheid maar kost 27% meer. Alleen verantwoord als variabele facturen niet doorrekend kunnen worden aan klanten.",
+                   "Lees loyaliteitsclausules grondig; plan contractherziening 3 mnd voor afloop; max. 12 mnd vast"],
                 ].map(([p, a, m, v], i) => (
                   <tr key={i} style={{ borderBottom: "1px solid #1e293b" }}>
-                    <td style={{ padding: "9px 11px", color: "#e2e8f0", fontWeight: 600 }}>{p}</td>
-                    <td style={{ padding: "9px 11px", color: "#60a5fa" }}>{a}</td>
-                    <td style={{ padding: "9px 11px", color: "#94a3b8" }}>{m}</td>
-                    <td style={{ padding: "9px 11px", color: "#64748b", fontSize: 11 }}>{v}</td>
+                    <td style={{ padding: "9px 11px", color: "#e2e8f0", fontWeight: 600, verticalAlign: "top" }}>{p}</td>
+                    <td style={{ padding: "9px 11px", color: "#60a5fa", verticalAlign: "top", whiteSpace: "nowrap" }}>{a}</td>
+                    <td style={{ padding: "9px 11px", color: "#94a3b8", verticalAlign: "top" }}>{m}</td>
+                    <td style={{ padding: "9px 11px", color: "#64748b", fontSize: 11, verticalAlign: "top" }}>{v}</td>
                   </tr>
                 ))}
               </tbody>
