@@ -567,14 +567,187 @@ class ReportUpdater:
         logger.info(f"Updated confirmed dates: {len(dates)} API-driven dates marked as confirmed")
         return content
     
-    def update_jsx_file(self, market_data: Dict):
-        """Update JSX bestand"""
-        logger.info(f"Updating {self.jsx_path}...")
-        
+    # ── Wekelijkse uitbreidingen ──────────────────────────────────────────────
+
+    def trim_rawdata_to_30_days(self, content: str) -> str:
+        """Trim rawData zodat enkel de laatste 30 handelsdagen bewaard blijven."""
+        pattern = r'\{ date: "(\d{2}/\d{2})", ttf: [\d.\-]+, belpex: [\d.\-]+, brent: [\d.]+, storage: [\d.]+, note: "[^"]*" \}'
+        entries = re.findall(pattern, content)
+        if len(entries) <= 30:
+            logger.info(f"rawData heeft {len(entries)} entries — geen trim nodig")
+            return content
+
+        # Sorteer chronologisch (DD/MM → MMDD voor vergelijking)
+        def sort_key(d):
+            day, month = d.split('/')
+            return month + day
+
+        sorted_dates = sorted(set(entries), key=sort_key)
+        dates_to_keep = set(sorted_dates[-30:])
+        dates_to_remove = set(sorted_dates[:-30])
+
+        lines = content.split('\n')
+        new_lines = []
+        removed = 0
+        for line in lines:
+            skip = False
+            for d in dates_to_remove:
+                if f'date: "{d}"' in line:
+                    skip = True
+                    removed += 1
+                    break
+            if not skip:
+                new_lines.append(line)
+
+        logger.info(f"rawData getrimd: {removed} oude entries verwijderd, {len(dates_to_keep)} bewaard")
+        return '\n'.join(new_lines)
+
+    def apply_ai_geopolitical(self, content: str, ai_data: Dict) -> str:
+        """Vervang de geopolitieke items array met AI-gegenereerde items."""
+        items = ai_data.get('geopolitical_items', [])
+        if not items:
+            logger.warning("Geen geopolitieke items in AI-analyse — sectie ongewijzigd")
+            return content
+
+        # Genereer nieuwe items-string
+        items_js = ',\n'.join([
+            f'              ["{item["titel"]}", "{item["color"]}", "{item["tekst"]}"]'
+            for item in items
+        ])
+
+        # Vervang de array tussen {[ en ].map( in de geopolitieke sectie
+        pattern = (
+            r'(⚔️ Geopolitieke Situatie[^\n]*\n\s*\{?\s*\[)'
+            r'([\s\S]*?)'
+            r'(\]\.map\(\(\[titel, color, tekst\]\))'
+        )
+        replacement = r'\g<1>\n' + items_js + r'\n            \g<3>'
+        new_content = re.sub(pattern, replacement, content, count=1)
+
+        if new_content == content:
+            logger.warning("Geopolitieke items pattern niet gevonden — sectie ongewijzigd")
+        else:
+            logger.info(f"Geopolitieke sectie bijgewerkt: {len(items)} items")
+
+        return new_content
+
+    def apply_ai_alert(self, content: str, ai_data: Dict) -> str:
+        """Update de alert banner met AI-gegenereerde tekst."""
+        alert = ai_data.get('alert', {})
+        if not alert:
+            return content
+
+        title = alert.get('title', '')
+        text  = alert.get('text', '')
+        is_critical = alert.get('is_critical', False)
+
+        border_color = "#ef4444" if is_critical else "#f97316"
+        text_color   = "#fca5a5" if is_critical else "#fdba74"
+        bg_color     = "#7c131322" if is_critical else "#7c2d1222"
+        icon         = "⚠️" if is_critical else "📉"
+
+        # Vervang de volledige alert div
+        pattern = (
+            r'(\{/\* ALERT \*/\}\s*)'
+            r'<div style=\{\{[^}]*background: "[^"]*"[^}]*border: "1px solid [^"]*"[^}]*\}\}>'
+            r'[\s\S]*?'
+            r'</div>\s*</div>\s*</div>'
+        )
+        new_alert = (
+            r'\g<1>'
+            f'<div style={{{{ background: "{bg_color}", border: "1px solid {border_color}", '
+            f'borderRadius: 10, padding: "14px 20px", marginBottom: 24, display: "flex", '
+            f'alignItems: "center", gap: 12 }}}}>\n'
+            f'        <span style={{{{ fontSize: 22, flexShrink: 0 }}}}>{icon}</span>\n'
+            f'        <div>\n'
+            f'          <div style={{{{ fontWeight: 700, color: "{text_color}", marginBottom: 2 }}}}>{title}</div>\n'
+            f'          <div style={{{{ fontSize: 13, color: "{text_color}" }}}}>\n'
+            f'            {text}\n'
+            f'          </div>\n'
+            f'        </div>\n'
+            f'      </div>'
+        )
+
+        new_content = re.sub(pattern, new_alert, content, count=1, flags=re.DOTALL)
+        if new_content != content:
+            logger.info("Alert banner bijgewerkt")
+        else:
+            # Fallback: vervang alleen de tekst in de bestaande banner
+            content = re.sub(
+                r'(MARKTUPDATE:[^<]*|KRITIEKE MARKTSITUATIE)',
+                title, content, count=1
+            )
+            logger.info("Alert banner: alleen titel bijgewerkt (fallback)")
+        return new_content if new_content != content else content
+
+    def apply_ai_kernboodschap(self, content: str, ai_data: Dict) -> str:
+        """Update de kernboodschap-paragraaf en triggerteksten."""
+        kernboodschap  = ai_data.get('kernboodschap', '')
+        trig_variabel  = ai_data.get('trigger_variabel', '')
+        trig_vast      = ai_data.get('trigger_vast', '')
+
+        if kernboodschap:
+            # Vervang de eerste <p> in het kernboodschap-blok
+            pattern = (
+                r'(KERNBOODSCHAP:[^\n]*\n\s*</h2>\s*\n\s*)'
+                r'<p style=\{\{ fontSize: 15,[^>]*\}\}>\s*\n\s*'
+                r'([\s\S]*?)'
+                r'\s*</p>'
+            )
+            replacement = (
+                r'\g<1>'
+                f'<p style={{{{ fontSize: 15, lineHeight: 1.85, color: "#bfdbfe", '
+                f'margin: "0 0 14px", fontWeight: 500 }}}}>\n'
+                f'            {kernboodschap}\n'
+                f'          </p>'
+            )
+            new_content = re.sub(pattern, replacement, content, count=1, flags=re.DOTALL)
+            if new_content != content:
+                logger.info("Kernboodschap bijgewerkt")
+                content = new_content
+
+        if trig_variabel:
+            content = re.sub(
+                r'(Trigger voor Variabel[^:]*:</strong>\s*)([^<]+)',
+                rf'\g<1>{trig_variabel} ',
+                content, count=1
+            )
+
+        if trig_vast:
+            content = re.sub(
+                r'(Trigger voor Vast[^:]*:</strong>\s*)([^<]+)',
+                rf'\g<1>{trig_vast} ',
+                content, count=1
+            )
+
+        return content
+
+    def apply_ai_header_datum(self, content: str, ai_data: Dict) -> str:
+        """Update de geopolitieke sectie-header met huidige maand/jaar."""
+        month_nl = {
+            1:"januari",2:"februari",3:"maart",4:"april",5:"mei",6:"juni",
+            7:"juli",8:"augustus",9:"september",10:"oktober",11:"november",12:"december"
+        }
+        now = datetime.now()
+        label = f"{month_nl[now.month].capitalize()} {now.year}"
+        content = re.sub(
+            r'(⚔️ Geopolitieke Situatie — )[^\n<"]+',
+            rf'\g<1>{label}',
+            content, count=1
+        )
+        return content
+
+    # ── Hoofd JSX-update ──────────────────────────────────────────────────────
+
+    def update_jsx_file(self, market_data: Dict, ai_data: Optional[Dict] = None):
+        """Update JSX bestand — dagelijks + optionele wekelijkse AI-updates."""
+        logger.info(f"Updating {self.jsx_path} (mode: {self.update_mode})...")
+
         with open(self.jsx_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        # Voer updates uit
+
+        # ── Altijd (dagelijks + wekelijks) ──────────────────────────────────
+        content = self.trim_rawdata_to_30_days(content)
         content = self.update_jsx_rawdata(content, market_data)
         content = self.update_jsx_kpis(content, market_data)
         content = self.update_jsx_kpi_variables(content, market_data)
@@ -582,36 +755,66 @@ class ReportUpdater:
         content = self.update_critical_header(content, market_data)
         content = self.update_analysis_values(content, market_data)
         content = self.update_geopolitical_references(content, market_data)
-        content = self.update_geopolitical_content(content, market_data)
-        # content = self.update_iea_strategic_reserves(content, market_data)  # Disabled due to regex issues
-        content = self.update_storage_calculation(content, market_data)
-        
-        # CONSISTENCY ENFORCEMENT
+        content = self.update_storage_calculation(content)
         content = self.enforce_gasopslag_consistency(content, market_data)
-        content = self.update_sources_section(content, market_data)  # NEW: Auto-update sources
-        # content = self.update_confirmed_dates(content, market_data)  # Disabled - footer is static
-        
-        # Sla op
+        content = self.update_sources_section(content, market_data)
+
+        # ── Alleen wekelijks: AI-gegenereerde inhoud ─────────────────────────
+        if self.update_mode == 'weekly' and ai_data:
+            logger.info("Weekly mode: AI-inhoud toepassen...")
+            content = self.apply_ai_header_datum(content, ai_data)
+            content = self.apply_ai_geopolitical(content, ai_data)
+            content = self.apply_ai_alert(content, ai_data)
+            content = self.apply_ai_kernboodschap(content, ai_data)
+            logger.info("AI-inhoud toegepast")
+
         with open(self.jsx_path, 'w', encoding='utf-8') as f:
             f.write(content)
-        
-        logger.info(f"Successfully updated {self.jsx_path}")
-        logger.info("Updated sources section with current data and removed outdated references")
-    
+
+        logger.info(f"JSX succesvol bijgewerkt: {self.jsx_path}")
+
+    def load_ai_structured(self) -> Optional[Dict]:
+        """Laad gestructureerde AI-analyse indien beschikbaar."""
+        filepath = 'data/ai_analysis.json'
+        if not os.path.exists(filepath):
+            return None
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data.get('structured')
+        except Exception as e:
+            logger.warning(f"Kon AI-analyse niet laden: {e}")
+            return None
+
+    def update_storage_calculation(self, content: str, market_data: Dict = None) -> str:
+        """Update storage calculation — market_data optioneel voor backwards compat."""
+        if market_data is None:
+            return content
+        remaining_pct = 90 - market_data["eu_storage"]
+        lines = content.split('\n')
+        for i, line in enumerate(lines):
+            if '["Nog te vullen (apr–okt)"' in line and '~' in line and 'pct-punten' in line:
+                lines[i] = f'              ["Nog te vullen (apr–okt)",    "~{remaining_pct:.0f} pct-punten", "#f97316"],'
+                logger.info(f"Storage calculation updated: {remaining_pct:.0f}%")
+                break
+        return '\n'.join(lines)
+
     def run_update(self):
-        """Voer volledige update uit"""
-        logger.info(f"Starting report update (mode: {self.update_mode})...")
+        """Voer volledige update uit."""
+        logger.info(f"Report update gestart (mode: {self.update_mode})...")
 
         market_data = self.load_market_data()
-        ai_analysis = self.load_ai_analysis()
 
-        # Step 1: Update JSX file
-        self.update_jsx_file(market_data)
+        # Laad gestructureerde AI-analyse (beschikbaar na wekelijkse ai_analyzer run)
+        ai_data = self.load_ai_structured() if self.update_mode == 'weekly' else None
+        if self.update_mode == 'weekly':
+            if ai_data:
+                logger.info("Gestructureerde AI-analyse geladen")
+            else:
+                logger.warning("Geen AI-analyse gevonden — JSX-teksten ongewijzigd")
 
-        if ai_analysis:
-            logger.info("AI analysis available - consider manual integration")
-
-        logger.info("Report update completed successfully")
+        self.update_jsx_file(market_data, ai_data)
+        logger.info("Report update voltooid")
 
 def main():
     updater = ReportUpdater()
