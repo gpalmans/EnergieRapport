@@ -939,7 +939,7 @@ export default function EnergieRapport() {
                    "Koppel laadschema aan daluurprijzen (00:00–06:00); evalueer contract na 12 maanden"],
                   ["Zonnepanelen + batterij",
                    "⬇ Dynamisch tarief",
-                   "Dynamische tarieven (Frank Energie, Bolt) maximaliseren teruglevering bij negatieve prijzen en goedkoop laden bij overschot. Vast of gewoon variabel laat dit voordeel onbenut.",
+                   "Dynamische tarieven (Ecofix, Bolt) maximaliseren teruglevering bij negatieve prijzen en goedkoop laden bij overschot. Vast of gewoon variabel laat dit voordeel onbenut.",
                    "Monitor dag-ahead via leveranciers-app of Fluvius; controleer teruglevering-vergoeding in contract"],
                   ["Huurder zonder zonnepanelen",
                    "⬇ Variabel — standaard keuze",
