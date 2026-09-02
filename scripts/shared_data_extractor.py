@@ -17,6 +17,8 @@ class PriceDataPoint:
     ttf: float
     belpex: float
     note: str = ""
+    brent: float = 0.0
+    storage: float = 0.0
 
 
 @dataclass
@@ -122,16 +124,18 @@ class DataExtractor:
         data_text = rawdata_match.group(1)
         points = []
 
-        # Match each entry: { date: "14/02", ttf: 30.8, belpex: 70.0, note: "" }
+        # Match each entry: { date: "04/08", ttf: 57.82, belpex: 140.86, brent: 83.31, storage: 37.1, note: "" }
         for match in re.finditer(
-            r'\{\s*date:\s*"([^"]+)",\s*ttf:\s*([\d.]+),\s*belpex:\s*([\d.]+),\s*note:\s*"([^"]*)"\s*\}',
+            r'\{\s*date:\s*"([^"]+)",\s*ttf:\s*([\d.]+),\s*belpex:\s*([\d.]+),\s*brent:\s*([\d.]+),\s*storage:\s*([\d.]+),\s*note:\s*"([^"]*)"\s*\}',
             data_text
         ):
             points.append(PriceDataPoint(
                 date=match.group(1),
                 ttf=float(match.group(2)),
                 belpex=float(match.group(3)),
-                note=match.group(4)
+                brent=float(match.group(4)),
+                storage=float(match.group(5)),
+                note=match.group(6)
             ))
 
         if not points:

@@ -6,6 +6,50 @@ en welke databronnen de cijfers hebben bevestigd.
 
 ---
 
+## Update 8 — 2 september 2026
+
+### **🔄 Volledige Geopolitieke & Forecast Update**
+
+**Bevestigde Marktdata (2 september 2026):**
+- **TTF Gas**: €71.92/MWh (OilPriceAPI)
+- **Belpex**: €172.18/MWh (energy-charts.info — daily average)
+- **België gasopslag**: 55.1% (GIE AGSI+ API)
+- **EU-gemiddelde opslag**: ~65.4% (31 augustus 2026, TASS)
+- **Brent**: $94.46/vat (OilPriceAPI)
+
+**Significante Marktbewegingen:**
+- **TTF stijging**: van dieptepunt €54 begin augustus naar €71.92 — hoogste sinds januari 2023
+- **Belpex stijging**: €152.37 (31/08) → €172.18 (+13.0%)
+- **Brent stabilisatie**: van dieptepunt $79 begin augustus naar $94.46
+- **EU-opslag historisch laag**: 65.39% eind augustus — laagste voor die datum sinds metingen in 2011
+- **Belgische opslag achterstand**: 55.1% vs EU-gemiddelde 65.4%; nog ~35 pct-punten tot 90% doel
+
+**Geopolitieke Context:**
+- Straat van Hormuz deels heropend sinds 21 april 2026, maar wapenstilstand blijft broos
+- Qatar LNG-exportcapaciteit (~17% wereldwijde LNG) zwaar beschadigd; herstel 3-5 jaar
+- OPEC+ productieverhogingen compenseren Hormuz-verlies; Brent stabiliseert rond $94
+- Engie-akkoord over heractivering Belgische nucleaire vloot; finaal akkoord verwacht oktober 2026
+
+**Technische Updates:**
+- `rawData` array volledig vervangen door 30 dagen data (04/08 — 02/09) inclusief brent/storage velden
+- Forecast arrays (base/bull/bear) bijgewerkt voor periode 02/09 — 01/10
+- TTF- en Belpex-grafieken: Y-assen, events en referentielijnen geüpdatet
+- Geopolitiek tab: opslagvergelijking, progress bar, injectie-tempo, events en energiemix herzien
+- Forecast tab: scenario's, ranges en sleutelfactoren aangepast aan september-horizon
+- Advies tab: kernboodschap, adviesmatrix, praktisch advies en triggers geactualiseerd
+- Bronnen tab en footer aangevuld met TASS, Voltstack, Selectra en Enerdeal
+- `usePDFDownload.js` gesynchroniseerd met JSX content voor PDF-pariteit
+- `data/latest_prices.json` bijgewerkt met live API waarden
+- `scripts/shared_data_extractor.py` regex aangepast voor 6-veld rawData entries
+
+**Validatie:**
+- ✅ DataExtractor parseert JSX correct (30 rijen, laatste 02/09)
+- ✅ Alle KPI-waarden in real-time: TTF 71.92, Belpex 172.18, Brent 94.46, Storage 55.1
+- ✅ Forecast scenario's en key factors consistent met JSX
+- ✅ PDF-pariteit (usePDFDownload.js) gecontroleerd
+
+---
+
 ## Update 7 — 29 maart 2026
 
 ### **🔄 Volledige Wekelijkse Update**

@@ -57,7 +57,7 @@ const preparePDFData = (reportData) => {
       brent: currentBrent, brentChange,
     },
 
-    alert: `Hormuz crisis dag 21+ · TTF €${currentTTF.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) · Brent $${currentBrent.toFixed(2)} · Force majeure Qatar/Kuwait/UAE · Belgische gasreserves ${Math.round(currentStorage)}%`,
+    alert: `TTF opnieuw richt €72 · TTF €${currentTTF.toFixed(2)} (${ttfVsBase > 0 ? '+' : ''}${ttfVsBase.toFixed(0)}% vs pre-crisis) · Belpex €${currentBelpex.toFixed(2)} (+${belpexChange ? belpexChange.toFixed(1) : 0}%) · Brent $${currentBrent.toFixed(2)} · EU-opslag 65.4% (31 aug) · Belgische gasreserves ${Math.round(currentStorage)}%`,
 
     chartData: {
       ttf: marketData.map(d => ({ date: d.date, value: d.ttf })),
@@ -95,16 +95,16 @@ const preparePDFData = (reportData) => {
     }),
 
     crisisItems: [
-      { title: 'Mega Tariefstijging België', color: 'red', text: 'Mega verhoogt onverwacht tarieven vanaf 6 maart: gas +14% tot +29%, elektriciteit +12% tot +22%. CREG betreurt deze praktijk en noemt het \'gevaarlijk precedent\' voor consumenten.' },
-      { title: 'Hormuz Crisis Volatiliteit', color: 'amber', text: 'Onrust Midden-Oosten veroorzaakt grote schommelingen in TTF-prijzen. Gasunie adviseert strategische noodvoorraad aan te leggen. Termijnprijzen elektriciteit volgen sterke stijging gasprijzen.' },
-      { title: 'Energy Sector Rotation', color: 'yellow', text: 'Energy Select Sector SPDR stijgt +8% in maart door geopolitieke spanningen. Great rotation naar energie sectoren terwijl yield-sensitive sectoren dalen.' },
-      { title: 'IEA Consumentenadvies', color: 'blue', text: 'IEA adviseert consumenten energieverbruik te verminderen: werk thuis, rij langzamer, gebruik geen gas kokers. Doel is prijzen stabiliseren tijdens conflict.' },
-      { title: 'Brent Prijsstijging', color: 'purple', text: `Brent handelt op $${currentBrent.toFixed(2)}/vat (+${((currentBrent - 101.55) / 101.55 * 100).toFixed(1)}% vs gisteren) na optimisme over Iran de-escalatie. Stijging volgt op scherpe daling van -11% op maandag.` },
+      { title: 'TTF hoogste niveau sinds jan 2023', color: 'red', text: `TTF noteert €${currentTTF.toFixed(2)}/MWh, het hoogste niveau sinds begin 2023. Gedreven door broze Hormuz-situatie, vertraagde LNG en lage EU-opslag.` },
+      { title: 'EU-opslag laagste ooit', color: 'red', text: 'EU-opslag 65.39% eind augustus 2026 — laagste seizoensniveau sinds 2011 en 14% onder het 5-jaargemiddelde. België 55.1%.' },
+      { title: 'Hormuz wapenstilstand broos', color: 'amber', text: 'Straat van Hormuz deels heropend sinds 21 april, maar wapenstilstand is broos. Tankerdoorvoer blijft sterk verminderd.' },
+      { title: 'Qatar LNG 3-5 jaar herstel', color: 'blue', text: '17% van wereldwijde LNG-exportcapaciteit is zwaar beschadigd. Volledig herstel duurt 3-5 jaar. Pre-crisis TTF-niveaus onbereikbaar tot 2028-2030.' },
+      { title: 'Vast tarief ~27% duurder', color: 'purple', text: 'VRT meldde in juni 2026 dat vaste contracten gemiddeld 27% duurder zijn dan variabele. Vast bevat de volledige risicopremie van dit moment.' },
     ],
 
     gasStorage: [
-      [`BE-gemiddelde (${currentDate.split(' ')[0]} mrt)`, `~${Math.round(currentStorage)}%`, 'red'],
-      ['Einde 2025', '~61%', 'amber'],
+      ['BE-gemiddelde (2 sep 2026)', `~${Math.round(currentStorage)}%`, 'red'],
+      ['EU-gemiddelde (31 aug)', '~65.4%', 'amber'],
       ['Einde 2024', '~72%', 'green'],
       ['EU-doel (1 nov)', '90%', 'blue'],
       ['Nog te vullen', `${90 - Math.round(currentStorage)} ppt`, 'amber'],
@@ -119,35 +119,35 @@ const preparePDFData = (reportData) => {
     ],
 
     forecasts: [
-      { name: 'Bearish', prob: '20%', color: 'green', ttf: '\u20AC30\u201340', belpex: '\u20AC50\u201365', trigger: 'Gasvelden herstellen 2-3 wk, Hormuz deels open, diplomatieke de-escalatie' },
-      { name: 'Basis', prob: '55%', color: 'blue', ttf: '\u20AC40\u201358', belpex: '\u20AC70\u201385', trigger: 'Gasvelden 3-5 mnd buiten werking, Hormuz beperkt open, Qatar LNG -17%' },
-      { name: 'Bullish', prob: '25%', color: 'red', ttf: '\u20AC58\u201375', belpex: '\u20AC85\u2013110', trigger: 'Nieuwe aanvallen infra, Hormuz dicht tot zomer, Qatar LNG langdurig stil' },
+      { name: 'Bearish', prob: '20%', color: 'green', ttf: '\u20AC50\u201360', belpex: '\u20AC80\u2013120', trigger: 'Hormuz volledig stabiel, mild najaar, injectie haalt 90%' },
+      { name: 'Basis', prob: '50%', color: 'blue', ttf: '\u20AC60\u201372', belpex: '\u20AC110\u2013170', trigger: 'Qatar-schade 3-5 jr, Hormuz broos, injectie 80-85%' },
+      { name: 'Bullish', prob: '30%', color: 'red', ttf: '\u20AC72\u201385', belpex: '\u20AC160\u2013220', trigger: 'Nieuwe escalatie, opslag onder 80%, vroege koude snap' },
     ],
 
     adviceMatrix: [
-      ['Gezin, krappe begroting', 'Vast \u2014 wacht 4-6 wk', 'Zekerheid primeert; wacht gasveld-impact af'],
-      ['Gemiddeld gezin', 'Variabel', 'Structureel bearish na crisis; normalisatie 2-5 mnd'],
-      ['Hoog verbruik (WP/EV)', 'Vast \u2014 weloverwogen', 'Hoge blootstelling; vaste maandkost stabiel'],
+      ['Gezin, krappe begroting', 'Variabel \u2014 maandelijkse check', 'Vast is ~27% duurder; variabel volgt de markt'],
+      ['Gemiddeld gezin', 'Variabel \u2014 12-18 mnd', 'Vast legt u vast op risicopremie; variabel profiteert van normalisatie'],
+      ['Hoog verbruik (WP/EV)', 'Variabel of vast', 'Afhankelijk van budgetruimte; vast biedt zekerheid, variabel is goedkoper'],
       ['Zonnepanelen + batterij', 'Variabel/dynamisch', 'Hernieuwbaar maximaliseert daluurvoordeel'],
-      ['KMO / zelfstandige', 'Vast \u2014 budgetstabiliteit', 'Voorspelbare kosten; herzie na 12 maanden'],
+      ['KMO / zelfstandige', 'Vast \u2014 indien nodig', 'Alleen als variabele kosten niet doorrekend kunnen worden'],
     ],
 
-    kernboodschap: 'De huidige marktbeweging is extreem, maar niet ongezien. In 2022 sloten tienduizenden Belgische gezinnen een vast contract af op een historisch piekmoment, terwijl de markt nadien sterk normaliseerde. Hoewel de Vlaamse consument wettelijk altijd kosteloos kan wisselen, gaan welkomstpremies en loyaliteitsvoordelen verloren bij vroegtijdig vertrek \u2014 waardoor velen alsnog te veel betaalden.',
+    kernboodschap: `TTF staat op €${currentTTF.toFixed(2)}/MWh en Belpex op €${currentBelpex.toFixed(2)}/MWh. De markt is gespannen door de broze Hormuz-situatie, historisch lage EU-opslag (65.4%) en structurele Qatar LNG-schade. Vast tarief blijft gemiddeld ~27% duurder dan variabel. Wie nu vastlegt, betaalt de volledige risicopremie van dit moment.`,
 
     practicalAdvice: [
-      'Observatieperiode (4-6 wk): Wacht tot eind april om gasveld-herstel impact te beoordelen. Volg TTF dagelijks.',
-      'TTF < \u20AC50 structureel (2+ wk) \u2192 variabel aantrekkelijk. TTF > \u20AC60 (6+ wk) \u2192 vast overwegen.',
+      'Observatieperiode (4-6 wk): Wacht tot eind oktober om het injectieseizoen en eerste wintervraag te beoordelen. Volg TTF dagelijks.',
+      'TTF < \u20AC55 structureel (2+ wk) en BE-opslag > 75% eind oktober \u2192 variabel aantrekkelijk. TTF > \u20AC75 (4+ wk) of EU-opslag < 80% \u2192 vast overwegen.',
       'Lees bijzondere voorwaarden: welkomstpremie-clausules, opzegtermijn, indexeringsformule bij variabel.',
       'Nooit overhaast tekenen. Paniek is marketing, geen financieel advies. Neem tijd om te vergelijken.',
     ],
 
     keyFactors: [
-      ['Hormuz Blokkade', 'Heropening vs. prolongatie \u2014 dagelijks monitoren', 'red'],
-      ['Gasveld Herstel', 'South Pars/Ras Laffan reparatie 3-5 mnd', 'red'],
-      ['België gasopslag', 'Injectieseizoen mrt-okt, doel 90%', 'amber'],
-      ['IEA Reserves', 'Nog 800M vaten beschikbaar, 2e vrijgave onwaarschijnlijk', 'amber'],
-      ['Diplomatie VS/Israel', 'Escalatie +10-15%, de-escalatie -20-30%', 'green'],
-      ['VREG Tarieven', 'Consumentenprijzen +15-25% in mei-juni 2026', 'green'],
+      ['EU-opslag laagste ooit', '65.39% eind aug; doel 90% op 1 nov', 'red'],
+      ['Qatar LNG-schade', 'South Pars/Ras Laffan herstel 3-5 jaar', 'red'],
+      ['Hormuz wapenstilstand', 'Broos; dagelijks monitoren', 'red'],
+      ['Hittegolf & koeling', 'Remt injectie, verhoogt zomervraag', 'amber'],
+      ['Vast tariefpremie', 'Gemiddeld ~27% duurder dan variabel', 'amber'],
+      ['OPEC+ productie', 'Stabiliseert Brent rond $94', 'green'],
     ],
 
     advice: {
@@ -155,8 +155,8 @@ const preparePDFData = (reportData) => {
         ? 'VAST TARIEF \u2014 maar wacht 4-6 weken voor weloverwogen keuze'
         : 'VARIABEL TARIEF \u2014 blijf rationeel en monitor de markt',
       rationale: ttfVsBase > 50
-        ? 'Prijspiek door geopolitieke schokken (Hormuz, Qatar LNG). Historisch normaliseren schokken binnen 2-5 maanden. Wie nu vastlegt betaalt de volledige risicopremie. Zekerheid primeert alleen bij krappe budgetten.'
-        : 'TTF verhoogd door tijdelijke supply shocks, structurele fundamentals bearish op lange termijn. Variabel profiteert van normalisatie. Monitor wekelijks. Geen reden tot haastbeslissing.',
+        ? 'Prijspiek door geopolitieke schokken (Hormuz, Qatar LNG) en lage EU-opslag. Vast tarief bevat de volledige risicopremie. Variabel profiteert met 1-2 maanden vertraging van eventuele normalisatie. Zekerheid primeert alleen bij krappe budgetten.'
+        : 'TTF verhoogd door tijdelijke supply shocks, structurele fundamentals blijven gespannen. Variabel volgt de markt met vertraging. Monitor wekelijks. Geen reden tot haastbeslissing.'
     },
   };
 };
