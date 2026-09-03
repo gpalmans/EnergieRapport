@@ -118,24 +118,24 @@ const chartEvents = [
 
 const forecastBase = [
   { date: "02/09", ttf: 71.92, belpex: 172.18 },
-  { date: "09/09", ttf: 70.50, belpex: 165.00 },
-  { date: "16/09", ttf: 68.00, belpex: 150.00 },
-  { date: "23/09", ttf: 65.00, belpex: 135.00 },
-  { date: "01/10", ttf: 62.00, belpex: 120.00 }
+  { date: "01/10", ttf: 75.00, belpex: 182.00 },
+  { date: "01/11", ttf: 82.00, belpex: 205.00 },
+  { date: "01/12", ttf: 87.00, belpex: 220.00 },
+  { date: "01/01", ttf: 87.00, belpex: 220.00 }
 ];
 const forecastBull = [
   { date: "02/09", ttf: 71.92, belpex: 172.18 },
-  { date: "09/09", ttf: 74.00, belpex: 185.00 },
-  { date: "16/09", ttf: 76.50, belpex: 195.00 },
-  { date: "23/09", ttf: 79.00, belpex: 205.00 },
-  { date: "01/10", ttf: 81.00, belpex: 210.00 }
+  { date: "01/10", ttf: 82.00, belpex: 210.00 },
+  { date: "01/11", ttf: 95.00, belpex: 245.00 },
+  { date: "01/12", ttf: 110.00, belpex: 285.00 },
+  { date: "01/01", ttf: 125.00, belpex: 320.00 }
 ];
 const forecastBear = [
   { date: "02/09", ttf: 71.92, belpex: 172.18 },
-  { date: "09/09", ttf: 67.00, belpex: 145.00 },
-  { date: "16/09", ttf: 62.00, belpex: 125.00 },
-  { date: "23/09", ttf: 55.00, belpex: 105.00 },
-  { date: "01/10", ttf: 50.00, belpex: 95.00 }
+  { date: "01/10", ttf: 66.00, belpex: 155.00 },
+  { date: "01/11", ttf: 60.00, belpex: 135.00 },
+  { date: "01/12", ttf: 55.00, belpex: 120.00 },
+  { date: "01/01", ttf: 52.00, belpex: 110.00 }
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -599,12 +599,12 @@ export default function EnergieRapport() {
       {/* ── FORECAST ── */}
       {tab === "forecast" && (<>
         <div style={SECTION}>
-          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>📈 TTF Gas Forecast (sep–okt 2026)</h3>
+          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>📈 TTF Gas Forecast (sep 2026 – jan 2027)</h3>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-              <YAxis domain={[45, 90]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
+              <YAxis domain={[40, 130]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
               <ReferenceLine x="01/10" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Nucleair akkoord?", fill: "#22c55e", fontSize: 10, position: "top" }} />
@@ -616,12 +616,12 @@ export default function EnergieRapport() {
         </div>
 
         <div style={SECTION}>
-          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>⚡ Belpex Elektriciteit Forecast (sep–okt 2026)</h3>
+          <h3 style={{ margin: "0 0 14px", color: "#f8fafc", fontSize: 16 }}>⚡ Belpex Elektriciteit Forecast (sep 2026 – jan 2027)</h3>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart margin={{ top: 4, right: 20, left: 0, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
               <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-              <YAxis domain={[80, 230]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
+              <YAxis domain={[100, 340]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
               <ReferenceLine x="01/10" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Nucleair akkoord?", fill: "#22c55e", fontSize: 10, position: "top" }} />
@@ -636,21 +636,21 @@ export default function EnergieRapport() {
           {[
             {
               t: "⬇ Bearish (Volledige normalisatie)", p: "20%", c: "#22c55e",
-              ttf: "€50–60", belpex: "€80–120",
-              items: ["Hormuz volledig stabiel, scheepvaart normaliseert","LNG-markt vindt alternatieve routes","Milde herfst drukt vraag","Iran-akkoord brengt extra olie","Injectie haalt 90% doel"],
+              ttf: "€52–72", belpex: "€110–175",
+              items: ["Hormuz volledig stabiel, scheepvaart normaliseert","LNG-markt vindt alternatieve routes","Milde winter drukt vraag","Iran-akkoord brengt extra olie","Opslag haalt 90% doel"],
               note: "Vereist: structureel herstel Qatar LNG sneller dan verwacht + milde winter",
             },
             {
-              t: "⟶ Basis (Gecontroleerde stabilisatie)", p: "50%", c: "#0ea5e9",
-              ttf: "€60–72", belpex: "€110–170",
-              items: ["Qatar LNG-schade 3-5 jaar: aanbod structureel krapper","Hormuz broos maar open","EU-injectie 80-85% target","Zomerse hitte laat af, wintervraag drukt","EU ETS op €85/ton ondersteunt Belpex"],
-              note: "Meest waarschijnlijk: TTF boven pre-crisis, lichte daling naar oktober",
+              t: "⟶ Basis (Gecontroleerde opwaartse druk)", p: "50%", c: "#0ea5e9",
+              ttf: "€72–88", belpex: "€170–225",
+              items: ["Qatar LNG-schade 3-5 jaar: aanbod structureel krapper","Hormuz broos maar open","EU-opslag blijft historisch laag","Wintervraag neemt toe (nov–jan)","EU ETS op €85/ton ondersteunt Belpex"],
+              note: "Meest waarschijnlijk: TTF stijgt door winterseizoenspatroon, blijft boven pre-crisis",
             },
             {
               t: "⬆ Bullish (Nieuwe schok)", p: "30%", c: "#ef4444",
-              ttf: "€72–85", belpex: "€160–220",
-              items: ["Nieuwe escalatie Midden-Oosten of Hormuz hersluit","Opslag haalt 90% niet → wintercrisis geprijsd","Vroege koude snap","LNG-aanbodgolf vertraagt","Russische afsnijding creëert acute schaarste"],
-              note: "Trigger: geopolitiek incident of opslagachterstand boven 15% vs historisch",
+              ttf: "€85–130", belpex: "€200–320",
+              items: ["Nieuwe escalatie Midden-Oosten of Hormuz hersluit","Opslag haalt 90% niet → wintercrisis geprijsd","Vroege koude snap (okt–nov)","LNG-aanbodgolf vertraagt","Russische afsnijding creëert acute schaarste"],
+              note: "Trigger: koude snap, opslagachterstand of nieuwe escalatie in Q4",
             },
           ].map((s, i) => (
             <div key={i} style={{ background: "#1e293b", border: `1px solid ${s.c}44`, borderRadius: 12, padding: "16px 18px" }}>
@@ -659,7 +659,7 @@ export default function EnergieRapport() {
                 <span style={{ ...BADGE(s.c), flexShrink: 0 }}>P: {s.p}</span>
               </div>
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 3 }}>Range sep–okt 2026</div>
+                <div style={{ fontSize: 11, color: "#64748b", marginBottom: 3 }}>Range sep 2026 – jan 2027</div>
                 <div style={{ color: "#0ea5e9", fontSize: 12 }}>TTF: <strong style={{ color: s.c }}>{s.ttf}/MWh</strong></div>
                 <div style={{ color: "#a78bfa", fontSize: 12 }}>Belpex: <strong style={{ color: s.c }}>{s.belpex}/MWh</strong></div>
               </div>

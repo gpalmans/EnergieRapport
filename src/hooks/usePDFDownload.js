@@ -119,9 +119,9 @@ const preparePDFData = (reportData) => {
     ],
 
     forecasts: [
-      { name: 'Bearish', prob: '20%', color: 'green', ttf: '\u20AC50\u201360', belpex: '\u20AC80\u2013120', trigger: 'Hormuz volledig stabiel, mild najaar, injectie haalt 90%' },
-      { name: 'Basis', prob: '50%', color: 'blue', ttf: '\u20AC60\u201372', belpex: '\u20AC110\u2013170', trigger: 'Qatar-schade 3-5 jr, Hormuz broos, injectie 80-85%' },
-      { name: 'Bullish', prob: '30%', color: 'red', ttf: '\u20AC72\u201385', belpex: '\u20AC160\u2013220', trigger: 'Nieuwe escalatie, opslag onder 80%, vroege koude snap' },
+      { name: 'Bearish', prob: '20%', color: 'green', ttf: '\u20AC52\u201372', belpex: '\u20AC110\u2013175', trigger: 'Hormuz stabiel, milde winter, opslag haalt 90%' },
+      { name: 'Basis', prob: '50%', color: 'blue', ttf: '\u20AC72\u201388', belpex: '\u20AC170\u2013225', trigger: 'Qatar-schade 3-5 jr, Hormuz broos, lage opslag, wintervraag stijgt' },
+      { name: 'Bullish', prob: '30%', color: 'red', ttf: '\u20AC85\u2013130', belpex: '\u20AC200\u2013320', trigger: 'Nieuwe escalatie, opslag onder 80%, vroege koude snap' },
     ],
 
     adviceMatrix: [
