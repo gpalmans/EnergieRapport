@@ -106,6 +106,16 @@ const chartData = addTrendlines(marketData, {
   belpexTrendMedium: { valueKey: 'belpex'       },
 });
 
+const periodAvg = {
+  ttf:    +(chartData.reduce((s, d) => s + d.ttf, 0)    / chartData.length).toFixed(2),
+  belpex: +(chartData.reduce((s, d) => s + d.belpex, 0) / chartData.length).toFixed(2),
+};
+
+const chartEvents = [
+  { date: "28/08", label: "Hormuz broos",       color: "#f97316" },
+  { date: "31/08", label: "EU-opslag laagste",  color: "#ef4444" },
+];
+
 const forecastBase = [
   { date: "02/09", ttf: 71.92, belpex: 172.18 },
   { date: "09/09", ttf: 70.50, belpex: 165.00 },
@@ -356,9 +366,12 @@ export default function EnergieRapport() {
               <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} />
               <YAxis domain={[50, 80]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
-              <ReferenceLine y={71.92} stroke="#f97316" strokeDasharray="4 4" label={{ value: "Sep-top", fill: "#f97316", fontSize: 10, position: "top" }} />
-              <ReferenceLine x="05/08" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Aug-dieptepunt", fill: "#22c55e", fontSize: 10, position: "top" }} />
-              <ReferenceLine x="21/08" stroke="#ef4444" strokeDasharray="4 4" label={{ value: "Piek", fill: "#ef4444", fontSize: 10, position: "top" }} />
+              {/* Horizontaal: gemiddelde van de getoonde periode */}
+              <ReferenceLine y={periodAvg.ttf} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "Gemiddelde", fill: "#f59e0b", fontSize: 10, position: "top" }} />
+              {/* Verticaal: economische/geopolitieke events in de periode */}
+              {chartEvents.map((ev, i) => (
+                <ReferenceLine key={`ttf-ev-${i}`} x={ev.date} stroke={ev.color} strokeDasharray="4 4" label={{ value: ev.label, fill: ev.color, fontSize: 10, position: "top" }} />
+              ))}
               <Line type="monotone" dataKey="ttf" name="TTF Gas" stroke="#0ea5e9" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
               {ttfTrends.short && <Line type="linear" dataKey="ttfTrendShort" name="Trend 7d" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 3" dot={false} connectNulls={false} />}
               {ttfTrends.medium && <Line type="linear" dataKey="ttfTrendMedium" name="Trend totaal" stroke="#22d3ee" strokeWidth={2} strokeDasharray="8 4" dot={false} />}
@@ -383,9 +396,12 @@ export default function EnergieRapport() {
               <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} />
               <YAxis domain={[60, 200]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
-              <ReferenceLine y={132.54} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "Aug gemiddelde", fill: "#f59e0b", fontSize: 10, position: "top" }} />
-              <ReferenceLine x="17/08" stroke="#ef4444" strokeDasharray="4 4" label={{ value: "Piek", fill: "#ef4444", fontSize: 10, position: "top" }} />
-              <ReferenceLine x="02/09" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Vandaag", fill: "#22c55e", fontSize: 10, position: "top" }} />
+              {/* Horizontaal: gemiddelde van de getoonde periode */}
+              <ReferenceLine y={periodAvg.belpex} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "Gemiddelde", fill: "#f59e0b", fontSize: 10, position: "top" }} />
+              {/* Verticaal: economische/geopolitieke events in de periode */}
+              {chartEvents.map((ev, i) => (
+                <ReferenceLine key={`belpex-ev-${i}`} x={ev.date} stroke={ev.color} strokeDasharray="4 4" label={{ value: ev.label, fill: ev.color, fontSize: 10, position: "top" }} />
+              ))}
               <Line type="monotone" dataKey="belpex" name="Belpex" stroke="#a78bfa" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
               {belpexTrends.short && <Line type="linear" dataKey="belpexTrendShort" name="Trend 7d" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 3" dot={false} connectNulls={false} />}
               {belpexTrends.medium && <Line type="linear" dataKey="belpexTrendMedium" name="Trend totaal" stroke="#22d3ee" strokeWidth={2} strokeDasharray="8 4" dot={false} />}
@@ -591,7 +607,6 @@ export default function EnergieRapport() {
               <YAxis domain={[45, 90]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
-              <ReferenceLine x="02/09" stroke="#0ea5e9" strokeDasharray="4 4" label={{ value: "Vandaag", fill: "#0ea5e9", fontSize: 10, position: "top" }} />
               <ReferenceLine x="01/10" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Nucleair akkoord?", fill: "#22c55e", fontSize: 10, position: "top" }} />
               <Line data={forecastBull} type="monotone" dataKey="ttf" name="⬆ Bullish" stroke="#ef4444" strokeWidth={2} dot={{ r: 3, fill: "#ef4444" }} />
               <Line data={forecastBase} type="monotone" dataKey="ttf" name="⟶ Basis"   stroke="#0ea5e9" strokeWidth={2.5} dot={{ r: 3, fill: "#0ea5e9" }} />
@@ -609,7 +624,6 @@ export default function EnergieRapport() {
               <YAxis domain={[80, 230]} tick={{ fill: "#64748b", fontSize: 11 }} tickFormatter={v => `€${v}`} />
               <Tooltip content={<Tip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "#94a3b8" }} />
-              <ReferenceLine x="02/09" stroke="#0ea5e9" strokeDasharray="4 4" label={{ value: "Vandaag", fill: "#0ea5e9", fontSize: 10, position: "top" }} />
               <ReferenceLine x="01/10" stroke="#22c55e" strokeDasharray="4 4" label={{ value: "Nucleair akkoord?", fill: "#22c55e", fontSize: 10, position: "top" }} />
               <Line data={forecastBull} type="monotone" dataKey="belpex" name="⬆ Bullish" stroke="#dc2626" strokeWidth={2.5} dot={{ r: 3, fill: "#dc2626" }} />
               <Line data={forecastBase} type="monotone" dataKey="belpex" name="⟶ Basis" stroke="#0ea5e9" strokeWidth={3} dot={{ r: 4, fill: "#0ea5e9" }} />
