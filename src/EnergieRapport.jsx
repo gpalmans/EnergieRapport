@@ -216,10 +216,13 @@ export default function EnergieRapport() {
   );
 
   const tabBtn = (t) => ({
-    padding: "8px 15px", borderRadius: 6, cursor: "pointer", fontSize: 13,
-    fontWeight: 600, border: "none", whiteSpace: "nowrap", transition: "all 0.2s",
-    background: tab === t ? "#0ea5e9" : "transparent",
+    flex: "1 1 auto",
+    minWidth: 120,
+    padding: "10px 16px", borderRadius: 10, cursor: "pointer", fontSize: 13,
+    fontWeight: 700, border: "none", whiteSpace: "nowrap", transition: "all 0.2s",
+    background: tab === t ? "#0ea5e9" : "#1e293b",
     color: tab === t ? "#fff" : "#94a3b8",
+    boxShadow: tab === t ? "0 3px 10px rgba(14,165,233,0.35)" : "inset 0 1px 2px rgba(0,0,0,0.15)",
   });
 
   return (
@@ -343,8 +346,16 @@ export default function EnergieRapport() {
       </div>
 
       {/* TABS */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 20, background: "#1e293b", padding: 6, borderRadius: 10, overflowX: "auto" }}>
-        {TABS.map(([t, l]) => <button key={t} style={tabBtn(t)} onClick={() => setTab(t)}>{l}</button>)}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+          <span style={{ fontSize: 11, color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            Navigeer door het rapport
+          </span>
+          <div style={{ flex: 1, height: 1, background: "#334155" }} />
+        </div>
+        <div style={{ display: "flex", gap: 6, background: "#0f172a", padding: 8, borderRadius: 14, border: "1px solid #1e293b", overflowX: "auto", boxShadow: "0 4px 16px rgba(0,0,0,0.25)" }}>
+          {TABS.map(([t, l]) => <button key={t} style={tabBtn(t)} onClick={() => setTab(t)}>{l}</button>)}
+        </div>
       </div>
 
       {/* ── ANALYSE ── */}
